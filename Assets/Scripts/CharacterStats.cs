@@ -8,6 +8,12 @@ public class CharacterStats : MonoBehaviour {
 
     public void TakeDamage(float damageTaken)
     {
+        currentHealth -= damageTaken;
+    }
 
+    public void Heal(float hpAdded)
+    {
+        currentHealth += hpAdded;
+        currentHealth = Mathf.Min(maxHealth, currentHealth);
     }
 }
