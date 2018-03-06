@@ -3,20 +3,63 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CustomPhysics2D : MonoBehaviour {
+    #region const variables
+    public const float GRAVITY_CONSTANT = 9.8f;
+    #endregion const variables
+    #region main variables
     public Vector2 velocity { get; set; }
+    [Header("Gravity Values")]
+    [Tooltip("When this is marked true, gravity will effect the object based on the gravity scale and gravity vector")]
+    public bool useGravity = true;
+    [Tooltip("If this is marked true, then the object will stop accelerating once it has reached the maximum velocity that it can travel")]
+    public bool useTerminalVelocity = true;
+    [SerializeField]
+    [Tooltip("The direction that gravity will be acting on the object")]
+    private Vector2 gravityVector = Vector2.down;
+    [Tooltip("The scale at which gravity can effect the object. Potentially can be used for varying the jump feel")]
+    public float gravityScale = 1;
+    [Tooltip("The maximum speed at which the ")]
+    public float terminalVelocity = 10;
+    #endregion main variables
 
 
     #region monobehavoiur methods
     private void Update()
     {
+        if (useGravity) UpdateVelocityFromGravity();
         UpdatePositionFromVelocity();
+    }
+
+    private void OnValidate()
+    {
+        gravityVector = gravityVector.normalized;
     }
     #endregion monobehaviour methods
 
+
+    private void UpdateVelocityFromGravity()
+    {
+        if (useTerminalVelocity)
+        {
+            
+        }
+        float gravityValueToApply = gravityScale * GRAVITY_CONSTANT * Time.deltaTime;
+        velocity += gravityValueToApply * gravityVector;
+
+    }
 
     private void UpdatePositionFromVelocity()
     {
         Vector3 velocityVector3 = new Vector3(velocity.x, velocity.y, 0);
         this.transform.position += velocityVector3 * Time.deltaTime;
+    }
+
+    /// <summary>
+    /// Sets the direction that gravity will be applied if applicable
+    /// </summary>
+    /// <param name="gravityVector"></param>
+    public void SetGravityVector(Vector2 gravityVector)
+    {
+        this.gravityVector = gravityVector.normalized;
     }
 }

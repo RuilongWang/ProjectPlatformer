@@ -154,6 +154,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9305d810554ecf44a96a36ab203a679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useGravity: 1
+  useTerminalVelocity: 1
+  gravityVector: {x: 0, y: -1}
+  gravityScale: 1
+  terminalVelocity: 10
 --- !u!1 &949451792
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,7 +223,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1cbb2c9c886d5f34093d6036e7fe6d8e, type: 3}
-  m_Color: {r: 0.75735295, g: 0.6905277, b: 0.6905277, a: 1}
+  m_Color: {r: 1, g: 0.8235294, b: 0.8235294, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

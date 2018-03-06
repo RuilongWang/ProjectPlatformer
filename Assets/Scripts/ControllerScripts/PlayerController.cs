@@ -4,4 +4,15 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+
+
+    #region monobehavoiur methods
+
+    #endregion monobehaviour methods
+
+    [System.Serializable]
+    public struct BufferedButtonInput
+    {
+
+    }
 }
