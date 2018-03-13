@@ -16,6 +16,16 @@ public class CustomPhysics2D : MonoBehaviour {
     [SerializeField]
     [Tooltip("The direction that gravity will be acting on the object")]
     private Vector2 gravityVector = Vector2.down;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public Vector2 gravityRight { get { return new Vector2(-gravityVector.y, gravityVector.x); } }
+    public Vector2 gravityLeft { get { return new Vector2(gravityVector.y, -gravityVector.x); } }
+    public Vector2 gravityUp { get { return -gravityVector; } }
+    public Vector2 gravityDown { get { return gravityVector; } }
+
+
     [Tooltip("The scale at which gravity can effect the object. Potentially can be used for varying the jump feel")]
     public float gravityScale = 1;
     [Tooltip("The maximum speed at which the ")]
@@ -41,7 +51,15 @@ public class CustomPhysics2D : MonoBehaviour {
     {
         if (useTerminalVelocity)
         {
-            
+            //Vector2 currentVelocityDown = new Vector2(velocity.x )
+            float dotGravity = Vector2.Dot(gravityVector, velocity);
+            Vector2 downComponent = dotGravity * gravityVector;
+            Vector2 rightComponent = Vector2.Dot(gravityRight, velocity) * gravityRight;
+
+            if (downComponent.magnitude > terminalVelocity && dotGravity > 0)
+            {
+                velocity = rightComponent + gravityDown * terminalVelocity;
+            }
         }
         float gravityValueToApply = gravityScale * GRAVITY_CONSTANT * Time.deltaTime;
         velocity += gravityValueToApply * gravityVector;
