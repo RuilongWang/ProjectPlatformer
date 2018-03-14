@@ -8,6 +8,7 @@ public class MovementMechanics : MonoBehaviour {
     public const float RUN_THRESHOLD = .65f;
 
     #region main variables
+    [Header("Ground Speed Variables")]
     [Tooltip("Our goal speed when our character is running")]
     public float maxRunSpeed = 20f;
     [Tooltip("Our goal speed when our character is walking")]
@@ -15,6 +16,10 @@ public class MovementMechanics : MonoBehaviour {
 
     [Tooltip("The acceleration of the player's movement. Smoothes into its goal speeds")]
     public float acceleration = 35;
+
+    [Header("Jump Variables")]
+    public float jumpVelocity = 10;
+
     #endregion main variables
 
     #region set at runtime
