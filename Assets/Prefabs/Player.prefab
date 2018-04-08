@@ -37,6 +37,7 @@ GameObject:
   - component: {fileID: 4574177464125060}
   - component: {fileID: 114734543380236362}
   - component: {fileID: 114101716665980264}
+  - component: {fileID: 114993215029316142}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -102,6 +103,18 @@ MonoBehaviour:
   gravityVector: {x: 0, y: -1}
   gravityScale: 1
   terminalVelocity: 10
+--- !u!114 &114993215029316142
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1643534526484386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 101b97616edfd854eaa20a23fdbc27c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
 --- !u!212 &212854314126170018
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour {
+public class PlayerStats : CharacterStats {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    #region monobehaviour methods
+    private void Start()
+    {
+        GameOverseer.Instance.player = this;
+    }
+
+    #endregion monobehaviour methods
 }

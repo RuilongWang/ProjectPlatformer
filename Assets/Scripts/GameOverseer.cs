@@ -11,7 +11,22 @@ using UnityEngine;
 public class GameOverseer : MonoBehaviour {
     public enum GameState { GamePlaying, GamePaused }
 
-    public CharacterStats player;
+    #region static variables
+    private static GameOverseer instance;
+    public static GameOverseer Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = GameObject.FindObjectOfType<GameOverseer>();
+            }
+            return instance;
+        }
+    }
+    #endregion static variables
+
+    public PlayerStats player { get; set; }
     public GameState currentGameState { get; set; }
 
     #region save game variables
@@ -22,7 +37,7 @@ public class GameOverseer : MonoBehaviour {
     #region monobehaviour methods
     private void Awake()
     {
-        
+        instance = this;
     }
 
     private void Start()
