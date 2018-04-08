@@ -36,6 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4574177464125060}
   - component: {fileID: 114734543380236362}
+  - component: {fileID: 114101716665980264}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -70,6 +71,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114101716665980264
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1643534526484386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4af43975cd626b5429a8c1638d729a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxRunSpeed: 20
+  maxWalkSpeed: 9
+  acceleration: 35
+  jumpVelocity: 10
 --- !u!114 &114734543380236362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -83,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useGravity: 1
   useTerminalVelocity: 1
-  gravityVector: {x: 0.7043925, y: -0.70981073}
+  gravityVector: {x: 0, y: -1}
   gravityScale: 1
   terminalVelocity: 10
 --- !u!212 &212854314126170018

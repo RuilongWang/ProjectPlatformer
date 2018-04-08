@@ -4,7 +4,12 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Hitbox : MonoBehaviour {
+    public bool debugSettingsActive = false;
+    [Tooltip("For debugging purposes only. Visually shows the position, size and rotation of hitboxes")]
     public SpriteRenderer hitboxSprite;
+    /// <summary>
+    /// This object should be found in the parent object of the hitbox
+    /// </summary>
     protected HitboxManager associatedHitboxManager;
 
     #region monobehaviour methods
@@ -15,6 +20,12 @@ public class Hitbox : MonoBehaviour {
         {
             Debug.LogWarning("There is NO HitboxManager associated with this Hitbox object");
         }
+        else
+        {
+            associatedHitboxManager.allHitboxes.Add(this);
+        }
+
+        SetHitboxToDebugMode(this.debugSettingsActive);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -35,6 +46,7 @@ public class Hitbox : MonoBehaviour {
 
     public void SetHitboxToDebugMode(bool setDebug)
     {
+        this.debugSettingsActive = setDebug;
         hitboxSprite.gameObject.SetActive(setDebug);
     }
 

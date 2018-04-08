@@ -7,15 +7,25 @@ public class HitboxManager : MonoBehaviour {
     public float hitForce;
 
     [Tooltip("Indicates whether or not a hitbox is currently activated. If true it is allowed to intereact with other hitboxes")]
-    public bool currentlyActive;
-    [Tooltip("This is a list of all the characters that have been hit by the associated characters hitbox")]
-    public List<HitboxManager> charactersHit;
+    public bool currentlyActive;//Could be useful for invincibility
 
+    /// <summary>
+    /// This is a list of all the characters that have been hit by the associated characters hitbox
+    /// </summary>
+    public List<HitboxManager> charactersHit { get; set; }
 
-    private List<Hitbox> allHitboxes;
+    /// <summary>
+    /// A list of all attached hitboxes that are attached to this hitbox manager
+    /// </summary>
+    public List<Hitbox> allHitboxes { get; set; }
 
 
     #region monobehaviour methods
+    private void Awake()
+    {
+        allHitboxes = new List<Hitbox>();
+    }
+
     private void Start()
     {
         if (!this.characterStats)
@@ -25,16 +35,30 @@ public class HitboxManager : MonoBehaviour {
     }
     #endregion monobehaviour methods
 
+    /// <summary>
+    /// If a hitbox has entered, this method should be called in the hitbox's manager
+    /// object
+    /// </summary>
+    /// <param name="hitbox"></param>
     public void OnHitboxEntered(Hitbox hitbox)
     {
-
+        if (!currentlyActive) return;
     }
 
+    /// <summary>
+    /// If a hitbox was exited, the hitbox should call this method in the hitbox
+    /// manager object
+    /// </summary>
+    /// <param name="hitbox"></param>
     public void OnHitboxExited(Hitbox hitbox)
     {
-
+        if (!currentlyActive) return;
     }
 
+    /// <summary>
+    /// Shows off all the hitboxes visually to make debugging a bit easier
+    /// </summary>
+    /// <param name="setDebug"></param>
     public void SetHitboxDebugMode(bool setDebug)
     {
         foreach (Hitbox hbox in allHitboxes)

@@ -70,4 +70,12 @@ public class MovementMechanics : MonoBehaviour {
         float xVelocity = Mathf.MoveTowards(rigid.velocity.x, goalSpeed, Time.deltaTime * acceleration);
         rigid.velocity = new Vector2(xVelocity, rigid.velocity.y);
     }
+
+    #region jump methods
+    public void Jump()
+    {
+
+    }
+
+    #endregion jump methods
 }
