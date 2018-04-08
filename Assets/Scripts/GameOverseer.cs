@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 /// <summary>
@@ -22,6 +24,16 @@ public class GameOverseer : MonoBehaviour {
     {
         
     }
+
+    private void Start()
+    {
+        
+    }
+
+    private void OnApplicationQuit()
+    {
+        
+    }
     #endregion monobehaviour methods
 
     /// <summary>
@@ -31,6 +43,24 @@ public class GameOverseer : MonoBehaviour {
     public void SaveGameData(string saveGameDataName)
     {
         string filePath = Path.Combine(Application.persistentDataPath, SAVE_GAME_FILE_NAME);
+
+        FileStream fs = new FileStream(filePath, FileMode.Open);
+        SaveData saveData = new SaveData();
+        saveData.healthPoints = player.currentHealth;
+        try
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            bf.Serialize(fs, saveData);
+
+        }
+        catch (SerializationException e)
+        {
+            Debug.LogWarning("There was an error saving the game data!");
+        }
+        finally
+        {
+            fs.Close();
+        }
     }
 
     /// <summary>
@@ -41,8 +71,12 @@ public class GameOverseer : MonoBehaviour {
         string filePath = Path.Combine(Application.persistentDataPath, SAVE_GAME_FILE_NAME);
     }
 
+
+    /// <summary>
+    /// This class will hold important data that we will want to save about the game
+    /// </summary>
     [System.Serializable]
-    private struct SaveData
+    private class SaveData
     {
         public float healthPoints;
     }
