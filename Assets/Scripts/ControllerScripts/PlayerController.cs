@@ -70,6 +70,16 @@ public class PlayerController : MonoBehaviour {
     {
         return buttonDictionary[buttonAction].buttonUp;
     }
+
+    public float GetHorizontal()
+    {
+        return Input.GetAxisRaw("Horizontal");
+    }
+
+    public float GetVertical()
+    {
+        return Input.GetAxisRaw("Vertical");
+    }
     #region get button methods
 
     #endregion get button methods
