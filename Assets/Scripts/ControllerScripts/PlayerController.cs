@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour {
         foreach (ButtonAction buttonAction in System.Enum.GetValues(typeof(ButtonAction)))
         {
             buttonDictionary.Add(buttonAction, new BufferedButtonInput());
+            buttonDictionary[buttonAction].buttonAction = buttonAction;
         }
     }
 
@@ -43,7 +44,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     /// <summary>
-    /// 
+    /// Gets a buffered up event for the passed in button action
     /// </summary>
     /// <param name="buttonAction"></param>
     public bool GetButtonBufferedUp(ButtonAction buttonAction)
@@ -56,26 +57,49 @@ public class PlayerController : MonoBehaviour {
         return false;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="buttonAction"></param>
+    /// <returns></returns>
     public bool GetButton(ButtonAction buttonAction)
     {
         return buttonDictionary[buttonAction].button;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="buttonAction"></param>
+    /// <returns></returns>
     public bool GetButtonDown(ButtonAction buttonAction)
     {
         return buttonDictionary[buttonAction].buttonDown;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="buttonAction"></param>
+    /// <returns></returns>
     public bool GetButtonUp(ButtonAction buttonAction)
     {
         return buttonDictionary[buttonAction].buttonUp;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public float GetHorizontal()
     {
         return Input.GetAxisRaw("Horizontal");
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public float GetVertical()
     {
         return Input.GetAxisRaw("Vertical");

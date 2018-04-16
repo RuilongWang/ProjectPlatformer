@@ -70,7 +70,8 @@ public class GameOverseer : MonoBehaviour {
         }
         catch (SerializationException e)
         {
-            Debug.LogWarning("There was an error saving the game data!");
+            
+            Debug.LogWarning(e.StackTrace);
         }
         finally
         {
