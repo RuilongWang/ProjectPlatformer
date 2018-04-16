@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour {
 
     public enum ButtonAction
     {
-        JUMP,
+        Jump,
     }
     #endregion const button names
     private Dictionary<ButtonAction, BufferedButtonInput> buttonDictionary = new Dictionary<ButtonAction, BufferedButtonInput>();
@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour {
         {
             buttonDictionary.Add(buttonAction, new BufferedButtonInput());
             buttonDictionary[buttonAction].buttonAction = buttonAction;
+            buttonDictionary[buttonAction].buttonName = buttonAction.ToString();
         }
     }
 

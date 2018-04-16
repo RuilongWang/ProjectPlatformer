@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class UINode : MonoBehaviour {
+    public Transform pointerPosition;
+    [Header("Adjacent UI Nodes")]
     [SerializeField]
     private UINode nodeUp;
     [SerializeField]
@@ -11,7 +13,6 @@ public class UINode : MonoBehaviour {
     private UINode nodeLeft;
     [SerializeField]
     private UINode nodeRight;
-
     private UIManager uiManager;
     public bool uiNodeActive { get; private set; }
 

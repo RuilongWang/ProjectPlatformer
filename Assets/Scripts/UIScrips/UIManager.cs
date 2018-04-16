@@ -10,15 +10,14 @@ public class UIManager : MonoBehaviour {
     [Tooltip("This is the default node that will be selected upon start up of this ui menu. If you want it to be reset to this ui node, use the reset method when entering")]
     public UINode defaultNode;
 
-    public UINode currentNodeSelected;
-
-    
+    public UINode currentNodeSelected { get; private set; }    
     private bool autoScrollActive;
 
     #region monobehaviour methods
     private void Awake()
     {
         allAttachedUINodes = new List<UINode>();
+        currentNodeSelected = defaultNode;
     }
 
     private void Update()
@@ -49,6 +48,7 @@ public class UIManager : MonoBehaviour {
     }
     #endregion monobehaviour methods
 
+    #region scrolling logic
     private IEnumerator ScrollUIElements(UIDirection uiDirection)
     {
         autoScrollActive = true;
@@ -138,6 +138,6 @@ public class UIManager : MonoBehaviour {
                 return true;
         }
         return false;
-        
     }
+    #endregion scrolling logic
 }
