@@ -57,12 +57,13 @@ public class UIManager : MonoBehaviour {
 
         while (timeBeforeAutoScroll > 0)
         {
-            if (IsScrollActive(uiDirection))
+            
+            if (!IsScrollActive(uiDirection))
             {
                 autoScrollActive = false;
                 yield break;
             }
-            timeBeforeAutoScroll -= Time.deltaTime;
+            timeBeforeAutoScroll -= Time.unscaledDeltaTime;
 
             yield return new WaitForEndOfFrame();
         }
@@ -78,6 +79,7 @@ public class UIManager : MonoBehaviour {
                 MoveToNextElemt(uiDirection);
             }
             yield return new WaitForEndOfFrame();
+            nextScrollTimer -= Time.unscaledDeltaTime;
         }
         autoScrollActive = false;   
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 using UnityEngine;
 
 public class UINode : MonoBehaviour {
@@ -14,7 +15,9 @@ public class UINode : MonoBehaviour {
     [SerializeField]
     private UINode nodeRight;
     private UIManager uiManager;
-    public bool uiNodeActive { get; private set; }
+    [Tooltip("Mark this true if a player can currently select the item. if the item is locked off to the player you can mark it false")]
+    public bool uiNodeActive = true;
+    public UnityEvent onEventPressed;
 
     private bool uiNodeSearched = false;
 
@@ -43,19 +46,22 @@ public class UINode : MonoBehaviour {
     /// <returns></returns>
     public UINode GetNodeUp()
     {
+        print("Step 1");
         if (nodeUp == null || uiNodeSearched)
         {
             uiNodeSearched = false;
             return null;
         }
+        print("Step 2");
         uiNodeSearched = true;
         UINode uiNodeToReturn = nodeUp;
         if (!nodeUp.uiNodeActive)
         {
             uiNodeToReturn = nodeUp.GetNodeUp();
         }
+        print(uiNodeToReturn);
         uiNodeSearched = false;
-
+        print("Step 3");
         return uiNodeToReturn;
     }
 
@@ -125,4 +131,11 @@ public class UINode : MonoBehaviour {
         return uiNodeToReturn;
     }
     #endregion get methods
+    /// <summary>
+    /// If a node is selected this method should be called
+    /// </summary>
+    public void OnNodeSelected()
+    {
+        onEventPressed.Invoke();
+    }
 }
