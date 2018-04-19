@@ -59,6 +59,11 @@ public class UIManager : MonoBehaviour {
         {
             StartCoroutine(ScrollUIElements(UIDirection.Left));
         }
+
+        if (Input.GetButtonDown("Submit"))
+        {
+            currentNodeSelected.OnNodeSelected();
+        }
     }
     #endregion monobehaviour methods
 
@@ -126,6 +131,10 @@ public class UIManager : MonoBehaviour {
 
     private bool IsScrollActive(UIDirection direction)
     {
+        if (!this.gameObject.activeSelf)
+        {
+            return false;
+        }
         switch (direction)
         {
             case UIDirection.Up:

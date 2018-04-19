@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 171774234}
   - component: {fileID: 171774235}
   m_Layer: 5
-  m_Name: QuitGame
+  m_Name: ExitGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -171,7 +171,18 @@ MonoBehaviour:
   uiNodeActive: 1
   onEventPressed:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1116644963}
+        m_MethodName: OnExitPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!224 &203913513 stripped
@@ -571,7 +582,18 @@ MonoBehaviour:
   uiNodeActive: 1
   onEventPressed:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1116644963}
+        m_MethodName: OnOptionsPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!224 &1082120384
@@ -595,6 +617,22 @@ RectTransform:
   m_AnchoredPosition: {x: -0.000076293945, y: -200}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1116644962 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1812499489040810, guid: 27a94ded5d5a26a44916ba98a5f60fb3,
+    type: 2}
+  m_PrefabInternal: {fileID: 1335472497}
+--- !u!114 &1116644963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1116644962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a64202dec5d45843b247b7584546bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1258958737
 GameObject:
   m_ObjectHideFlags: 0
@@ -676,6 +714,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1939042617}
     m_Modifications:
+    - target: {fileID: 114551120123042168, guid: 27a94ded5d5a26a44916ba98a5f60fb3,
+        type: 2}
+      propertyPath: onEventPressed.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 224483409415639602, guid: 27a94ded5d5a26a44916ba98a5f60fb3,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -820,6 +863,31 @@ Prefab:
         type: 2}
       propertyPath: m_AnchoredPosition.x
       value: -115
+      objectReference: {fileID: 0}
+    - target: {fileID: 114551120123042168, guid: 27a94ded5d5a26a44916ba98a5f60fb3,
+        type: 2}
+      propertyPath: onEventPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114551120123042168, guid: 27a94ded5d5a26a44916ba98a5f60fb3,
+        type: 2}
+      propertyPath: onEventPressed.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114551120123042168, guid: 27a94ded5d5a26a44916ba98a5f60fb3,
+        type: 2}
+      propertyPath: onEventPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1116644963}
+    - target: {fileID: 114551120123042168, guid: 27a94ded5d5a26a44916ba98a5f60fb3,
+        type: 2}
+      propertyPath: onEventPressed.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnNewGamePressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 114551120123042168, guid: 27a94ded5d5a26a44916ba98a5f60fb3,
+        type: 2}
+      propertyPath: onEventPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 27a94ded5d5a26a44916ba98a5f60fb3, type: 2}
@@ -1176,7 +1244,18 @@ MonoBehaviour:
   uiNodeActive: 1
   onEventPressed:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1116644963}
+        m_MethodName: OnLoadGamePressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!224 &1922671604

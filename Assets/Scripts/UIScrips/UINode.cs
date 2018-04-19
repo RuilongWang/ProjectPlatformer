@@ -46,22 +46,19 @@ public class UINode : MonoBehaviour {
     /// <returns></returns>
     public UINode GetNodeUp()
     {
-        print("Step 1");
         if (nodeUp == null || uiNodeSearched)
         {
             uiNodeSearched = false;
             return null;
         }
-        print("Step 2");
         uiNodeSearched = true;
         UINode uiNodeToReturn = nodeUp;
         if (!nodeUp.uiNodeActive)
         {
             uiNodeToReturn = nodeUp.GetNodeUp();
         }
-        print(uiNodeToReturn);
+
         uiNodeSearched = false;
-        print("Step 3");
         return uiNodeToReturn;
     }
 
