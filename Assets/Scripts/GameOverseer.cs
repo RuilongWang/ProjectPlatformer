@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -29,6 +30,16 @@ public class GameOverseer : MonoBehaviour {
     public PlayerStats player { get; set; }
     public GameState currentGameState { get; set; }
 
+    #region debug variables
+    [Header("Debug Game Toggles")]
+    //Displays the player's currents stats in a UI window in the top right corner
+    public bool playerStatsWindow = false;
+    //Displays active hitboxes visually in game
+    public bool displayHitboxesVisually = false;
+    //Changes the color of the hitboxes, based on their current state
+    public bool displayHitboxStates = false;
+    #endregion debug variables
+
     #region save game variables
     private static string SAVE_GAME_FILE_NAME = "ProjectRobotGirlsSaveData.dat";
     #endregion save game variables
@@ -51,6 +62,7 @@ public class GameOverseer : MonoBehaviour {
     }
     #endregion monobehaviour methods
 
+    #region save game methods
     /// <summary>
     /// Saves this particular instance of the game. Any changes before may be overwritten
     /// Takes in the name of the file that we are going to create
@@ -61,6 +73,9 @@ public class GameOverseer : MonoBehaviour {
 
         FileStream fs = new FileStream(filePath, FileMode.Open);
         SaveData saveData = new SaveData();
+
+        saveData.sceneName = SceneManager.GetActiveScene().name;
+
         saveData.healthPoints = player.currentHealth;
         try
         {
@@ -85,6 +100,11 @@ public class GameOverseer : MonoBehaviour {
     public void LoadGameData(string saveGameDataName)
     {
         string filePath = Path.Combine(Application.persistentDataPath, SAVE_GAME_FILE_NAME);
+
+        if (!File.Exists(filePath))
+        {
+
+        }
     }
 
 
@@ -94,6 +114,17 @@ public class GameOverseer : MonoBehaviour {
     [System.Serializable]
     private class SaveData
     {
+        //Name of the level or scene that this save took place
+        public string sceneName;
+
         public float healthPoints;
     }
+    #endregion save game methods
+
+    #region debug methods
+    private void UpdateDebugSettings()
+    {
+
+    }
+    #endregion debug methods
 }
