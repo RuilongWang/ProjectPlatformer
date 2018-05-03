@@ -1,12 +1,29 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SpawnPool <T> : MonoBehaviour where T : MonoBehaviour  {
-    public T[] listOfObjectToPool;
+public class SpawnPool : MonoBehaviour  {
+    #region static variables
+    private static SpawnPool instance;
+
+    public static SpawnPool Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = GameObject.FindObjectOfType<SpawnPool>();
+            }
+
+            return instance;
+        }
+    }
+    #endregion static variables
+
+    public PrefabStruct[] listOfObjectToPool;
     public int initialAmountToPoolPerObject = 10;
     public Transform parentToStorePooledObjects;
 
-    private Dictionary<string, Queue<T>> dictionayOfPooledObjects = new Dictionary<string, Queue<T>>();
+    private Dictionary<string, Queue<MonoBehaviour>> dictionayOfPooledObjects = new Dictionary<string, Queue<MonoBehaviour>>();
 
     #region Monobehaviour methods
     private void Start()
@@ -20,7 +37,7 @@ public abstract class SpawnPool <T> : MonoBehaviour where T : MonoBehaviour  {
     
     #endregion monobehaviour methods
 
-    public virtual T Spawn(T prefabToSpawn)
+    public virtual MonoBehaviour Spawn(MonoBehaviour prefabToSpawn)
     {
         if (!dictionayOfPooledObjects.ContainsKey(prefabToSpawn.name))
         {
@@ -28,20 +45,20 @@ public abstract class SpawnPool <T> : MonoBehaviour where T : MonoBehaviour  {
             return null;
         }
 
-        Queue<T> queuedObjectsInPool = dictionayOfPooledObjects[prefabToSpawn.name];
+        Queue<MonoBehaviour> queuedObjectsInPool = dictionayOfPooledObjects[prefabToSpawn.name];
         if (queuedObjectsInPool.Count == 0)
         {
             CreateNewObjectForSpawnPool(prefabToSpawn);
         }
 
-        T objectThatIsBeingSpawned = queuedObjectsInPool.Dequeue();
+        MonoBehaviour objectThatIsBeingSpawned = queuedObjectsInPool.Dequeue();
         objectThatIsBeingSpawned.gameObject.SetActive(true);
         SetupObjectWhenSpawned(objectThatIsBeingSpawned);
 
         return objectThatIsBeingSpawned;
     }
 
-    public virtual void Despawn(T objectToDespawn)
+    public virtual void Despawn(MonoBehaviour objectToDespawn)
     {
         if (!dictionayOfPooledObjects.ContainsKey(objectToDespawn.name))
         {
@@ -54,32 +71,47 @@ public abstract class SpawnPool <T> : MonoBehaviour where T : MonoBehaviour  {
 
     }
 
+    /// <summary>
+    /// Intiailzes the 
+    /// </summary>
     protected virtual void InitializeSpawnPool()
     {
-        foreach (T prefabToCreate in listOfObjectToPool)
+        foreach (PrefabStruct prefabStruct in listOfObjectToPool)
         {
-            for (int i = 0; i < initialAmountToPoolPerObject; i++)
+            for (int i = 0; i < prefabStruct.initialNumberOfSpawnedObjects; i++)
             {
-                CreateNewObjectForSpawnPool(prefabToCreate);
+                CreateNewObjectForSpawnPool(prefabStruct.prefabObject);
             }
         }
         
     }
 
-    protected virtual void CreateNewObjectForSpawnPool(T prefabToPool)
+    /// <summary>
+    /// Instantiates a new object into the world if there are not enough currently stored
+    /// in the spawn pool queue
+    /// </summary>
+    /// <param name="prefabToPool"></param>
+    protected virtual void CreateNewObjectForSpawnPool(MonoBehaviour prefabToPool)
     {
-        T newObjectToAddToPool = Instantiate<T>(prefabToPool);
+        MonoBehaviour newObjectToAddToPool = Instantiate<MonoBehaviour>(prefabToPool);
         newObjectToAddToPool.gameObject.SetActive(false);
         if (!dictionayOfPooledObjects.ContainsKey(prefabToPool.name))
         {
-            dictionayOfPooledObjects.Add(prefabToPool.name, new Queue<T>());
+            dictionayOfPooledObjects.Add(prefabToPool.name, new Queue<MonoBehaviour>());
         }
         newObjectToAddToPool.transform.SetParent(parentToStorePooledObjects);
         dictionayOfPooledObjects[prefabToPool.name].Enqueue(newObjectToAddToPool);
     }
 
-    protected virtual void SetupObjectWhenSpawned(T objectToSetup)
+    protected virtual void SetupObjectWhenSpawned(MonoBehaviour objectToSetup)
     {
 
+    }
+
+    [System.Serializable]
+    public struct PrefabStruct
+    {
+        public MonoBehaviour prefabObject;
+        public int initialNumberOfSpawnedObjects;
     }
 }

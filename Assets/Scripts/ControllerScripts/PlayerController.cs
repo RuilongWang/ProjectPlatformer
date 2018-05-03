@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
+    private MovementMechanics movementMechanics;
+
 
     #region const button names
-
-
     public enum ButtonAction
     {
         Jump,
@@ -25,7 +25,15 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    
+    private void Start()
+    {
+        movementMechanics = GetComponent<MovementMechanics>();
+    }
+
+    private void Update()
+    {
+        movementMechanics.SetHorizontalInput(GetHorizontal());
+    }
     #endregion monobehaviour methods
     /// <summary>
     /// If this method is called and an action is return to be true,

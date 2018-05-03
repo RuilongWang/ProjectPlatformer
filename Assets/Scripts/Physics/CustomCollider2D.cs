@@ -9,7 +9,7 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
 public class CustomCollider2D : MonoBehaviour {
-    public Collider2D associatedCollider;
+    public Collider2D associatedCollider { get; private set; }
     public int horizontalRayCount = 4;
     public int verticalRayCount = 4;
 
@@ -19,7 +19,7 @@ public class CustomCollider2D : MonoBehaviour {
 
 
     #region monobehaviour methods
-    private void Start()
+    private void Awake()
     {
         rigid = GetComponent<CustomPhysics2D>();
         associatedCollider = GetComponent<Collider2D>();
