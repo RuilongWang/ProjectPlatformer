@@ -482,6 +482,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d273d7e09567344aa518ce3ae162923, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStatsWindow: 0
+  displayHitboxesVisually: 0
+  displayHitboxStates: 0
 --- !u!4 &1187020694
 Transform:
   m_ObjectHideFlags: 0
