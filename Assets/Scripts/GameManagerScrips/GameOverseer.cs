@@ -44,6 +44,10 @@ public class GameOverseer : MonoBehaviour {
     private static string SAVE_GAME_FILE_NAME = "ProjectRobotGirlsSaveData.dat";
     #endregion save game variables
 
+    #region game settings variables
+    
+    #endregion game settings variables
+
 
     #region monobehaviour methods
     private void Awake()
@@ -53,6 +57,7 @@ public class GameOverseer : MonoBehaviour {
 
     private void Start()
     {
+
         
     }
 
@@ -118,6 +123,10 @@ public class GameOverseer : MonoBehaviour {
         public string sceneName;
 
         public float healthPoints;
+
+        #region Game Settings Variables to Save
+        public bool startGameInFullScreen = true;
+        #endregion Game Settings Variables to Save
     }
     #endregion save game methods
 

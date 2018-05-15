@@ -20,8 +20,7 @@ public class SpawnPool : MonoBehaviour  {
     #endregion static variables
 
     public PrefabStruct[] listOfObjectToPool;
-    public int initialAmountToPoolPerObject = 10;
-    public Transform parentToStorePooledObjects;
+    private Transform parentToStorePooledObjects;
 
     private Dictionary<string, Queue<MonoBehaviour>> dictionayOfPooledObjects = new Dictionary<string, Queue<MonoBehaviour>>();
 
