@@ -62,6 +62,7 @@ public class MovementMechanics : MonoBehaviour {
         {
             goalSpeed = maxRunSpeed * Mathf.Sign(horizontalInput);
         }
+        print(goalSpeed);
     }
     #endregion set movement
 

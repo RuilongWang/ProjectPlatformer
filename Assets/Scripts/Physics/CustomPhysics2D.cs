@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Typically will only interact with the environment. Interactions with enemies or projectiles or other hitboxes should take place with a
+/// hitbox trigger collider
+/// </summary>
 public class CustomPhysics2D : MonoBehaviour {
     #region const variables
     public const float GRAVITY_CONSTANT = 9.8f;

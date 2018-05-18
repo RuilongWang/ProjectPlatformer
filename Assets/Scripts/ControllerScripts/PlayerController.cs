@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Player controller that is used to manipulate the player
+/// </summary>
 public class PlayerController : MonoBehaviour {
     private MovementMechanics movementMechanics;
 

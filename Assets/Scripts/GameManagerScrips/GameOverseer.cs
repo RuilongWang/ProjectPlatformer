@@ -42,10 +42,11 @@ public class GameOverseer : MonoBehaviour {
 
     #region save game variables
     private static string SAVE_GAME_FILE_NAME = "ProjectRobotGirlsSaveData.dat";
+    private static string BACKUP_SAVE_GAME_FILE_NAME = "backup_ProjectRobotGirlsSaveData.dat";
     #endregion save game variables
 
     #region game settings variables
-    
+
     #endregion game settings variables
 
 
@@ -87,15 +88,22 @@ public class GameOverseer : MonoBehaviour {
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(fs, saveData);
 
+            fs.Close();
+            fs = null;
+
         }
         catch (SerializationException e)
         {
-            
-            Debug.LogWarning(e.StackTrace);
+            Debug.LogWarning("There was a problem saving our game data");
+            Debug.LogError(e.StackTrace);
         }
         finally
         {
-            fs.Close();
+            if (fs != null)
+            {
+                fs.Close();
+            }
+            
         }
     }
 

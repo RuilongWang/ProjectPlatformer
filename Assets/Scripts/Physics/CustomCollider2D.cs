@@ -8,8 +8,13 @@ using UnityEngine;
 /// ensure that an object does not pass through a InteractableTIle object
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(CustomPhysics2D))]
 public class CustomCollider2D : MonoBehaviour {
     public Collider2D associatedCollider { get; private set; }
+    public float horizontalBuffer;
+    public float verticalBuffer;
+
+    [Header("Ray Counts")]
     public int horizontalRayCount = 4;
     public int verticalRayCount = 4;
 
@@ -28,6 +33,14 @@ public class CustomCollider2D : MonoBehaviour {
     private void Update()
     {
         UpdateColliderBounds();
+        //CheckCollisionUp();
+        Collider2D colliderThatWasHit = null;
+        if (CheckCollisionDown(out colliderThatWasHit))
+        {
+            Debug.Log(colliderThatWasHit.name);
+            transform.position = new Vector3(transform.position.x, colliderThatWasHit.bounds.max.y, transform.position.z);
+            rigid.velocity = new Vector2(rigid.velocity.x, 0);
+        }
     }
 
     private void OnValidate()
@@ -42,6 +55,28 @@ public class CustomCollider2D : MonoBehaviour {
         }
     }
     #endregion monobehaviour methods
+
+    private bool CheckCollisionDown(out Collider2D colliderThatWasHit)
+    {
+        colliderThatWasHit = null;
+        if (rigid.velocity.y > 0) return false;
+        Vector2 totalDistance = (currentColliderBounds.bottomRight - currentColliderBounds.bottomLeft) - Vector2.right * horizontalBuffer * 2;
+        Vector2 segment = totalDistance / (horizontalRayCount - 1);
+
+        Vector2 originRayToCheck = currentColliderBounds.bottomLeft + Vector2.right * horizontalBuffer;
+        for (int i = 0; i < horizontalRayCount; i++)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(originRayToCheck, Vector2.down, Mathf.Abs(rigid.velocity.y * Time.deltaTime), LayerMask.GetMask("Environment"));
+            if (hit)
+            {
+                colliderThatWasHit = hit.collider;
+                return true;
+            }
+            originRayToCheck += segment;
+        }
+
+        return false;
+    }
 
 
     private Vector2 CheckRayHitPoint(Vector2 originPoint, Vector2 direction, float distance)

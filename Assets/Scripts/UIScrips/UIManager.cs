@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
 
+
+/// <summary>
+/// UI Managers are used primarily for menus that invoolve selectable options.
+/// This should be used in options screens, pause menus or other selection menus
+/// </summary>
 public class UIManager : MonoBehaviour {
     public enum UIDirection { Up, Down, Left, Right }
     private const float Minimum_Axis_Threshold = 0.5f;
