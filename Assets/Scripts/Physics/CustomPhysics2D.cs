@@ -22,6 +22,8 @@ public class CustomPhysics2D : MonoBehaviour {
     [Tooltip("The direction that gravity will be acting on the object")]
     private Vector2 gravityVector = Vector2.down;
 
+    public List<CustomCollider2D> allCustomColliders { get; private set; }
+
     /// <summary>
     /// 
     /// </summary>
@@ -39,9 +41,19 @@ public class CustomPhysics2D : MonoBehaviour {
 
 
     #region monobehavoiur methods
+    private void Awake()
+    {
+        allCustomColliders = new List<CustomCollider2D>();
+    }
+
     private void Update()
     {
         if (useGravity) UpdateVelocityFromGravity();
+
+        foreach (CustomCollider2D customCollider in allCustomColliders)
+        {
+            customCollider.UpdateCollisionPhysics();
+        }
         UpdatePositionFromVelocity();
     }
 

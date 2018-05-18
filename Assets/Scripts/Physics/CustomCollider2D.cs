@@ -30,14 +30,22 @@ public class CustomCollider2D : MonoBehaviour {
         associatedCollider = GetComponent<Collider2D>();
     }
 
-    private void Update()
+    private void Start()
+    {
+        if (rigid)
+        {
+            rigid.allCustomColliders.Add(this);
+        }
+    }
+
+    public void UpdateCollisionPhysics()
     {
         UpdateColliderBounds();
         //CheckCollisionUp();
         Collider2D colliderThatWasHit = null;
         if (CheckCollisionDown(out colliderThatWasHit))
         {
-            Debug.Log(colliderThatWasHit.name);
+            //Debug.Log(colliderThatWasHit.name);
             transform.position = new Vector3(transform.position.x, colliderThatWasHit.bounds.max.y, transform.position.z);
             rigid.velocity = new Vector2(rigid.velocity.x, 0);
         }
@@ -52,6 +60,14 @@ public class CustomCollider2D : MonoBehaviour {
         if (verticalRayCount < 2)
         {
             verticalRayCount = 2;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (rigid)
+        {
+            rigid.allCustomColliders.Remove(this);
         }
     }
     #endregion monobehaviour methods
@@ -73,6 +89,7 @@ public class CustomCollider2D : MonoBehaviour {
                 return true;
             }
             originRayToCheck += segment;
+            DebugSettings.DrawLineDirection(originRayToCheck, Vector2.down, Time.deltaTime * rigid.velocity.y);
         }
 
         return false;
@@ -93,7 +110,8 @@ public class CustomCollider2D : MonoBehaviour {
         currentColliderBounds = new ColliderBounds();
         currentColliderBounds.bottomLeft = associatedCollider.bounds.min;
         currentColliderBounds.topRight = associatedCollider.bounds.max;
-        currentColliderBounds.bottomRight = new Vector2();
+        currentColliderBounds.bottomRight = new Vector2(associatedCollider.bounds.max.x, associatedCollider.bounds.min.y);
+        currentColliderBounds.topLeft = new Vector2(associatedCollider.bounds.min.x, associatedCollider.bounds.max.y);
     }
 
 
