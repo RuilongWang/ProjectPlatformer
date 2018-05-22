@@ -76,12 +76,14 @@ public class CustomCollider2D : MonoBehaviour {
     {
         colliderThatWasHit = null;
         if (rigid.velocity.y > 0) return false;
-        Vector2 totalDistance = (currentColliderBounds.bottomRight - currentColliderBounds.bottomLeft) - Vector2.right * horizontalBuffer * 2;
+        Vector2 totalDistance = (currentColliderBounds.bottomRight - currentColliderBounds.bottomLeft);
         Vector2 segment = totalDistance / (horizontalRayCount - 1);
 
-        Vector2 originRayToCheck = currentColliderBounds.bottomLeft + Vector2.right * horizontalBuffer;
+        Vector2 originRayToCheck = currentColliderBounds.bottomLeft;
         for (int i = 0; i < horizontalRayCount; i++)
         {
+            DebugSettings.DrawLineDirection(originRayToCheck, Vector2.down, Time.deltaTime * rigid.velocity.y);
+
             RaycastHit2D hit = Physics2D.Raycast(originRayToCheck, Vector2.down, Mathf.Abs(rigid.velocity.y * Time.deltaTime), LayerMask.GetMask("Environment"));
             if (hit)
             {
@@ -89,7 +91,7 @@ public class CustomCollider2D : MonoBehaviour {
                 return true;
             }
             originRayToCheck += segment;
-            DebugSettings.DrawLineDirection(originRayToCheck, Vector2.down, Time.deltaTime * rigid.velocity.y);
+           
         }
 
         return false;
@@ -108,10 +110,10 @@ public class CustomCollider2D : MonoBehaviour {
     private void UpdateColliderBounds()
     {
         currentColliderBounds = new ColliderBounds();
-        currentColliderBounds.bottomLeft = associatedCollider.bounds.min;
-        currentColliderBounds.topRight = associatedCollider.bounds.max;
-        currentColliderBounds.bottomRight = new Vector2(associatedCollider.bounds.max.x, associatedCollider.bounds.min.y);
-        currentColliderBounds.topLeft = new Vector2(associatedCollider.bounds.min.x, associatedCollider.bounds.max.y);
+        currentColliderBounds.bottomLeft = associatedCollider.bounds.min + Vector3.right * horizontalBuffer + Vector3.up * verticalBuffer;
+        currentColliderBounds.topRight = associatedCollider.bounds.max - Vector3.right * horizontalBuffer - Vector3.up * verticalBuffer;
+        currentColliderBounds.bottomRight = new Vector3(associatedCollider.bounds.max.x, associatedCollider.bounds.min.y) - Vector3.right * horizontalBuffer + Vector3.up * verticalBuffer;
+        currentColliderBounds.topLeft = new Vector3(associatedCollider.bounds.min.x, associatedCollider.bounds.max.y) + Vector3.right * horizontalBuffer - Vector3.up * verticalBuffer;
     }
 
 
