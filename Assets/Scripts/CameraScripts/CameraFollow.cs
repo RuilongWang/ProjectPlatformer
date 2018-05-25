@@ -21,6 +21,8 @@ public class CameraFollow : MonoBehaviour {
         }
 
         offsetFromParent = transform.position - currentTargetToFollow.position;
+
+        transform.SetParent(null);
     }
 
     private void LateUpdate()

@@ -30,8 +30,11 @@ public class MovementMechanics : MonoBehaviour {
     #endregion set at runtime
 
     #region monobehaviour methods
+    
+
     private void Start()
     {
+
         rigid = GetComponent<CustomPhysics2D>();
     }
 
