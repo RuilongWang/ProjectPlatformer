@@ -43,12 +43,6 @@ public class CustomCollider2D : MonoBehaviour {
         UpdateColliderBounds();
         //CheckCollisionUp();
         Collider2D colliderThatWasHit = null;
-        if (CheckCollisionDown(out colliderThatWasHit))
-        {
-            //Debug.Log(colliderThatWasHit.name);
-            transform.position = new Vector3(transform.position.x, colliderThatWasHit.bounds.max.y, transform.position.z);
-            rigid.velocity = new Vector2(rigid.velocity.x, 0);
-        }
     }
 
     private void OnValidate()
@@ -73,69 +67,39 @@ public class CustomCollider2D : MonoBehaviour {
     #endregion monobehaviour methods
 
     #region collision checks
-
-    private bool CheckCollisionUp(out Collider2D colliderThatWasHit)
+    /// <summary>
+    /// Gets a list of all environmental colliders hit given the following parameters.
+    /// </summary>
+    /// <param name="point1"></param>
+    /// <param name="point2"></param>
+    /// <param name="directionToCastRay"></param>
+    /// <param name="distanceToCastRay"></param>
+    /// <param name="totalPointsToCheck"></param>
+    /// <returns></returns>
+    private List<TileCollider> GetAllTilesHitFromRayCasts(Vector2 point1, Vector2 point2, Vector2 directionToCastRay, float distanceToCastRay, int totalPointsToCheck)
     {
-        colliderThatWasHit = null;
+        List<TileCollider> allCollidersThatWereHit = new List<TileCollider>();
 
-        if (rigid.velocity.y <= 0) return false;
+        Vector2 segmentDistance = (point2 - point1) / (totalPointsToCheck - 1);
 
-        Vector2 totalDistance = currentColliderBounds.topRight - currentColliderBounds.topLeft);
-        Vector2 segment = totalDistance / (horizontalRayCount - 1);
+        Vector2 originPointForRaycast = point1;
 
-        Vector2 originRayToCheck = currentColliderBounds.topLeft;
-
-        for (int i = 0; i < horizontalRayCount; i++)
+        for (int i = 0; i < totalPointsToCheck; i++)
         {
-            DebugSettings.DrawLineDirection(originRayToCheck, Vector2.down, Time.deltaTime * rigid.velocity.y);
-
-            RaycastHit2D hit = Physics2D.Raycast(originRayToCheck, Vector2.up, Mathf.Abs(rigid.velocity.y * Time.deltaTime), LayerMask.GetMask("Environment"));
-            if (hit)
+            RaycastHit2D rayHit = Physics2D.Raycast(originPointForRaycast, directionToCastRay, distanceToCastRay, LayerMask.GetMask("Environment"));
+            if (rayHit)
             {
-                colliderThatWasHit = hit.collider;
-                return true;
+                TileCollider tileColliderThatWasHit = rayHit.collider.GetComponent<TileCollider>();
+                if (tileColliderThatWasHit)
+                {
+                    allCollidersThatWereHit.Add(tileColliderThatWasHit);
+                }
             }
-            originRayToCheck += segment;
         }
 
-        return false;
-    }
-
-    private bool CheckCollisionDown(out Collider2D colliderThatWasHit)
-    {
-        colliderThatWasHit = null;
-        if (rigid.velocity.y > 0) return false;
-        Vector2 totalDistance = (currentColliderBounds.bottomRight - currentColliderBounds.bottomLeft);
-        Vector2 segment = totalDistance / (horizontalRayCount - 1);
-
-        Vector2 originRayToCheck = currentColliderBounds.bottomLeft;
-        for (int i = 0; i < horizontalRayCount; i++)
-        {
-            DebugSettings.DrawLineDirection(originRayToCheck, Vector2.down, Time.deltaTime * rigid.velocity.y);
-
-            RaycastHit2D hit = Physics2D.Raycast(originRayToCheck, Vector2.down, Mathf.Abs(rigid.velocity.y * Time.deltaTime), LayerMask.GetMask("Environment"));
-            if (hit)
-            {
-                colliderThatWasHit = hit.collider;
-                return true;
-            }
-            originRayToCheck += segment;
-           
-        }
-
-        return false;
+        return allCollidersThatWereHit;
     }
     #endregion collision checks
-
-
-    private Vector2 CheckRayHitPoint(Vector2 originPoint, Vector2 direction, float distance)
-    {
-        Ray2D ray = new Ray2D(originPoint, direction);
-        RaycastHit2D rayHit = Physics2D.Raycast(ray.origin, ray.direction, distance);
-
-        return Vector2.zero;//IMPLEMENT THIS LATER!
-
-    }
 
     private void UpdateColliderBounds()
     {
