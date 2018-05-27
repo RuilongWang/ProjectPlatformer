@@ -15,7 +15,9 @@ public class CustomCollider2D : MonoBehaviour {
     public float verticalBuffer;
 
     [Header("Ray Counts")]
+    [Tooltip("The number of rays we will fire in the horizontal direction")]
     public int horizontalRayCount = 4;
+    [Tooltip("The number of rays we will fire in the vertical direction")]
     public int verticalRayCount = 4;
 
 
@@ -36,13 +38,6 @@ public class CustomCollider2D : MonoBehaviour {
         {
             rigid.allCustomColliders.Add(this);
         }
-    }
-
-    public void UpdateCollisionPhysics()
-    {
-        UpdateColliderBounds();
-        //CheckCollisionUp();
-        Collider2D colliderThatWasHit = null;
     }
 
     private void OnValidate()
@@ -67,6 +62,83 @@ public class CustomCollider2D : MonoBehaviour {
     #endregion monobehaviour methods
 
     #region collision checks
+
+
+    public void UpdateCollisionPhysics()
+    {
+        UpdateColliderBounds();
+        //CheckCollisionUp();
+    }
+
+    private bool UpdateCollisionUp()
+    {
+        if (rigid.velocity.y <= 0)
+        {
+            return false;
+        }
+
+        List<TileCollider> tileCollidersThatWeHit = GetAllTilesHitFromRayCasts(
+            currentColliderBounds.topLeft, currentColliderBounds.topRight, Vector2.up, Mathf.Abs(rigid.velocity.y), verticalRayCount);
+        if (tileCollidersThatWeHit.Count == 0)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool UpdateCollisionDown()
+    {
+        if (rigid.velocity.y > 0)
+        {
+            return false;
+        }
+
+        List<TileCollider> tileCollidersThatWeHit = GetAllTilesHitFromRayCasts(
+            currentColliderBounds.bottomLeft, currentColliderBounds.bottomRight, Vector2.down, Mathf.Abs(rigid.velocity.y), verticalRayCount);
+        if (tileCollidersThatWeHit.Count == 0)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool UpdateCollisionRight()
+    {
+        if (rigid.velocity.x < 0)
+        {
+            return false;
+        }
+
+        List<TileCollider> tileCollidersThatWeHit = GetAllTilesHitFromRayCasts(
+            currentColliderBounds.topRight, currentColliderBounds.bottomRight, Vector2.right, Mathf.Abs(rigid.velocity.x), horizontalRayCount);
+        if (tileCollidersThatWeHit.Count == 0)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool UpdateCollisionLeft()
+    {
+        if (rigid.velocity.x >= 0)
+        {
+            return false;
+        }
+
+        List<TileCollider> tileCollidersThatWeHit = GetAllTilesHitFromRayCasts(
+            currentColliderBounds.topLeft, currentColliderBounds.bottomLeft, Vector2.left, Mathf.Abs(rigid.velocity.x), horizontalRayCount);
+        if (tileCollidersThatWeHit.Count == 0)
+        {
+            return false;
+        }
+
+        return true;
+
+    }
+
     /// <summary>
     /// Gets a list of all environmental colliders hit given the following parameters.
     /// </summary>
