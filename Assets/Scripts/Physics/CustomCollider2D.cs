@@ -174,7 +174,7 @@ public class CustomCollider2D : MonoBehaviour {
             }
         }
 
-        transform.position = new Vector3(lowestXValue, transform.position.y, transform.position.z);
+        transform.position = new Vector3(lowestXValue + (transform.position.x - currentColliderBounds.topRight.x), transform.position.y, transform.position.z);
 
         return true;
     }
@@ -203,7 +203,7 @@ public class CustomCollider2D : MonoBehaviour {
             }
         }
 
-        transform.position = new Vector3(highestXValue, transform.position.y, transform.position.z);
+        transform.position = new Vector3(highestXValue + (transform.position.x - currentColliderBounds.topLeft.x), transform.position.y, transform.position.z);
 
         return true;
 
