@@ -92,9 +92,16 @@ public class MovementMechanics : MonoBehaviour {
     }
 
     #region jump methods
-    public void Jump()
+    /// <summary>
+    /// Call this method to perform a jump.
+    /// Returns true if jump was successfully made. False if there 
+    /// were conditions that were not met to perform a jump.
+    /// </summary>
+    /// <returns></returns>
+    public bool Jump()
     {
         rigid.velocity = new Vector2(rigid.velocity.x, jumpVelocity);
+        return true;
     }
 
     #endregion jump methods
