@@ -9,17 +9,24 @@ public class MovementMechanics : MonoBehaviour {
 
     #region main variables
     [Header("Ground Speed Variables")]
+
     [Tooltip("Our goal speed when our character is running")]
     public float maxRunSpeed = 20f;
     [Tooltip("Our goal speed when our character is walking")]
     public float maxWalkSpeed = 9f;
-
     [Tooltip("The acceleration of the player's movement. Smoothes into its goal speeds")]
     public float acceleration = 35;
 
-    [Header("Jump Variables")]
-    public float jumpVelocity = 10;
 
+    [Space(3)]
+    [Header("Jump Variables")]
+
+    [Tooltip("The height of our jump at its max. Based on Unity units for distance")]
+    public float heightOfJump = 1;
+    [Tooltip("How long it takes before we reach the top of our jump height. Meausred in seconds")]
+    public float timeToReachJumpApex = 1;
+    [Tooltip("The velocity that our character will launch with upward when performing a jump")]
+    private float jumpVelocity;
     #endregion main variables
 
     #region set at runtime
@@ -30,12 +37,16 @@ public class MovementMechanics : MonoBehaviour {
     #endregion set at runtime
 
     #region monobehaviour methods
-    
+    private void Awake()
+    {
+        rigid = GetComponent<CustomPhysics2D>();
+    }
 
     private void Start()
     {
-
-        rigid = GetComponent<CustomPhysics2D>();
+        float gravity = (2 * heightOfJump) / Mathf.Pow(timeToReachJumpApex, 2);
+        jumpVelocity = Mathf.Abs(gravity) * timeToReachJumpApex;
+        rigid.gravityScale = gravity / CustomPhysics2D.GRAVITY_CONSTANT;
     }
 
     private void Update()
