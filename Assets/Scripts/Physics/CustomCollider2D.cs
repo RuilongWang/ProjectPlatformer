@@ -117,7 +117,7 @@ public class CustomCollider2D : MonoBehaviour {
             }
         }
 
-        transform.position = new Vector3(transform.position.x, lowestYValue, transform.position.z);
+        transform.position = new Vector3(transform.position.x, lowestYValue + (transform.position.y - currentColliderBounds.topLeft.y), transform.position.z);
         return true;
     }
 
