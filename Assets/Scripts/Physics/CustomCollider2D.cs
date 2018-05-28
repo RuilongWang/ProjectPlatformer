@@ -67,9 +67,33 @@ public class CustomCollider2D : MonoBehaviour {
     public void UpdateCollisionPhysics()
     {
         UpdateColliderBounds();
+
+        if (UpdateCollisionDown())
+        {
+            rigid.velocity = new Vector2(rigid.velocity.x, 0);
+
+        }
+        if (UpdateCollisionUp())
+        {
+            rigid.velocity = new Vector2(rigid.velocity.x, 0);
+
+        }
+        if (UpdateCollisionRight())
+        {
+            rigid.velocity = new Vector2(0, rigid.velocity.y);
+        }
+        if (UpdateCollisionLeft())
+        {
+            rigid.velocity = new Vector2(0, rigid.velocity.y);
+        }
         //CheckCollisionUp();
     }
 
+    /// <summary>
+    /// Checks if an our collider interacts with an environmental collider while it is moving up. We will
+    /// push the object to the lowest point that we have hit
+    /// </summary>
+    /// <returns></returns>
     private bool UpdateCollisionUp()
     {
         if (rigid.velocity.y <= 0)
@@ -78,12 +102,22 @@ public class CustomCollider2D : MonoBehaviour {
         }
 
         List<TileCollider> tileCollidersThatWeHit = GetAllTilesHitFromRayCasts(
-            currentColliderBounds.topLeft, currentColliderBounds.topRight, Vector2.up, Mathf.Abs(rigid.velocity.y), verticalRayCount);
+            currentColliderBounds.topLeft + Vector2.right * horizontalBuffer, currentColliderBounds.topRight + Vector2.left * horizontalBuffer, Vector2.up, Mathf.Abs(rigid.velocity.y * Time.deltaTime), verticalRayCount);
         if (tileCollidersThatWeHit.Count == 0)
         {
             return false;
         }
+        float lowestYValue = tileCollidersThatWeHit[0].GetPointToBottom(transform.position).y;
+        foreach (TileCollider tile in tileCollidersThatWeHit)
+        {
+            Vector2 pointThatWeCollidedWith = tile.GetPointToBottom(transform.position);
+            if (pointThatWeCollidedWith.y < lowestYValue)
+            {
+                lowestYValue = pointThatWeCollidedWith.y;
+            }
+        }
 
+        transform.position = new Vector3(transform.position.x, lowestYValue, transform.position.z);
         return true;
     }
 
@@ -95,11 +129,23 @@ public class CustomCollider2D : MonoBehaviour {
         }
 
         List<TileCollider> tileCollidersThatWeHit = GetAllTilesHitFromRayCasts(
-            currentColliderBounds.bottomLeft, currentColliderBounds.bottomRight, Vector2.down, Mathf.Abs(rigid.velocity.y), verticalRayCount);
+            currentColliderBounds.bottomLeft + Vector2.right * horizontalBuffer, currentColliderBounds.bottomRight + Vector2.left * horizontalBuffer, Vector2.down, Mathf.Abs(rigid.velocity.y * Time.deltaTime), verticalRayCount);
         if (tileCollidersThatWeHit.Count == 0)
         {
             return false;
         }
+
+        float highestYValue = tileCollidersThatWeHit[0].GetPointToTop(transform.position).y;
+        foreach (TileCollider tile in tileCollidersThatWeHit)
+        {
+            Vector2 pointThatWeCollidedWith = tile.GetPointToTop(transform.position);
+            if (pointThatWeCollidedWith.y > highestYValue)
+            {
+                highestYValue = pointThatWeCollidedWith.y;
+            }
+        }
+
+        transform.position = new Vector3(transform.position.x, highestYValue, transform.position.z);
 
         return true;
     }
@@ -112,11 +158,23 @@ public class CustomCollider2D : MonoBehaviour {
         }
 
         List<TileCollider> tileCollidersThatWeHit = GetAllTilesHitFromRayCasts(
-            currentColliderBounds.topRight, currentColliderBounds.bottomRight, Vector2.right, Mathf.Abs(rigid.velocity.x), horizontalRayCount);
+            currentColliderBounds.topRight + Vector2.down * verticalBuffer, currentColliderBounds.bottomRight + Vector2.up * verticalBuffer, Vector2.right, Mathf.Abs(rigid.velocity.x * Time.deltaTime), horizontalRayCount);
         if (tileCollidersThatWeHit.Count == 0)
         {
             return false;
         }
+
+        float lowestXValue = tileCollidersThatWeHit[0].GetPointToLeft(transform.position).x;
+        foreach (TileCollider tile in tileCollidersThatWeHit)
+        {
+            Vector2 pointThatWeCollidedWith = tile.GetPointToLeft(transform.position);
+            if (pointThatWeCollidedWith.x < lowestXValue)
+            {
+                lowestXValue = pointThatWeCollidedWith.x;
+            }
+        }
+
+        transform.position = new Vector3(lowestXValue, transform.position.y, transform.position.z);
 
         return true;
     }
@@ -129,11 +187,23 @@ public class CustomCollider2D : MonoBehaviour {
         }
 
         List<TileCollider> tileCollidersThatWeHit = GetAllTilesHitFromRayCasts(
-            currentColliderBounds.topLeft, currentColliderBounds.bottomLeft, Vector2.left, Mathf.Abs(rigid.velocity.x), horizontalRayCount);
+            currentColliderBounds.topLeft + Vector2.down * verticalBuffer, currentColliderBounds.bottomLeft + Vector2.up * verticalBuffer, Vector2.left, Mathf.Abs(rigid.velocity.x * Time.deltaTime), horizontalRayCount);
         if (tileCollidersThatWeHit.Count == 0)
         {
             return false;
         }
+
+        float highestXValue = tileCollidersThatWeHit[0].GetPointToRight(transform.position).x;
+        foreach (TileCollider tile in tileCollidersThatWeHit)
+        {
+            Vector2 pointThatWeCollidedWith = tile.GetPointToRight(transform.position);
+            if (pointThatWeCollidedWith.x > highestXValue)
+            {
+                highestXValue = pointThatWeCollidedWith.x;
+            }
+        }
+
+        transform.position = new Vector3(highestXValue, transform.position.y, transform.position.z);
 
         return true;
 
@@ -164,9 +234,13 @@ public class CustomCollider2D : MonoBehaviour {
                 TileCollider tileColliderThatWasHit = rayHit.collider.GetComponent<TileCollider>();
                 if (tileColliderThatWasHit)
                 {
+
                     allCollidersThatWereHit.Add(tileColliderThatWasHit);
                 }
             }
+
+            DebugSettings.DrawLineDirection(originPointForRaycast, directionToCastRay, distanceToCastRay, Color.red);
+            originPointForRaycast += segmentDistance;
         }
 
         return allCollidersThatWereHit;
@@ -176,10 +250,10 @@ public class CustomCollider2D : MonoBehaviour {
     private void UpdateColliderBounds()
     {
         currentColliderBounds = new ColliderBounds();
-        currentColliderBounds.bottomLeft = associatedCollider.bounds.min + Vector3.right * horizontalBuffer + Vector3.up * verticalBuffer;
-        currentColliderBounds.topRight = associatedCollider.bounds.max - Vector3.right * horizontalBuffer - Vector3.up * verticalBuffer;
-        currentColliderBounds.bottomRight = new Vector3(associatedCollider.bounds.max.x, associatedCollider.bounds.min.y) - Vector3.right * horizontalBuffer + Vector3.up * verticalBuffer;
-        currentColliderBounds.topLeft = new Vector3(associatedCollider.bounds.min.x, associatedCollider.bounds.max.y) + Vector3.right * horizontalBuffer - Vector3.up * verticalBuffer;
+        currentColliderBounds.bottomLeft = associatedCollider.bounds.min;
+        currentColliderBounds.topRight = associatedCollider.bounds.max;
+        currentColliderBounds.bottomRight = new Vector3(associatedCollider.bounds.max.x, associatedCollider.bounds.min.y);
+        currentColliderBounds.topLeft = new Vector3(associatedCollider.bounds.min.x, associatedCollider.bounds.max.y);
     }
 
 

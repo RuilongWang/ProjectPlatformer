@@ -50,6 +50,7 @@ public class CustomPhysics2D : MonoBehaviour {
     {
         if (useGravity) UpdateVelocityFromGravity();
 
+
         foreach (CustomCollider2D customCollider in allCustomColliders)
         {
             customCollider.UpdateCollisionPhysics();
@@ -86,6 +87,7 @@ public class CustomPhysics2D : MonoBehaviour {
     private void UpdatePositionFromVelocity()
     {
         Vector3 velocityVector3 = new Vector3(velocity.x, velocity.y, 0);
+        
         this.transform.position += velocityVector3 * Time.deltaTime;
     }
 

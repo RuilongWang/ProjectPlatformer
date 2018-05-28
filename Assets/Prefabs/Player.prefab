@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 20899605395864238}
   - component: {fileID: 124506969392567218}
   - component: {fileID: 81737959171133346}
+  - component: {fileID: 114099239540577736}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -86,7 +87,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1518346028353678}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.81, z: -10.086089}
+  m_LocalPosition: {x: 0, y: 0.81, z: -2.74}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4574177464125060}
@@ -99,7 +100,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1643534526484386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.41929713, y: -0.4992158, z: 0.086089596}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4032373154094190}
@@ -126,8 +127,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
-  orthographic size: 1
+  orthographic: 0
+  orthographic size: 1.08
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -175,6 +176,19 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1518346028353678}
   m_Enabled: 1
+--- !u!114 &114099239540577736
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1518346028353678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cf95a0e875ba094bb5906748cd5964a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraLerpSpeed: 0
+  offsetFromParent: {x: 0, y: 0, z: 0}
 --- !u!114 &114101716665980264
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -201,8 +215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc13aa7aed35a24489d854e438cd41c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalBuffer: 0
-  verticalBuffer: 0
+  horizontalBuffer: 0.01
+  verticalBuffer: 0.01
   horizontalRayCount: 4
   verticalRayCount: 4
 --- !u!114 &114734543380236362
