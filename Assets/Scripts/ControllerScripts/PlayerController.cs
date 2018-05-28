@@ -36,6 +36,10 @@ public class PlayerController : MonoBehaviour {
     private void Update()
     {
         movementMechanics.SetHorizontalInput(GetHorizontal());
+        if (GetButtonDown(ButtonAction.Jump))
+        {
+            movementMechanics.Jump();
+        }
     }
     #endregion monobehaviour methods
     /// <summary>

@@ -27,6 +27,8 @@ public class MovementMechanics : MonoBehaviour {
     public float timeToReachJumpApex = 1;
     [Tooltip("The velocity that our character will launch with upward when performing a jump")]
     private float jumpVelocity;
+
+    public bool canJump { get; private set; }
     #endregion main variables
 
     #region set at runtime
@@ -42,8 +44,12 @@ public class MovementMechanics : MonoBehaviour {
         rigid = GetComponent<CustomPhysics2D>();
     }
 
-    private void Start()
+    private void OnValidate()
     {
+        if (!rigid)
+        {
+            rigid = GetComponent<CustomPhysics2D>();
+        }
         float gravity = (2 * heightOfJump) / Mathf.Pow(timeToReachJumpApex, 2);
         jumpVelocity = Mathf.Abs(gravity) * timeToReachJumpApex;
         rigid.gravityScale = gravity / CustomPhysics2D.GRAVITY_CONSTANT;
@@ -88,7 +94,7 @@ public class MovementMechanics : MonoBehaviour {
     #region jump methods
     public void Jump()
     {
-
+        rigid.velocity = new Vector2(rigid.velocity.x, jumpVelocity);
     }
 
     #endregion jump methods
