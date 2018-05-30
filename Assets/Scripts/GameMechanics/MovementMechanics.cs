@@ -30,6 +30,10 @@ public class MovementMechanics : MonoBehaviour {
     public float inAirAcceleration = 15;
     [Tooltip("The velocity that our character will launch with upward when performing a jump")]
     private float jumpVelocity;
+    /// <summary>
+    /// Indicates whethere or not our character can double jump in the air
+    /// </summary>
+    private bool doubleJumpAvailable = true;
 
     public bool canJump { get; private set; }
     #endregion main variables
@@ -45,6 +49,11 @@ public class MovementMechanics : MonoBehaviour {
     private void Awake()
     {
         rigid = GetComponent<CustomPhysics2D>();
+    }
+
+    private void Start()
+    {
+        rigid.OnGroundedEvent += this.OnGroundedEvent;
     }
 
     private void OnValidate()
@@ -105,6 +114,12 @@ public class MovementMechanics : MonoBehaviour {
     {
         if (rigid.isInAir)
         {
+            if (doubleJumpAvailable)
+            {
+                rigid.velocity = new Vector2(rigid.velocity.x, jumpVelocity);
+                doubleJumpAvailable = false;
+                return true;
+            }
             return false;
         }
         rigid.velocity = new Vector2(rigid.velocity.x, jumpVelocity);
@@ -112,4 +127,11 @@ public class MovementMechanics : MonoBehaviour {
     }
 
     #endregion jump methods
+    /// <summary>
+    /// Use this method to run any code that needs to occur when we land
+    /// </summary>
+    public void OnGroundedEvent()
+    {
+        doubleJumpAvailable = true;
+    }
 }

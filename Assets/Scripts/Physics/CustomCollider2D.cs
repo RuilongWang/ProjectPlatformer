@@ -71,12 +71,21 @@ public class CustomCollider2D : MonoBehaviour {
         if (UpdateCollisionDown())
         {
             rigid.velocity = new Vector2(rigid.velocity.x, 0);
-            rigid.isInAir = false;
+            if (rigid.isInAir)
+            {
+                rigid.isInAir = false;
+                rigid.OnPhysicsObjectGrounded();
+            }
 
         }
         else
         {
-            rigid.isInAir = true;
+            if (!rigid.isInAir)
+            {
+                rigid.isInAir = true;
+                rigid.OnPhysicsObjectGrounded();
+            }
+
         }
         if (UpdateCollisionUp())
         {

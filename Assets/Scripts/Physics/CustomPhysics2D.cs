@@ -23,6 +23,9 @@ public class CustomPhysics2D : MonoBehaviour {
     private Vector2 gravityVector = Vector2.down;
 
     public List<CustomCollider2D> allCustomColliders { get; private set; }
+
+    
+
     /// <summary>
     /// A boolean value that indicates whether or not our character is currently in the 
     /// </summary>
@@ -69,6 +72,21 @@ public class CustomPhysics2D : MonoBehaviour {
     #endregion monobehaviour methods
 
 
+    #region event methods
+    /// <summary>
+    /// This event will be called anytime our object lands on a ground tile after being considered airborne
+    /// </summary>
+    public delegate void PhysicsObjectGroundedEvent();
+    public event PhysicsObjectGroundedEvent OnGroundedEvent;
+
+    /// <summary>
+    /// This event will be called anytime our object becomes airborne after being considered grounded
+    /// </summary>
+    public delegate void PhysicsObjectAirborneEvent();
+    public event PhysicsObjectAirborneEvent OnAirborneEvent;
+    #endregion event methods
+
+
     private void UpdateVelocityFromGravity()
     {
         if (useTerminalVelocity)
@@ -103,4 +121,21 @@ public class CustomPhysics2D : MonoBehaviour {
     {
         this.gravityVector = gravityVector.normalized;
     }
+
+    /// <summary>
+    /// Used to activate our character grounded trigger
+    /// </summary>
+    public void OnPhysicsObjectGrounded()
+    {
+        OnGroundedEvent();
+    }
+
+    /// <summary>
+    /// Used to activate our character airborne trigger
+    /// </summary>
+    public void OnPhysicsOjbectAirborne()
+    {
+        OnAirborneEvent();
+    }
+ 
 }
