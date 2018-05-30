@@ -71,7 +71,12 @@ public class CustomCollider2D : MonoBehaviour {
         if (UpdateCollisionDown())
         {
             rigid.velocity = new Vector2(rigid.velocity.x, 0);
+            rigid.isInAir = false;
 
+        }
+        else
+        {
+            rigid.isInAir = true;
         }
         if (UpdateCollisionUp())
         {

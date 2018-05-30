@@ -23,6 +23,10 @@ public class CustomPhysics2D : MonoBehaviour {
     private Vector2 gravityVector = Vector2.down;
 
     public List<CustomCollider2D> allCustomColliders { get; private set; }
+    /// <summary>
+    /// A boolean value that indicates whether or not our character is currently in the 
+    /// </summary>
+    public bool isInAir { get; set; }
 
     /// <summary>
     /// 

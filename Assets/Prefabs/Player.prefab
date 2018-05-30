@@ -74,7 +74,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1344431761169720}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.16, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 4574177464125060}
@@ -100,7 +100,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1643534526484386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.32, y: 1.194, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4032373154094190}
@@ -203,7 +203,8 @@ MonoBehaviour:
   maxRunSpeed: 7
   maxWalkSpeed: 3
   acceleration: 70
-  jumpVelocity: 10
+  heightOfJump: 0.7
+  timeToReachJumpApex: 0.25
 --- !u!114 &114375720379727562
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -233,7 +234,7 @@ MonoBehaviour:
   useGravity: 1
   useTerminalVelocity: 1
   gravityVector: {x: 0, y: -1}
-  gravityScale: 1
+  gravityScale: 2.2857141
   terminalVelocity: 10
 --- !u!114 &114972791385344788
 MonoBehaviour:
@@ -300,7 +301,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1cbb2c9c886d5f34093d6036e7fe6d8e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 92a961a604b8da6419718b27f3c0391b, type: 3}
   m_Color: {r: 1, g: 0.8235294, b: 0.8235294, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -25,6 +25,9 @@ public class MovementMechanics : MonoBehaviour {
     public float heightOfJump = 1;
     [Tooltip("How long it takes before we reach the top of our jump height. Meausred in seconds")]
     public float timeToReachJumpApex = 1;
+
+    [Tooltip("The acceleration that will be applied to our character while they are in the air.")]
+    public float inAirAcceleration = 15;
     [Tooltip("The velocity that our character will launch with upward when performing a jump")]
     private float jumpVelocity;
 
@@ -100,6 +103,10 @@ public class MovementMechanics : MonoBehaviour {
     /// <returns></returns>
     public bool Jump()
     {
+        if (rigid.isInAir)
+        {
+            return false;
+        }
         rigid.velocity = new Vector2(rigid.velocity.x, jumpVelocity);
         return true;
     }
