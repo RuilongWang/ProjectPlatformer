@@ -203,8 +203,10 @@ MonoBehaviour:
   maxRunSpeed: 7
   maxWalkSpeed: 3
   acceleration: 70
+  maxInAirSpeed: 8
   heightOfJump: 0.7
   timeToReachJumpApex: 0.25
+  inAirAcceleration: 45
 --- !u!114 &114375720379727562
 MonoBehaviour:
   m_ObjectHideFlags: 1

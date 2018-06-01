@@ -20,12 +20,12 @@ public class MovementMechanics : MonoBehaviour {
 
     [Space(3)]
     [Header("Jump Variables")]
-
+    [Tooltip("The maximum speed that our character will while in the air")]
+    public float maxInAirSpeed = 25;
     [Tooltip("The height of our jump at its max. Based on Unity units for distance")]
     public float heightOfJump = 1;
     [Tooltip("How long it takes before we reach the top of our jump height. Meausred in seconds")]
     public float timeToReachJumpApex = 1;
-
     [Tooltip("The acceleration that will be applied to our character while they are in the air.")]
     public float inAirAcceleration = 15;
     [Tooltip("The velocity that our character will launch with upward when performing a jump")]
@@ -85,11 +85,25 @@ public class MovementMechanics : MonoBehaviour {
     /// <param name="horizontalInput"></param>
     public void SetHorizontalInput(float horizontalInput)
     {
-        
+        if (rigid.isInAir)
+        {
+            if (Mathf.Abs(horizontalInput) < WALK_THRESHOLD)
+            {
+                goalSpeed = rigid.velocity.x;
+
+            }
+            else
+            {
+                goalSpeed = Mathf.Sign(horizontalInput) * maxInAirSpeed;
+            }
+            return;
+        }
 
         if (Mathf.Abs(horizontalInput) < WALK_THRESHOLD)
         {
+            
             goalSpeed = 0;
+            
         }
         else if (Mathf.Abs(horizontalInput) < RUN_THRESHOLD)
         {
@@ -101,10 +115,16 @@ public class MovementMechanics : MonoBehaviour {
         }
     }
     #endregion set movement
-
+    /// <summary>
+    /// This method will update the velocity to the goal velocity by the 
+    /// </summary>
     private void UpdateVelocity()
     {
-        float xVelocity = Mathf.MoveTowards(rigid.velocity.x, goalSpeed, Time.deltaTime * acceleration);
+        float xVelocity = rigid.velocity.x;
+        
+        xVelocity = Mathf.MoveTowards(rigid.velocity.x, goalSpeed, Time.deltaTime * (rigid.isInAir ? inAirAcceleration : acceleration));
+        
+        
         rigid.velocity = new Vector2(xVelocity, rigid.velocity.y);
     }
 
