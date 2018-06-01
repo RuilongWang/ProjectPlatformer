@@ -71,6 +71,11 @@ public class MovementMechanics : MonoBehaviour {
     {
         UpdateVelocity();
     }
+
+    private void OnDestroy()
+    {
+        rigid.OnGroundedEvent -= this.OnGroundedEvent;//Make sure to unsubscribe from the event avoid errors
+    }
     #endregion monobehaviour methos
 
     #region set movement

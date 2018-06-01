@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// We will have this as a child object of our character
+/// </summary>
 public class HitboxManager : MonoBehaviour {
     public CharacterStats characterStats;
     public float hitForce;
@@ -12,7 +15,7 @@ public class HitboxManager : MonoBehaviour {
     /// <summary>
     /// This is a list of all the characters that have been hit by the associated characters hitbox
     /// </summary>
-    public List<HitboxManager> charactersHit { get; set; }
+    public List<HitboxManager> listOfCharactersHit { get; set; }
 
     /// <summary>
     /// A list of all attached hitboxes that are attached to this hitbox manager
@@ -23,6 +26,7 @@ public class HitboxManager : MonoBehaviour {
     #region monobehaviour methods
     private void Awake()
     {
+        listOfCharactersHit = new List<HitboxManager>();
         allHitboxes = new List<Hitbox>();
     }
 
@@ -32,6 +36,11 @@ public class HitboxManager : MonoBehaviour {
         {
             Debug.LogWarning("There is no character stats attached to the hit box manager " + transform.name);
         }
+    }
+
+    private void OnEnable()
+    {
+        
     }
     #endregion monobehaviour methods
 
