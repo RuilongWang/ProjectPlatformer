@@ -2,77 +2,65 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 /// <summary>
-/// We will have this as a child object of our character
+/// This class will manage all the hitboxes and hurtboxes that are associated with 
+/// a character. Each hitbox and hurtbox object will also hold a reference to this object
 /// </summary>
 public class HitboxManager : MonoBehaviour {
-    public CharacterStats characterStats;    
-    public float rightKnockBackVector;
 
-    [Tooltip("Indicates whether or not a hitbox is currently activated. If true it is allowed to intereact with other hitboxes")]
-    public bool currentlyActive;//Could be useful for invincibility
-
+    #region main variables
     /// <summary>
-    /// This is a list of all the characters that have been hit by the associated characters hitbox
+    /// This variable inicates that an enemy is currently in hitstun. Meaning that they can not move or take any
+    /// control of their character until they have recovered back down to 0
     /// </summary>
-    public List<HitboxManager> listOfCharactersHit { get; set; }
-
-    /// <summary>
-    /// A list of all attached hitboxes that are attached to this hitbox manager
-    /// </summary>
-    public List<Hitbox> allHitboxes { get; set; }
+    public float timeRemainingForHitStun { get; private set; }
 
 
-    #region monobehaviour methods
-    private void Awake()
-    {
-        listOfCharactersHit = new List<HitboxManager>();
-        allHitboxes = new List<Hitbox>();
-    }
+    private List<HitboxManager> allManagersEffectedByCurrentAttack = new List<HitboxManager>();
+    #endregion main variables
 
-    private void Start()
-    {
-        if (!this.characterStats)
-        {
-            Debug.LogWarning("There is no character stats attached to the hit box manager " + transform.name);
-        }
-    }
+    #region monbehavour methods
 
-    private void OnEnable()
-    {
-        
-    }
     #endregion monobehaviour methods
 
+    #region event methods
     /// <summary>
-    /// If a hitbox has entered, this method should be called in the hitbox's manager
-    /// object
+    /// Call this method whenever there is a new attack that has occurred.
+    /// It will reset the necessary values
     /// </summary>
-    /// <param name="hitbox"></param>
-    public void OnHitboxEntered(Hitbox hitbox)
+    public void OnNewAttackInitiated()
     {
-        if (!currentlyActive) return;
+        allManagersEffectedByCurrentAttack.Clear();
     }
 
     /// <summary>
-    /// If a hitbox was exited, the hitbox should call this method in the hitbox
-    /// manager object
+    /// Call this method whenever an enemy has been hit by a hitbox.
+    /// The method will reutrn true if we made a successful attack (Meaning that we
+    /// were able to damage to the enemy) and false if we did not make a successful attack on the enemy
+    /// (either they were invincible or not able to get hit). Even if no damage is given, we will still return
+    /// true if the attack langed
     /// </summary>
-    /// <param name="hitbox"></param>
-    public void OnHitboxExited(Hitbox hitbox)
+    /// <returns></returns>
+    public bool OnAttackedEnemyHurtbox(HitBox ourHitBox, HurtBox enemyHurtBox)
     {
-        if (!currentlyActive) return;
+
+        return false;
     }
 
     /// <summary>
-    /// Shows off all the hitboxes visually to make debugging a bit easier
+    /// Use this method if whenever we collide with an enemy hitbox. Returns false if nothing occurs
+    /// upon colliding with an enemy hurtbox
     /// </summary>
-    /// <param name="setDebug"></param>
-    public void SetHitboxDebugMode(bool setDebug)
+    /// <param name="ourHitBox"></param>
+    /// <param name="enemyHitbox"></param>
+    /// <returns></returns>
+    public bool OnAttackEnemyHitbox(HitBox ourHitBox, HitBox enemyHitbox)
     {
-        foreach (Hitbox hbox in allHitboxes)
-        {
-            hbox.SetHitboxToDebugMode(setDebug);
-        }
+
+        return false;
     }
+
+
+    #endregion event methods
 }
