@@ -6,8 +6,8 @@ using UnityEngine;
 /// We will have this as a child object of our character
 /// </summary>
 public class HitboxManager : MonoBehaviour {
-    public CharacterStats characterStats;
-    public float hitForce;
+    public CharacterStats characterStats;    
+    public float rightKnockBackVector;
 
     [Tooltip("Indicates whether or not a hitbox is currently activated. If true it is allowed to intereact with other hitboxes")]
     public bool currentlyActive;//Could be useful for invincibility
