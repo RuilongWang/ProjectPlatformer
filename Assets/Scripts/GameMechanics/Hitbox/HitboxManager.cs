@@ -7,7 +7,7 @@ using UnityEngine;
 /// This class will manage all the hitboxes and hurtboxes that are associated with 
 /// a character. Each hitbox and hurtbox object will also hold a reference to this object
 /// </summary>
-public class HitboxManager : MonoBehaviour {
+public class HitBoxManager : MonoBehaviour {
 
     #region main variables
     /// <summary>
@@ -17,7 +17,11 @@ public class HitboxManager : MonoBehaviour {
     public float timeRemainingForHitStun { get; private set; }
 
 
-    private List<HitboxManager> allManagersEffectedByCurrentAttack = new List<HitboxManager>();
+    private List<HitBoxManager> allManagersEffectedByCurrentAttack = new List<HitBoxManager>();
+    [System.NonSerialized]
+    public List<HitBox> allConnectedHitboxes = new List<HitBox>();
+    [System.NonSerialized]
+    public List<HurtBox> allConnectedHurtboxes = new List<HurtBox>();
     #endregion main variables
 
     #region monbehavour methods

@@ -8,13 +8,25 @@ using UnityEngine;
 /// </summary>
 public class HitBox : MonoBehaviour {
     #region main vairables
+    public HitBoxManager associatedHitBoxManager { get; private set; }
     private bool hitboxCurrentlyActive;
     #endregion main variables
 
     #region monobehaviour methods
     private void Start()
     {
-        
+        associatedHitBoxManager = GetComponentInParent<HitBoxManager>();
+        if (!associatedHitBoxManager)
+        {
+            Debug.LogWarning("There should be a hitbox manager that is attached to the parent of " + this.transform.name);
+            return;
+        }
+        associatedHitBoxManager.allConnectedHitboxes.Add(this);
+    }
+
+    private void OnDestroy()
+    {
+        associatedHitBoxManager.allConnectedHitboxes.Remove(this);
     }
 
     private void OnEnable()
