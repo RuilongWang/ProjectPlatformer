@@ -10,6 +10,8 @@ using UnityEngine;
 public class HitBoxManager : MonoBehaviour {
 
     #region main variables
+    [Tooltip("The character stats that are associated with this hitbox manager. Any damage or effects taht are applied to this object will reference this character stats object")]
+    public CharacterStats associatedCharacterStats;
     /// <summary>
     /// This variable inicates that an enemy is currently in hitstun. Meaning that they can not move or take any
     /// control of their character until they have recovered back down to 0
@@ -25,17 +27,21 @@ public class HitBoxManager : MonoBehaviour {
     #endregion main variables
 
     #region monbehavour methods
-
+    private void Start()
+    {
+        this.associatedCharacterStats = GetComponentInParent<CharacterStats>();
+    }
     #endregion monobehaviour methods
 
     #region event methods
     /// <summary>
     /// Call this method whenever there is a new attack that has occurred.
-    /// It will reset the necessary values
+    /// It will reset the necessary values. This would be best to call in an animator, to ensure that a new  
     /// </summary>
-    public void OnNewAttackInitiated()
+    public void OnResetHitBoxManager()
     {
         allManagersEffectedByCurrentAttack.Clear();
+        
     }
 
     /// <summary>
@@ -48,8 +54,17 @@ public class HitBoxManager : MonoBehaviour {
     /// <returns></returns>
     public bool OnAttackedEnemyHurtbox(HitBox ourHitBox, HurtBox enemyHurtBox)
     {
+        if (ourHitBox.associatedHitBoxManager == enemyHurtBox.associatedHiBboxManager)
+        {
+            return false;
+        }
+        if (allManagersEffectedByCurrentAttack.Contains(enemyHurtBox.associatedHiBboxManager))
+        {
+            return false;
+        }
 
-        return false;
+        enemyHurtBox.associatedHiBboxManager.associatedCharacterStats.TakeDamage(ourHitBox.damageToApply);
+        return true;
     }
 
     /// <summary>
@@ -59,12 +74,17 @@ public class HitBoxManager : MonoBehaviour {
     /// <param name="ourHitBox"></param>
     /// <param name="enemyHitbox"></param>
     /// <returns></returns>
-    public bool OnAttackEnemyHitbox(HitBox ourHitBox, HitBox enemyHitbox)
+    public bool OnAttackedEnemyHitbox(HitBox ourHitBox, HitBox enemyHitbox)
     {
 
         return false;
     }
 
+
+    public void OnWasAttackedByEnemyHitbox(HurtBox ourHurtbox, HitBox enemyHitbox)
+    {
+
+    }
 
     #endregion event methods
 }

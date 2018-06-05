@@ -8,8 +8,15 @@ using UnityEngine;
 /// </summary>
 public class HitBox : MonoBehaviour {
     #region main vairables
+    [Tooltip("The base damage to apply to an enemy if hit by this hitbox")]
+    public float damageToApply = 1;
+    [Tooltip("Some moves will apply a hitstun to an enemy, meaning that they can not take any actions until the hitstun has worn off. Hitstun will not stack on an enemy. It will simply use the last hitstun value that was applied")]
+    public float hitStunTimeInSeconds = 0;
+    [Tooltip("The force that will be applied to a hit enemy")]
+    public float knockbackForce = 1;
+    public Vector2 directionToApplyKnockback = Vector2.right;
+
     public HitBoxManager associatedHitBoxManager { get; private set; }
-    private bool hitboxCurrentlyActive;
     #endregion main variables
 
     #region monobehaviour methods
@@ -27,11 +34,6 @@ public class HitBox : MonoBehaviour {
     private void OnDestroy()
     {
         associatedHitBoxManager.allConnectedHitboxes.Remove(this);
-    }
-
-    private void OnEnable()
-    {
-        hitboxCurrentlyActive = true;
     }
 
     private void OnDisable()
