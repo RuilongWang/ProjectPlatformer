@@ -48,6 +48,8 @@ public class MovementMechanics : MonoBehaviour {
 
     private float goalSpeed = 0;
     private CustomPhysics2D rigid;
+
+    private Animator anim;
     #endregion set at runtime
 
     #region monobehaviour methods
@@ -59,6 +61,7 @@ public class MovementMechanics : MonoBehaviour {
     private void Start()
     {
         rigid.OnGroundedEvent += this.OnGroundedEvent;
+        anim = GetComponent<Animator>();
     }
 
     private void OnValidate()
@@ -106,10 +109,13 @@ public class MovementMechanics : MonoBehaviour {
             return;
         }
 
+        anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
+
         if (Mathf.Abs(horizontalInput) < WALK_THRESHOLD)
         {
             
             goalSpeed = 0;
+            return;
             
         }
         else if (Mathf.Abs(horizontalInput) < RUN_THRESHOLD)
@@ -119,6 +125,17 @@ public class MovementMechanics : MonoBehaviour {
         else
         {
             goalSpeed = maxRunSpeed * Mathf.Sign(horizontalInput);
+        }
+
+        if (goalSpeed > 0 && isFacingLeft)
+        {
+            isFacingLeft = false;
+            FlipSpriteToFaceDirection();
+        }
+        else if (goalSpeed < 0 && !isFacingLeft)
+        {
+            isFacingLeft = true;
+            FlipSpriteToFaceDirection();
         }
     }
     #endregion set movement
