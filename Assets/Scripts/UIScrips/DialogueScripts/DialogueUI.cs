@@ -9,13 +9,23 @@ using UnityEngine.UI;
 public class DialogueUI : MonoBehaviour {
 
     #region main variables
-
+    /// <summary>
+    /// Use this variable when choosing the next dialogue option.
+    /// By default this option should be 0. This will act as the index of the 
+    /// dialogue node list.
+    /// </summary>
+    private int dialogueOptionSelected = 0;
     #endregion main variables
+
+
 
     #region monobehaviour methods
     private void Update()
     {
+        if (Input.GetButtonDown("Select")) 
+        {
 
+        }
     }
     #endregion monobehaviour methods
 
@@ -32,6 +42,14 @@ public class DialogueUI : MonoBehaviour {
     /// Clean up that we should use after a dialogue action has completed
     /// </summary>
     public void EndDialogue()
+    {
+
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void MoveToNextDialogueNode()
     {
 
     }
