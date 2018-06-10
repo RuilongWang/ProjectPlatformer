@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 61537608770453640}
   - component: {fileID: 114972791385344788}
   - component: {fileID: 114375720379727562}
+  - component: {fileID: 95226809282825450}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -75,7 +76,7 @@ Transform:
   m_GameObject: {fileID: 1344431761169720}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_Children: []
   m_Father: {fileID: 4574177464125060}
   m_RootOrder: 0
@@ -101,7 +102,7 @@ Transform:
   m_GameObject: {fileID: 1643534526484386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.32, y: 1.194, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_Children:
   - {fileID: 4032373154094190}
   - {fileID: 4064155780257796}
@@ -156,7 +157,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.16}
+  m_Offset: {x: 0, y: 0.23}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -167,7 +168,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.16, y: 0.32}
+  m_Size: {x: 0.16, y: 0.46}
   m_EdgeRadius: 0
 --- !u!81 &81737959171133346
 AudioListener:
@@ -176,6 +177,24 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1518346028353678}
   m_Enabled: 1
+--- !u!95 &95226809282825450
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1643534526484386}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 99608c30054a71047a28557d5f1abdbc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114099239540577736
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -207,6 +226,7 @@ MonoBehaviour:
   heightOfJump: 0.7
   timeToReachJumpApex: 0.25
   inAirAcceleration: 45
+  isFacingLeft: 0
 --- !u!114 &114375720379727562
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -303,7 +323,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 92a961a604b8da6419718b27f3c0391b, type: 3}
+  m_Sprite: {fileID: 21300006, guid: ee407d121d3b0394dac465da5c636f4a, type: 3}
   m_Color: {r: 1, g: 0.8235294, b: 0.8235294, a: 1}
   m_FlipX: 0
   m_FlipY: 0

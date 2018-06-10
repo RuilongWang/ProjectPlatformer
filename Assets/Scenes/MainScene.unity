@@ -484,6 +484,30 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 0.15
       objectReference: {fileID: 0}
+    - target: {fileID: 61537608770453640, guid: 9800e139e5f1d6a44b4b3e3095755b9c,
+        type: 2}
+      propertyPath: m_Size.y
+      value: 0.46
+      objectReference: {fileID: 0}
+    - target: {fileID: 61537608770453640, guid: 9800e139e5f1d6a44b4b3e3095755b9c,
+        type: 2}
+      propertyPath: m_Offset.y
+      value: 0.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 4574177464125060, guid: 9800e139e5f1d6a44b4b3e3095755b9c, type: 2}
+      propertyPath: m_LocalScale.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114101716665980264, guid: 9800e139e5f1d6a44b4b3e3095755b9c,
+        type: 2}
+      propertyPath: isFacingRight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 212854314126170018, guid: 9800e139e5f1d6a44b4b3e3095755b9c,
+        type: 2}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9800e139e5f1d6a44b4b3e3095755b9c, type: 2}
   m_IsPrefabParent: 0
@@ -840,3 +864,26 @@ MonoBehaviour:
   canHitWhileMovingLeft: 1
   canHitWhileMovingUp: 1
   canHitWhileMovingDown: 1
+--- !u!1 &2084396115 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1643534526484386, guid: 9800e139e5f1d6a44b4b3e3095755b9c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1053161605}
+--- !u!95 &2084396123
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2084396115}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 99608c30054a71047a28557d5f1abdbc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

@@ -30,6 +30,11 @@ public class MovementMechanics : MonoBehaviour {
     public float inAirAcceleration = 15;
     [Tooltip("The velocity that our character will launch with upward when performing a jump")]
     private float jumpVelocity;
+
+    [Space(3)]
+    [Header("Orientation Variables")]
+    public bool isFacingLeft;
+
     /// <summary>
     /// Indicates whethere or not our character can double jump in the air
     /// </summary>
@@ -65,6 +70,8 @@ public class MovementMechanics : MonoBehaviour {
         float gravity = (2 * heightOfJump) / Mathf.Pow(timeToReachJumpApex, 2);
         jumpVelocity = Mathf.Abs(gravity) * timeToReachJumpApex;
         rigid.gravityScale = gravity / CustomPhysics2D.GRAVITY_CONSTANT;
+
+        FlipSpriteToFaceDirection();
     }
 
     private void Update()
@@ -151,7 +158,6 @@ public class MovementMechanics : MonoBehaviour {
         return true;
     }
 
-    #endregion jump methods
     /// <summary>
     /// Use this method to run any code that needs to occur when we land
     /// </summary>
@@ -159,4 +165,21 @@ public class MovementMechanics : MonoBehaviour {
     {
         doubleJumpAvailable = true;
     }
+    #endregion jump methods
+
+    #region orientation methods
+    /// <summary>
+    /// Sets the scale of the sprite so that it is facing the direction that the player is having them
+    /// move
+    /// </summary>
+    private void FlipSpriteToFaceDirection()
+    {
+        float adjustedXScale = Mathf.Round(Mathf.Abs(this.transform.localScale.x) * (isFacingLeft ? 1 : -1) * 100) / 100;
+        this.transform.localScale = new Vector3(adjustedXScale, this.transform.localScale.y, this.transform.localScale.z);
+    }
+    #endregion orientation methods
+
+
+
+
 }
