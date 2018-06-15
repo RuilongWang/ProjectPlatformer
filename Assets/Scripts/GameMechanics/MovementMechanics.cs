@@ -162,6 +162,10 @@ public class MovementMechanics : MonoBehaviour {
     }
 
     #region jump methods
+    /// <summary>
+    /// Updates the scale of gravity in our rigid variable based on whether or not we are fast
+    /// falling
+    /// </summary>
     private void UpdateGravityScaleWhenInAir()
     {
         if (!rigid.isInAir)
