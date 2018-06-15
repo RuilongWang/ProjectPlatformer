@@ -28,8 +28,14 @@ public class MovementMechanics : MonoBehaviour {
     public float timeToReachJumpApex = 1;
     [Tooltip("The acceleration that will be applied to our character while they are in the air.")]
     public float inAirAcceleration = 15;
+    [Tooltip("The scale that we will multiply the gravity force when our character is fast falling")]
+    public float fastFallScale = 1.7f;
+    //Indicates whether or not our character is currently fast falling
+    public bool isFastFalling { get; set; }
     [Tooltip("The velocity that our character will launch with upward when performing a jump")]
     private float jumpVelocity;
+
+
 
     [Space(3)]
     [Header("Orientation Variables")]
@@ -50,12 +56,14 @@ public class MovementMechanics : MonoBehaviour {
     private CustomPhysics2D rigid;
 
     private Animator anim;
+    private float defaultGravityScale = 1;
     #endregion set at runtime
 
     #region monobehaviour methods
     private void Awake()
     {
         rigid = GetComponent<CustomPhysics2D>();
+        defaultGravityScale = rigid.gravityScale;
     }
 
     private void Start()
@@ -79,6 +87,7 @@ public class MovementMechanics : MonoBehaviour {
 
     private void Update()
     {
+        UpdateGravityScaleWhenInAir();
         UpdateVelocity();
     }
 
@@ -153,6 +162,16 @@ public class MovementMechanics : MonoBehaviour {
     }
 
     #region jump methods
+    private void UpdateGravityScaleWhenInAir()
+    {
+        if (!rigid.isInAir)
+        {
+            return;//Don't worry about this method if we are not currently in the air
+        }
+
+        rigid.gravityScale = defaultGravityScale * (isFastFalling ? fastFallScale : 1);
+    }
+
     /// <summary>
     /// Call this method to perform a jump.
     /// Returns true if jump was successfully made. False if there 

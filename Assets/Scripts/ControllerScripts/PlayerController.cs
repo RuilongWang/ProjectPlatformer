@@ -40,6 +40,14 @@ public class PlayerController : MonoBehaviour {
         {
             movementMechanics.Jump();
         }
+        if (GetButton(ButtonAction.Jump) && movementMechanics.isFastFalling)
+        {
+            movementMechanics.isFastFalling = false;
+        }
+        else if (!GetButton(ButtonAction.Jump) && !movementMechanics.isFastFalling)
+        {
+            movementMechanics.isFastFalling = true;
+        }
     }
     #endregion monobehaviour methods
     /// <summary>

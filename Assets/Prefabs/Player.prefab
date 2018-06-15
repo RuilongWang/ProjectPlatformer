@@ -223,9 +223,10 @@ MonoBehaviour:
   maxWalkSpeed: 3
   acceleration: 70
   maxInAirSpeed: 8
-  heightOfJump: 0.7
+  heightOfJump: 1
   timeToReachJumpApex: 0.25
   inAirAcceleration: 45
+  fastFallScale: 1.9
   isFacingLeft: 0
 --- !u!114 &114375720379727562
 MonoBehaviour:
@@ -256,7 +257,7 @@ MonoBehaviour:
   useGravity: 1
   useTerminalVelocity: 1
   gravityVector: {x: 0, y: -1}
-  gravityScale: 2.2857141
+  gravityScale: 3.265306
   terminalVelocity: 10
 --- !u!114 &114972791385344788
 MonoBehaviour:
