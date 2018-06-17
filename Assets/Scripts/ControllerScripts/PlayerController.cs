@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
     public enum ButtonAction
     {
         Jump,
+        MeleeAttack,
     }
     #endregion const button names
     private Dictionary<ButtonAction, BufferedButtonInput> buttonDictionary = new Dictionary<ButtonAction, BufferedButtonInput>();
@@ -35,10 +36,21 @@ public class PlayerController : MonoBehaviour {
 
     private void Update()
     {
-        movementMechanics.SetHorizontalInput(GetHorizontal());
-        if (GetButtonDown(ButtonAction.Jump))
+        //Update all the bufferend inputs
+        foreach (BufferedButtonInput bufferedButtonInput in buttonDictionary.Values)
         {
-            movementMechanics.Jump();
+            bufferedButtonInput.UpdateButtonPress(Time.deltaTime);
+        }
+
+
+        movementMechanics.SetHorizontalInput(GetHorizontal());
+        if (GetButtonBufferedDown(ButtonAction.Jump))
+        {
+
+            if (movementMechanics.Jump())
+            {
+                ResetBufferedButtonDown(ButtonAction.Jump);
+            }
         }
         if (GetButton(ButtonAction.Jump) && movementMechanics.isFastFalling)
         {
@@ -60,7 +72,6 @@ public class PlayerController : MonoBehaviour {
     {
         if (buttonDictionary[buttonAction].isButtonBufferedDown)
         {
-            buttonDictionary[buttonAction].ResetButtonBufferedDown();
             return true;
         }
         return false;
@@ -75,11 +86,32 @@ public class PlayerController : MonoBehaviour {
     {
         if (buttonDictionary[buttonAction].isButtonBufferedUp)
         {
-            buttonDictionary[buttonAction].ResetButtonBufferedUp();
+            
             return true;
         }
         return false;
     }
+
+    /// <summary>
+    /// This method should be called after a buffered button down event was
+    /// used. For example if jump is successfully executed, we should call this method
+    /// to reset the jump button being down
+    /// </summary>
+    /// <param name="buttonAction"></param>
+    public void ResetBufferedButtonDown(ButtonAction buttonAction)
+    {
+        buttonDictionary[buttonAction].ResetButtonBufferedDown();
+    }
+
+    /// <summary>
+    /// See ResetBufferedButtonDown.
+    /// </summary>
+    /// <param name="buttonAction"></param>
+    public void ResetBufferedButtonUp(ButtonAction buttonAction)
+    {
+        buttonDictionary[buttonAction].ResetButtonBufferedUp();
+    }
+
 
     /// <summary>
     /// 
@@ -189,6 +221,7 @@ public class PlayerController : MonoBehaviour {
 
         public void UpdateButtonPress(float deltaTime)
         {
+            
             buttonDownTimer = Mathf.MoveTowards(buttonDownTimer, 0, deltaTime);
             buttonUpTimer = Mathf.MoveTowards(buttonUpTimer, 0, deltaTime);
 
