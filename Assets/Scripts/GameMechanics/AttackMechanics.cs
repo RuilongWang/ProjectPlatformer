@@ -28,6 +28,15 @@ public class AttackMechanics : MonoBehaviour {
 
     private string[] attackTypeNames;
 
+    /// <summary>
+    /// The current horizontal input from the character controller
+    /// </summary>
+    private float horizontalInput;
+    /// <summary>
+    /// The current vertical input from the character controller
+    /// </summary>
+    private float verticalInput;
+
     private Animator anim;
     #endregion main variables
 
@@ -53,12 +62,35 @@ public class AttackMechanics : MonoBehaviour {
     /// was registered
     /// </summary>
     /// <returns></returns>
-    private bool MeleeAttack()
+    private void MeleeAttack()
     {
-
-        return false;
+        SetBufferedAttackType(AttackType.Neutral_Attack);
     }
 
+    /// <summary>
+    /// Sets the horizontal input from the character controller
+    /// </summary>
+    /// <param name="horizontalInput"></param>
+    public void SetHorizontalInput(float horizontalInput)
+    {
+        this.horizontalInput = horizontalInput;
+    }
+
+
+    /// <summary>
+    /// Sets the vertical input fromt the character controller
+    /// </summary>
+    /// <param name="verticalInput"></param>
+    public void SetVerticalInput(float verticalInput)
+    {
+        this.verticalInput = verticalInput;
+    }
+
+
+    /// <summary>
+    /// Begins a buffered
+    /// </summary>
+    /// <param name="attackType"></param>
     private void SetBufferedAttackType(AttackType attackType)
     {
         bufferedButtonPressTimer[attackType] = timeToDeactivateAttackTrigger;
@@ -66,8 +98,7 @@ public class AttackMechanics : MonoBehaviour {
         if (bufferedButtonPressTimer[attackType] <= 0)
         {
             StartCoroutine(AttackInputBufferCoroutine(attackType));
-        }
-            
+        }  
     }
 
     /// <summary>
@@ -80,8 +111,8 @@ public class AttackMechanics : MonoBehaviour {
     {
         while (bufferedButtonPressTimer[attackType] > 0)
         {
-            bufferedButtonPressTimer[attackType] -= Time.deltaTime;
             yield return null;
+            bufferedButtonPressTimer[attackType] -= Time.deltaTime;
         }
 
         if (anim.GetBool(attackTypeNames[(int)attackType]))
