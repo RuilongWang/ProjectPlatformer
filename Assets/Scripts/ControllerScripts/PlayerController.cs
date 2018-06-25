@@ -15,18 +15,14 @@ public class PlayerController : MonoBehaviour {
         Jump,
         MeleeAttack,
     }
+
+    private string[] buttonActionNamesList;
     #endregion const button names
-    private Dictionary<ButtonAction, BufferedButtonInput> buttonDictionary = new Dictionary<ButtonAction, BufferedButtonInput>();
 
     #region monobehaviour methods
     private void Awake()
     {
-        foreach (ButtonAction buttonAction in System.Enum.GetValues(typeof(ButtonAction)))
-        {
-            buttonDictionary.Add(buttonAction, new BufferedButtonInput());
-            buttonDictionary[buttonAction].buttonAction = buttonAction;
-            buttonDictionary[buttonAction].buttonName = buttonAction.ToString();
-        }
+        buttonActionNamesList = System.Enum.GetNames(typeof(ButtonAction));
     }
 
     private void Start()
@@ -36,21 +32,13 @@ public class PlayerController : MonoBehaviour {
 
     private void Update()
     {
-        //Update all the bufferend inputs
-        foreach (BufferedButtonInput bufferedButtonInput in buttonDictionary.Values)
+        
+
+
+        movementMechanics.SetHorizontalInput(GetHorizontalAxisRaw());
+        if (GetButtonDown(ButtonAction.Jump))
         {
-            bufferedButtonInput.UpdateButtonPress(Time.deltaTime);
-        }
-
-
-        movementMechanics.SetHorizontalInput(GetHorizontal());
-        if (GetButtonBufferedDown(ButtonAction.Jump))
-        {
-
-            if (movementMechanics.Jump())
-            {
-                ResetBufferedButtonDown(ButtonAction.Jump);
-            }
+            movementMechanics.Jump();
         }
         if (GetButton(ButtonAction.Jump) && movementMechanics.isFastFalling)
         {
@@ -62,55 +50,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
     #endregion monobehaviour methods
-    /// <summary>
-    /// If this method is called and an action is return to be true,
-    /// that action will then be set to false immediately after. Game Actions
-    /// should only need to be called once per frame.
-    /// </summary>
-    /// <param name="buttonAction"></param>
-    public bool GetButtonBufferedDown(ButtonAction buttonAction)
-    {
-        if (buttonDictionary[buttonAction].isButtonBufferedDown)
-        {
-            return true;
-        }
-        return false;
-
-    }
-
-    /// <summary>
-    /// Gets a buffered up event for the passed in button action
-    /// </summary>
-    /// <param name="buttonAction"></param>
-    public bool GetButtonBufferedUp(ButtonAction buttonAction)
-    {
-        if (buttonDictionary[buttonAction].isButtonBufferedUp)
-        {
-            
-            return true;
-        }
-        return false;
-    }
-
-    /// <summary>
-    /// This method should be called after a buffered button down event was
-    /// used. For example if jump is successfully executed, we should call this method
-    /// to reset the jump button being down
-    /// </summary>
-    /// <param name="buttonAction"></param>
-    public void ResetBufferedButtonDown(ButtonAction buttonAction)
-    {
-        buttonDictionary[buttonAction].ResetButtonBufferedDown();
-    }
-
-    /// <summary>
-    /// See ResetBufferedButtonDown.
-    /// </summary>
-    /// <param name="buttonAction"></param>
-    public void ResetBufferedButtonUp(ButtonAction buttonAction)
-    {
-        buttonDictionary[buttonAction].ResetButtonBufferedUp();
-    }
+    
 
 
     /// <summary>
@@ -120,7 +60,7 @@ public class PlayerController : MonoBehaviour {
     /// <returns></returns>
     public bool GetButton(ButtonAction buttonAction)
     {
-        return buttonDictionary[buttonAction].button;
+        return Input.GetButton(buttonActionNamesList[(int)buttonAction]);
     }
 
     /// <summary>
@@ -130,7 +70,7 @@ public class PlayerController : MonoBehaviour {
     /// <returns></returns>
     public bool GetButtonDown(ButtonAction buttonAction)
     {
-        return buttonDictionary[buttonAction].buttonDown;
+        return Input.GetButtonDown(buttonActionNamesList[(int)buttonAction]);
     }
 
     /// <summary>
@@ -140,109 +80,28 @@ public class PlayerController : MonoBehaviour {
     /// <returns></returns>
     public bool GetButtonUp(ButtonAction buttonAction)
     {
-        return buttonDictionary[buttonAction].buttonUp;
+        return Input.GetButtonUp(buttonActionNamesList[(int)buttonAction]);
     }
 
     /// <summary>
-    /// 
+    /// Returns the current horizontal axis of the joystick
     /// </summary>
     /// <returns></returns>
-    public float GetHorizontal()
+    public float GetHorizontalAxisRaw()
     {
         return Input.GetAxisRaw("Horizontal");
     }
 
     /// <summary>
-    /// 
+    /// Returns the vertical axis of the joystick
     /// </summary>
     /// <returns></returns>
-    public float GetVertical()
+    public float GetVerticalAxisRaw()
     {
         return Input.GetAxisRaw("Vertical");
     }
     #region get button methods
 
     #endregion get button methods
-    /// <summary>
-    /// Class to help with buffeeing button inputs. Players need a little leeway in their button presses
-    /// so this should be fine. Also have access to the basic Unity button methods from here as well
-    /// </summary>
-    private class BufferedButtonInput
-    {
-        private const float BUTTON_BUFFER_TIME = 0.117f;//About a 7 frame buffer
-
-
-        public ButtonAction buttonAction;
-        public string buttonName;
-        private float buttonDownTimer;
-        private float buttonUpTimer;
-
-        #region button status variables
-        public bool isButtonBufferedDown
-        {
-            get
-            {
-                return buttonDownTimer > 0;
-            }
-        }
-
-        public bool isButtonBufferedUp
-        {
-            get
-            {
-                return buttonUpTimer > 0;
-            }
-        }
-
-        public bool buttonUp
-        {
-            get
-            {
-                return Input.GetButtonUp(buttonName);
-            }
-        }
-
-        public bool buttonDown
-        {
-            get
-            {
-                return Input.GetButtonDown(buttonName);
-            }
-        }
-
-        public bool button
-        {
-            get
-            {
-                return Input.GetButton(buttonName);
-            }
-        }
-        #endregion button status variables
-
-        public void UpdateButtonPress(float deltaTime)
-        {
-            
-            buttonDownTimer = Mathf.MoveTowards(buttonDownTimer, 0, deltaTime);
-            buttonUpTimer = Mathf.MoveTowards(buttonUpTimer, 0, deltaTime);
-
-            if (buttonDown)
-            {
-                buttonDownTimer = BUTTON_BUFFER_TIME;
-            }
-            if (buttonUp)
-            {
-                buttonUpTimer = BUTTON_BUFFER_TIME;
-            }
-        }
-
-        public void ResetButtonBufferedDown()
-        {
-            buttonDownTimer = 0;
-        }
-
-        public void ResetButtonBufferedUp()
-        {
-            buttonUpTimer = 0;
-        }
-    }
+    
 }
