@@ -41,8 +41,8 @@ public class GameOverseer : MonoBehaviour {
     #endregion debug variables
 
     #region save game variables
-    private static string SAVE_GAME_FILE_NAME = Path.Combine(Application.persistentDataPath, "ProjectRobotGirlsSaveData.dat");
-    private static string BACKUP_SAVE_GAME_FILE_NAME = Path.Combine(Application.persistentDataPath, "backup_ProjectRobotGirlsSaveData.dat");
+    private static string SAVE_GAME_FILE_NAME;
+    private static string BACKUP_SAVE_GAME_FILE_NAME;
     #endregion save game variables
 
     #region game settings variables
@@ -53,6 +53,9 @@ public class GameOverseer : MonoBehaviour {
     #region monobehaviour methods
     private void Awake()
     {
+        SAVE_GAME_FILE_NAME = Path.Combine(Application.persistentDataPath, "ProjectRobotGirlsSaveData.dat");
+        BACKUP_SAVE_GAME_FILE_NAME = Path.Combine(Application.persistentDataPath, "backup_ProjectRobotGirlsSaveData.dat");
+
         instance = this;
     }
 
