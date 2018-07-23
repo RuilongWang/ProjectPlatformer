@@ -41,8 +41,8 @@ public class GameOverseer : MonoBehaviour {
     #endregion debug variables
 
     #region save game variables
-    private static string SAVE_GAME_FILE_NAME = "ProjectRobotGirlsSaveData.dat";
-    private static string BACKUP_SAVE_GAME_FILE_NAME = "backup_ProjectRobotGirlsSaveData.dat";
+    private static string SAVE_GAME_FILE_NAME = Path.Combine(Application.persistentDataPath, "ProjectRobotGirlsSaveData.dat");
+    private static string BACKUP_SAVE_GAME_FILE_NAME = Path.Combine(Application.persistentDataPath, "backup_ProjectRobotGirlsSaveData.dat");
     #endregion save game variables
 
     #region game settings variables
@@ -69,14 +69,22 @@ public class GameOverseer : MonoBehaviour {
     #endregion monobehaviour methods
 
     #region save game methods
+    public bool gameCurrentlySaving { get; private set; }
+
+
     /// <summary>
     /// Saves this particular instance of the game. Any changes before may be overwritten
     /// Takes in the name of the file that we are going to create
     /// </summary>
     public void SaveGameData(string saveGameDataName)
     {
-        string filePath = Path.Combine(Application.persistentDataPath, SAVE_GAME_FILE_NAME);
-
+        if (gameCurrentlySaving)
+        {
+            Debug.Log("Game currently saving. Please wait until it is complete.");
+            return;
+        }
+        gameCurrentlySaving = true;
+        string filePath = SAVE_GAME_FILE_NAME;
         FileStream fs = new FileStream(filePath, FileMode.Open);
         SaveData saveData = new SaveData();
 
@@ -90,6 +98,7 @@ public class GameOverseer : MonoBehaviour {
 
             fs.Close();
             fs = null;
+            File.Copy(SAVE_GAME_FILE_NAME, BACKUP_SAVE_GAME_FILE_NAME);
 
         }
         catch (SerializationException e)
@@ -105,6 +114,12 @@ public class GameOverseer : MonoBehaviour {
             }
             
         }
+        gameCurrentlySaving = false;
+    }
+
+    public void ThreadedGameSave()
+    {
+
     }
 
     /// <summary>
@@ -112,8 +127,11 @@ public class GameOverseer : MonoBehaviour {
     /// </summary>
     public void LoadGameData(string saveGameDataName)
     {
-        string filePath = Path.Combine(Application.persistentDataPath, SAVE_GAME_FILE_NAME);
-        if (!File.Exists(filePath))
+        try
+        {
+
+        }
+        catch
         {
 
         }

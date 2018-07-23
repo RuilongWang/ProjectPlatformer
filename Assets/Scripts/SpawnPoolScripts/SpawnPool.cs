@@ -36,6 +36,12 @@ public class SpawnPool : MonoBehaviour  {
     
     #endregion monobehaviour methods
 
+    /// <summary>
+    /// Dequeues a previously inactive gameobject that is an instantiation of the prefab passed it
+    /// and returns it as active
+    /// </summary>
+    /// <param name="prefabToSpawn"></param>
+    /// <returns></returns>
     public virtual MonoBehaviour Spawn(MonoBehaviour prefabToSpawn)
     {
         if (!dictionayOfPooledObjects.ContainsKey(prefabToSpawn.name))
@@ -57,6 +63,11 @@ public class SpawnPool : MonoBehaviour  {
         return objectThatIsBeingSpawned;
     }
 
+    /// <summary>
+    /// Despawns an object and add it back to its respective queue to be used
+    /// when it is needed
+    /// </summary>
+    /// <param name="objectToDespawn"></param>
     public virtual void Despawn(MonoBehaviour objectToDespawn)
     {
         if (!dictionayOfPooledObjects.ContainsKey(objectToDespawn.name))
@@ -71,7 +82,7 @@ public class SpawnPool : MonoBehaviour  {
     }
 
     /// <summary>
-    /// Intiailzes the 
+    /// Intiailzes the spawn pool with the necessary game objects
     /// </summary>
     protected virtual void InitializeSpawnPool()
     {
@@ -82,7 +93,6 @@ public class SpawnPool : MonoBehaviour  {
                 CreateNewObjectForSpawnPool(prefabStruct.prefabObject);
             }
         }
-        
     }
 
     /// <summary>

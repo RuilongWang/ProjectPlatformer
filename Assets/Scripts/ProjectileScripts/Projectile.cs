@@ -29,6 +29,12 @@ public class Projectile : MonoBehaviour {
     {
         UpdateRotationBasedOnVelocity();
     }
+
+
+    protected virtual void OnTriggerEnter2D(Collider2D collider)
+    {
+
+    }
     #endregion monobehaviour methods
 
     /// <summary>
@@ -55,6 +61,17 @@ public class Projectile : MonoBehaviour {
     private void UpdateRotationBasedOnVelocity()
     {
         Vector2 velocityUnityVector = rigid.velocity.normalized;
+
+    }
+
+    /// <summary>
+    /// When our projectile collides with any valid object this method should be called.
+    /// By default it will just be destroyed. Otherwise it may do damage or other functionality
+    /// if needed
+    /// </summary>
+    /// <param name="collider"></param>
+    private void OnProjectileCollision(Collider2D collider)
+    {
 
     }
 }
