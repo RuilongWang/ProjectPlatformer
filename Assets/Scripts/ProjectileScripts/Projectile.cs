@@ -10,6 +10,8 @@ using UnityEngine;
 public class Projectile : MonoBehaviour {
 
     #region main variables
+    [Range(0f, 1f)]
+    public float accuracy = 1;
     public float lauchSpeed = 10;
     public Vector2 launchVector = Vector2.right;
 
