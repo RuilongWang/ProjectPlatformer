@@ -25,6 +25,11 @@ public class SpawnPool : MonoBehaviour  {
     private Dictionary<string, Queue<MonoBehaviour>> dictionayOfPooledObjects = new Dictionary<string, Queue<MonoBehaviour>>();
 
     #region Monobehaviour methods
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void Start()
     {
         if (!parentToStorePooledObjects)
@@ -58,7 +63,6 @@ public class SpawnPool : MonoBehaviour  {
 
         MonoBehaviour objectThatIsBeingSpawned = queuedObjectsInPool.Dequeue();
         objectThatIsBeingSpawned.gameObject.SetActive(true);
-        SetupObjectWhenSpawned(objectThatIsBeingSpawned);
 
         return objectThatIsBeingSpawned;
     }
@@ -78,7 +82,6 @@ public class SpawnPool : MonoBehaviour  {
         objectToDespawn.gameObject.SetActive(false);
         objectToDespawn.transform.SetParent(parentToStorePooledObjects);
         dictionayOfPooledObjects[objectToDespawn.name].Enqueue(objectToDespawn);
-
     }
 
     /// <summary>
@@ -112,9 +115,36 @@ public class SpawnPool : MonoBehaviour  {
         dictionayOfPooledObjects[prefabToPool.name].Enqueue(newObjectToAddToPool);
     }
 
-    protected virtual void SetupObjectWhenSpawned(MonoBehaviour objectToSetup)
+    /// <summary>
+    /// 
+    /// </summary>
+    public void AddObjectsToSpawnPoolIfNotAddedAlready(MonoBehaviour prefabToPool, int numberToAdd = 10)
     {
+        string prefabName = GetPrefabNameFromClonedObject(prefabToPool.name);
+        int adjustedNumberToAdd = numberToAdd;
+        if (dictionayOfPooledObjects.ContainsKey(prefabName))
+        {
+            adjustedNumberToAdd = dictionayOfPooledObjects[prefabName].Count;
+        }
+        
+        for (int i = 0; i < adjustedNumberToAdd; i++)
+        {
+            CreateNewObjectForSpawnPool(prefabToPool);
+        }
+    }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public string GetPrefabNameFromClonedObject(string clonedGameObjectName)
+    {
+        string keyword = "(Clone)";
+        if (!clonedGameObjectName.Contains(keyword))
+        {
+            return clonedGameObjectName;
+        }
+        else return clonedGameObjectName.Substring(0, clonedGameObjectName.Length - keyword.Length);
     }
 
     [System.Serializable]
