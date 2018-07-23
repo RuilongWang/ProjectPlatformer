@@ -76,11 +76,16 @@ public class GameOverseer : MonoBehaviour {
     /// Saves this particular instance of the game. Any changes before may be overwritten
     /// Takes in the name of the file that we are going to create
     /// </summary>
-    public void SaveGameData(string saveGameDataName)
+    public void SaveGameData(string saveGameDataName, int attemptCount = 0)
     {
         if (gameCurrentlySaving)
         {
             Debug.Log("Game currently saving. Please wait until it is complete.");
+            return;
+        }
+        if (attemptCount >= 3)
+        {
+            Debug.LogError("We have attempted to save 3 times in a row... There may be something seriously wrong that you need to look into");
             return;
         }
         gameCurrentlySaving = true;
@@ -129,13 +134,50 @@ public class GameOverseer : MonoBehaviour {
     {
         try
         {
-
+            SaveData saveData = LoadSaveDataBinaryFile(SAVE_GAME_FILE_NAME);
+            if (saveData == null)
+            {
+                saveData = LoadSaveDataBinaryFile(BACKUP_SAVE_GAME_FILE_NAME);
+            }
+            if (saveData == null)
+            {
+                Debug.LogWarning("There was no save file found.");
+                return;
+            }
         }
         catch
         {
 
         }
+    }
 
+    private SaveData LoadSaveDataBinaryFile(string path)
+    {
+        if (!File.Exists(path))
+        {
+            return null;
+        }
+        FileStream fs = null;
+        try
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            fs = new FileStream(path, FileMode.Open);
+            SaveData sd = (SaveData)bf.Deserialize(fs);
+            fs.Close();
+            fs = null;
+            return sd;
+        }
+        catch (System.Exception e)
+        {
+            if (fs != null)
+            {
+                fs.Close();
+                fs = null;
+            }
+            Debug.LogError(path + "<- There was an error loading from this path. It may be corrupted.");
+            Debug.LogError(e.StackTrace);
+        }
+        return null;
     }
 
 
