@@ -14,9 +14,24 @@ public class ProjectileHitbox : HitBox {
         
     }
 
+    private void OnValidate()
+    {
+        if (rayCountForHitbox < 2)
+        {
+            rayCountForHitbox = 2;
+        } 
+    }
+
+    /// <summary>
+    /// Visually draw out what the hitbox will look like to make it more clear to the
+    /// designer
+    /// </summary>
     private void OnDrawGizmosSelected()
     {
-        
+        Vector3 topPoint = transform.position + (transform.up * widthOfProjectileHitbox / 2);
+        Vector3 bottomPoint = transform.position + (-transform.up * widthOfProjectileHitbox / 2);
+
+        Gizmos.DrawLine(topPoint, bottomPoint);
     }
     #endregion monobehaviour methods
 
