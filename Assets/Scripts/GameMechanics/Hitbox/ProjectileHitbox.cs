@@ -31,7 +31,16 @@ public class ProjectileHitbox : HitBox {
         Vector3 topPoint = transform.position + (transform.up * widthOfProjectileHitbox / 2);
         Vector3 bottomPoint = transform.position + (-transform.up * widthOfProjectileHitbox / 2);
 
+        Gizmos.color = Color.red;
         Gizmos.DrawLine(topPoint, bottomPoint);
+
+        Vector3 intervalOffset = (bottomPoint - topPoint) / (rayCountForHitbox - 1f);
+        Vector3 currentPoint = topPoint;
+        for (int i = 0; i < rayCountForHitbox; i++)
+        {
+            Gizmos.DrawLine(currentPoint, currentPoint + (transform.forward * .75f));
+            currentPoint += intervalOffset;
+        }
     }
     #endregion monobehaviour methods
 
