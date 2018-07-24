@@ -38,7 +38,7 @@ public class ProjectileHitbox : HitBox {
         Vector3 currentPoint = topPoint;
         for (int i = 0; i < rayCountForHitbox; i++)
         {
-            Gizmos.DrawLine(currentPoint, currentPoint + (transform.forward * .75f));
+            Gizmos.DrawLine(currentPoint, currentPoint + (transform.right * .5f));
             currentPoint += intervalOffset;
         }
     }
