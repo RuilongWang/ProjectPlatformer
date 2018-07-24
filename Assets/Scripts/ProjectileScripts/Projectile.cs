@@ -14,9 +14,10 @@ public class Projectile : MonoBehaviour {
     public float accuracy = 1;
     public float lauchSpeed = 10;
     public Vector2 launchVector = Vector2.right;
+    public float projectileHealth;
 
     private BoxCollider2D attachedCollder;
-    private CharacterStats characterThatLaunchedProjectile;
+    private CharacterStats associatedCharacterThatFiredProjectile;
     private CustomPhysics2D rigid;
 
     #endregion main variables
@@ -31,12 +32,6 @@ public class Projectile : MonoBehaviour {
     {
         UpdateRotationBasedOnVelocity();
     }
-
-
-    protected virtual void OnTriggerEnter2D(Collider2D collider)
-    {
-
-    }
     #endregion monobehaviour methods
 
     /// <summary>
@@ -46,7 +41,7 @@ public class Projectile : MonoBehaviour {
     /// <param name="launchVector"></param>
     public void SetUpProjectile(CharacterStats characterThatLaunchedProjectile, Vector2 launchVector)
     {
-        this.characterThatLaunchedProjectile = characterThatLaunchedProjectile;
+        this.associatedCharacterThatFiredProjectile = characterThatLaunchedProjectile;
     }
 
     /// <summary>

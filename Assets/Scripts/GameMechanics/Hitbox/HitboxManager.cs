@@ -52,7 +52,7 @@ public class HitBoxManager : MonoBehaviour {
     /// true if the attack langed
     /// </summary>
     /// <returns></returns>
-    public bool OnAttackedEnemyHurtbox(HitBox ourHitBox, HurtBox enemyHurtBox)
+    public virtual bool OnAttackedEnemyHurtbox(HitBox ourHitBox, HurtBox enemyHurtBox)
     {
         if (ourHitBox.associatedHitBoxManager == enemyHurtBox.associatedHiBboxManager)
         {
@@ -74,14 +74,15 @@ public class HitBoxManager : MonoBehaviour {
     /// <param name="ourHitBox"></param>
     /// <param name="enemyHitbox"></param>
     /// <returns></returns>
-    public bool OnAttackedEnemyHitbox(HitBox ourHitBox, HitBox enemyHitbox)
+    public virtual bool OnAttackedEnemyHitbox(HitBox ourHitBox, HitBox enemyHitbox)
     {
 
         return false;
     }
 
 
-    public void OnWasAttackedByEnemyHitbox(HurtBox ourHurtbox, HitBox enemyHitbox)
+
+    public virtual void OnWasAttackedByEnemyHitbox(HurtBox ourHurtbox, HitBox enemyHitbox)
     {
 
     }
