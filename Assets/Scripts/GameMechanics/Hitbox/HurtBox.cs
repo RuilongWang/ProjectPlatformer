@@ -30,12 +30,31 @@ public class HurtBox : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision)
     {
         HitBox hitbox = collision.GetComponent<HitBox>();
+        HurtBox hurtbox = collision.GetComponent<HurtBox>();
 
         if (hitbox && hitbox.associatedHitBoxManager != this.associatedHiBboxManager)//Checking to make sure this is not our own hitbox
+        {
+            OnHurtboxEnteredEnemyHitbox(hitbox);
+        }
+        if (hurtbox && hurtbox.associatedHiBboxManager != this.associatedHiBboxManager)
         {
 
         }
     }
     #endregion monobehaviour methods
 
+
+    protected virtual void OnHurtboxEnteredEnemyHitbox(HitBox enemyHitbox)
+    {
+
+    }
+
+    /// <summary>
+    /// Don't really see a use for this one, but its there if you need it...
+    /// This will be called any time a hurtbox enters an enemy hurtbox
+    /// </summary>
+    protected virtual void OnHurtboxEnteredEnemyHurtbox(HurtBox enemyHurtbox)
+    {
+
+    }
 }

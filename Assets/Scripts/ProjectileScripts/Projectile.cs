@@ -45,14 +45,6 @@ public class Projectile : MonoBehaviour {
     }
 
     /// <summary>
-    /// Updates where our projectile will be located
-    /// </summary>
-    private void UpdateCollisionPoint()
-    {
-
-    }
-
-    /// <summary>
     /// Updates the rotation of the projectile to match the velocity that it is currently travelling at
     /// </summary>
     private void UpdateRotationBasedOnVelocity()

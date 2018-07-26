@@ -5,8 +5,9 @@ using UnityEngine;
 public class ProjectileHitboxManager : HitBoxManager {
     private Projectile associatedProjectile;
 
-    #region monobehaviour methods
 
-    #endregion monobehaviour methods
+    #region override methods
+
+    #endregion override methods
 
 }

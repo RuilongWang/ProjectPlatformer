@@ -40,6 +40,34 @@ public class HitBox : MonoBehaviour {
     {
         
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        HitBox enemyHitbox = collision.GetComponent<HitBox>();
+        HurtBox enemyHurtbox = collision.GetComponent<HurtBox>();
+
+        if (enemyHitbox && enemyHitbox.associatedHitBoxManager != this.associatedHitBoxManager)
+        {
+            OnHitboxEnterEnemyHitbox(enemyHitbox);
+        }
+        if (enemyHurtbox && enemyHurtbox.associatedHiBboxManager != this.associatedHitBoxManager)
+        {
+            OnHitboxEnterEnemyHurtbox(enemyHurtbox);
+        }
+    }
     #endregion monobehavour methods
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="enemyHitbox"></param>
+    protected void OnHitboxEnterEnemyHitbox(HitBox enemyHitbox)
+    {
+
+    }
+
+    protected virtual void OnHitboxEnterEnemyHurtbox(HurtBox enemyHurtbox)
+    {
+
+    }
 
 }

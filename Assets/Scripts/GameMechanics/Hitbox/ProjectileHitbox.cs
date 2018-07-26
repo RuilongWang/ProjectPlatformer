@@ -44,6 +44,9 @@ public class ProjectileHitbox : HitBox {
     }
     #endregion monobehaviour methods
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void UpdateProjectileHitboxRays()
     {
 

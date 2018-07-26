@@ -41,51 +41,6 @@ public class HitBoxManager : MonoBehaviour {
     public void OnResetHitBoxManager()
     {
         allManagersEffectedByCurrentAttack.Clear();
-        
     }
-
-    /// <summary>
-    /// Call this method whenever an enemy has been hit by a hitbox.
-    /// The method will reutrn true if we made a successful attack (Meaning that we
-    /// were able to damage to the enemy) and false if we did not make a successful attack on the enemy
-    /// (either they were invincible or not able to get hit). Even if no damage is given, we will still return
-    /// true if the attack langed
-    /// </summary>
-    /// <returns></returns>
-    public virtual bool OnAttackedEnemyHurtbox(HitBox ourHitBox, HurtBox enemyHurtBox)
-    {
-        if (ourHitBox.associatedHitBoxManager == enemyHurtBox.associatedHiBboxManager)
-        {
-            return false;
-        }
-        if (allManagersEffectedByCurrentAttack.Contains(enemyHurtBox.associatedHiBboxManager))
-        {
-            return false;
-        }
-
-        enemyHurtBox.associatedHiBboxManager.associatedCharacterStats.TakeDamage(ourHitBox.damageToApply);
-        return true;
-    }
-
-    /// <summary>
-    /// Use this method if whenever we collide with an enemy hitbox. Returns false if nothing occurs
-    /// upon colliding with an enemy hurtbox
-    /// </summary>
-    /// <param name="ourHitBox"></param>
-    /// <param name="enemyHitbox"></param>
-    /// <returns></returns>
-    public virtual bool OnAttackedEnemyHitbox(HitBox ourHitBox, HitBox enemyHitbox)
-    {
-
-        return false;
-    }
-
-
-
-    public virtual void OnWasAttackedByEnemyHitbox(HurtBox ourHurtbox, HitBox enemyHitbox)
-    {
-
-    }
-
     #endregion event methods
 }
