@@ -5,16 +5,20 @@ using UnityEngine;
 /// <summary>
 /// Base class for projectiles
 /// </summary>
-[RequireComponent(typeof(BoxCollider2D))]
+
 [RequireComponent(typeof(CustomPhysics2D))]
 public class Projectile : MonoBehaviour {
 
     #region main variables
     [Range(0f, 1f)]
+    [Tooltip("Change this value if you want there to be some variability when a bullet fires so that it does not always fire perfectly in the same location.")]
     public float accuracy = 1;
+    [Tooltip("This is the desired launch speed of the projectile")]
     public float lauchSpeed = 10;
-    public Vector2 launchVector = Vector2.right;
-    public float projectileHealth;
+    /// <summary>
+    /// The direction that we will launch our projectile at. This will be set at run time
+    /// </summary>
+    public Vector2 launchVector { get; set; }
 
     private BoxCollider2D attachedCollder;
     private CharacterStats associatedCharacterThatFiredProjectile;
@@ -25,7 +29,7 @@ public class Projectile : MonoBehaviour {
     #region monobehaviour methods
     private void Start()
     {
-        rigid = GetComponent<CustomPhysics2D>();   
+        rigid = GetComponent<CustomPhysics2D>();
     }
 
     protected virtual void Update()
@@ -38,10 +42,20 @@ public class Projectile : MonoBehaviour {
     /// Call this method after spawning a projectile to properly set up our projectile
     /// </summary>
     /// <param name="characterThatLaunchedProjectile"></param>
-    /// <param name="launchVector"></param>
-    public void SetUpProjectile(CharacterStats characterThatLaunchedProjectile, Vector2 launchVector)
+    public void SetUpProjectile(CharacterStats characterThatLaunchedProjectile)
     {
         this.associatedCharacterThatFiredProjectile = characterThatLaunchedProjectile;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void LaunchProjectile(Vector2 launchDirection)
+    {
+        launchDirection = launchDirection.normalized;
+
+        this.transform.right = launchDirection;
+        this.rigid.velocity = launchDirection * lauchSpeed;
     }
 
     /// <summary>
@@ -50,7 +64,7 @@ public class Projectile : MonoBehaviour {
     private void UpdateRotationBasedOnVelocity()
     {
         Vector2 velocityUnityVector = rigid.velocity.normalized;
-
+        this.transform.right = velocityUnityVector;
     }
 
     /// <summary>

@@ -7,9 +7,7 @@ using UnityEngine;
 /// certain conditions, this class may also interact with other hitbox classes found in enemies
 /// </summary>
 public class HitBox : MonoBehaviour {
-    #region const variables
-    public const string HITBOX_LAYER = "Hitbox";
-    #endregion const variables
+    
     #region main vairables
     [Tooltip("The base damage to apply to an enemy if hit by this hitbox")]
     public float damageToApply = 1;
