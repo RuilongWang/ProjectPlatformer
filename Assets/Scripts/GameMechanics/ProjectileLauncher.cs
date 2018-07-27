@@ -22,6 +22,14 @@ public class ProjectileLauncher : MonoBehaviour {
         associatedCharacterStats = GetComponentInParent<CharacterStats>();
         SpawnPool.Instance.AddObjectsToSpawnPoolIfNotAddedAlready(associatedProjectileToLaunch);
     }
+
+    private void Update()
+    {
+        if (Input.GetButtonDown("Fire"))
+        {
+            LaunchProjectile();
+        }
+    }
     #endregion monobehaviour methods
     /// <summary>
     /// Call this method when you want to launch the associated projectile
@@ -29,6 +37,7 @@ public class ProjectileLauncher : MonoBehaviour {
     public void LaunchProjectile()
     {
         Projectile projectileToLaunch = (Projectile)SpawnPool.Instance.Spawn(associatedProjectileToLaunch);
-        projectileToLaunch.SetUpProjectile(associatedCharacterStats, launchPoint.forward);
+        projectileToLaunch.SetUpProjectile(associatedCharacterStats, launchPoint.position);
+        projectileToLaunch.LaunchProjectile(-Mathf.Sign(transform.parent.localScale.x) * this.transform.right);
     }
 }

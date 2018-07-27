@@ -8,6 +8,9 @@ using UnityEngine;
 
 [RequireComponent(typeof(CustomPhysics2D))]
 public class Projectile : MonoBehaviour {
+    #region const varialbes
+    public const string ANIMATION_HIT = "Hit";
+    #endregion const variables
 
     #region main variables
     [Range(0f, 1f)]
@@ -23,13 +26,17 @@ public class Projectile : MonoBehaviour {
     private BoxCollider2D attachedCollder;
     private CharacterStats associatedCharacterThatFiredProjectile;
     public CustomPhysics2D rigid { get; private set; }
+    public Animator anim { get; private set; }
+    private ProjectileHitboxManager hitboxManager;
 
     #endregion main variables
 
     #region monobehaviour methods
-    private void Start()
+    private void Awake()
     {
         rigid = GetComponent<CustomPhysics2D>();
+        anim = GetComponent<Animator>();
+        hitboxManager = GetComponent<ProjectileHitboxManager>();
     }
 
     protected virtual void Update()
@@ -42,8 +49,9 @@ public class Projectile : MonoBehaviour {
     /// Call this method after spawning a projectile to properly set up our projectile
     /// </summary>
     /// <param name="characterThatLaunchedProjectile"></param>
-    public void SetUpProjectile(CharacterStats characterThatLaunchedProjectile)
+    public void SetUpProjectile(CharacterStats characterThatLaunchedProjectile, Vector3 originPoint)
     {
+        this.transform.position = originPoint;
         this.associatedCharacterThatFiredProjectile = characterThatLaunchedProjectile;
     }
 
@@ -73,8 +81,11 @@ public class Projectile : MonoBehaviour {
     /// if needed
     /// </summary>
     /// <param name="collider"></param>
-    private void OnProjectileCollision(Collider2D collider)
+    public void OnProjectileCollision(Collider2D collider, Vector3 positionOfImpact)
     {
-
+        transform.position = positionOfImpact;
+        anim.SetTrigger(ANIMATION_HIT);
+        rigid.enabled = false;
+        hitboxManager.DeactivateHitboxManager();
     }
 }

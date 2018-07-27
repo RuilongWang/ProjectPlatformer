@@ -10,12 +10,18 @@ using UnityEngine;
 public class HitBoxManager : MonoBehaviour {
     #region const variables
     public const string HITBOX_LAYER = "Hitbox";
+    public const string ENVIRONMENT_LAYER = "Environment";
     #endregion const variables
 
 
     #region main variables
-    [Tooltip("The character stats that are associated with this hitbox manager. Any damage or effects taht are applied to this object will reference this character stats object")]
-    public CharacterStats associatedCharacterStats;
+    /// <summary>
+    /// The character stats that are associated with this hitbox manager. Any damage or effects that are 
+    /// applied to this object will reference this character stats object.
+    /// </summary>
+    public CharacterStats associatedCharacterStats { get; set; }
+
+
     /// <summary>
     /// This variable inicates that an enemy is currently in hitstun. Meaning that they can not move or take any
     /// control of their character until they have recovered back down to 0
@@ -31,7 +37,7 @@ public class HitBoxManager : MonoBehaviour {
     #endregion main variables
 
     #region monbehavour methods
-    private void Start()
+    protected virtual void Start()
     {
         this.associatedCharacterStats = GetComponentInParent<CharacterStats>();
     }
@@ -57,6 +63,22 @@ public class HitBoxManager : MonoBehaviour {
             }
         }
         return false;
+    }
+
+    /// <summary>
+    /// If this is called it will disable all the hitboxes and hurboxes that are attached to our manager
+    /// </summary>
+    public void DeactivateHitboxManager()
+    {
+        foreach (HitBox hbox in allConnectedHitboxes)
+        {
+            hbox.gameObject.SetActive(false);
+        }
+        foreach(HurtBox hbox in allConnectedHurtboxes)
+        {
+            hbox.gameObject.SetActive(false);
+        }
+        this.enabled = false;
     }
     #endregion event methods
 }

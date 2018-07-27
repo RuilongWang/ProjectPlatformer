@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
     {
         Jump,
         MeleeAttack,
+        Fire
     }
 
     private string[] buttonActionNamesList;

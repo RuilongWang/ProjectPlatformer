@@ -13,11 +13,12 @@ public class ProjectileHitbox : HitBox {
     #region monobehaviour methods
     protected override void Start()
     {
+        base.Start();
         projectileHitboxManager = (ProjectileHitboxManager)associatedHitBoxManager;
     }
     private void Update()
     {
-        
+        UpdateProjectileHitboxRays();
     }
 
     private void OnValidate()
@@ -67,7 +68,7 @@ public class ProjectileHitbox : HitBox {
         for (int i = 0; i < rayCountForHitbox; i++)
         {
             ray = new Ray2D(currentPoint, transform.right);
-            hit = Physics2D.Raycast(ray.origin, ray.direction, proj.rigid.velocity.x * Time.deltaTime, LayerMask.GetMask(HitBoxManager.HITBOX_LAYER));
+            hit = Physics2D.Raycast(ray.origin, ray.direction, proj.rigid.velocity.x * Time.deltaTime, LayerMask.GetMask(HitBoxManager.HITBOX_LAYER, HitBoxManager.ENVIRONMENT_LAYER));
             if (hit)
             {
                 HitBox hitbox = hit.collider.GetComponent<HitBox>();
@@ -75,13 +76,26 @@ public class ProjectileHitbox : HitBox {
 
                 if (hitbox)
                 {
+                    
                     OnHitboxEnterEnemyHitbox(hitbox);
                 }
                 if (hurtbox)
                 {
                     OnHitboxEnterEnemyHurtbox(hurtbox);
                 }
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer(HitBoxManager.ENVIRONMENT_LAYER))
+                {
+                    OnHitboxEnteredEnvironmentCollider(hit.collider);
+                    projectileHitboxManager.associatedProjectile.OnProjectileCollision(hit.collider, hit.point);
+                }
             }
+            currentPoint += intervalOffset;
         }
+    }
+
+    protected override void OnHitboxEnteredEnvironmentCollider(Collider2D collider )
+    {
+        base.OnHitboxEnteredEnvironmentCollider(collider);
+
     }
 }

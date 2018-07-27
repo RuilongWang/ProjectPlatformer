@@ -24,7 +24,10 @@ public class HurtBox : MonoBehaviour {
 
     private void OnDestroy()
     {
-        associatedHiBboxManager.allConnectedHurtboxes.Remove(this);
+        if (associatedHiBboxManager)
+        {
+            associatedHiBboxManager.allConnectedHurtboxes.Remove(this);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -34,7 +34,8 @@ public class HitBox : MonoBehaviour {
 
     private void OnDestroy()
     {
-        associatedHitBoxManager.allConnectedHitboxes.Remove(this);
+        if (associatedHitBoxManager)
+            associatedHitBoxManager.allConnectedHitboxes.Remove(this);
     }
 
     private void OnDisable()
@@ -65,10 +66,23 @@ public class HitBox : MonoBehaviour {
     {
 
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="enemyHurtbox"></param>
     protected virtual void OnHitboxEnterEnemyHurtbox(HurtBox enemyHurtbox)
     {
 
+    }
+
+    /// <summary>
+    /// Potentially we may want to interact with the environment when we collide with the terrain when we hit a wall or the ground
+    /// This method will always be called if we hit something in the environment layer
+    /// </summary>
+    /// <param name="collider"></param>
+    protected virtual void OnHitboxEnteredEnvironmentCollider(Collider2D collider)
+    {
+        
     }
 
 }
