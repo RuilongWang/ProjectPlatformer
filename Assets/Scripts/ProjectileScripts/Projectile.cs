@@ -18,7 +18,7 @@ public class Projectile : MonoBehaviour {
 
     private BoxCollider2D attachedCollder;
     private CharacterStats associatedCharacterThatFiredProjectile;
-    private CustomPhysics2D rigid;
+    public CustomPhysics2D rigid { get; private set; }
 
     #endregion main variables
 

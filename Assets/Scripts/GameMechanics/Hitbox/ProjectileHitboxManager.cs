@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileHitboxManager : HitBoxManager {
-    private Projectile associatedProjectile;
+    [Tooltip("The associated projectile object")]
+    public Projectile associatedProjectile;
 
 
     #region override methods

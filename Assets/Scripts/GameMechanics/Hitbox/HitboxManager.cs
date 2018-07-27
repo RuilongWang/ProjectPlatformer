@@ -8,6 +8,10 @@ using UnityEngine;
 /// a character. Each hitbox and hurtbox object will also hold a reference to this object
 /// </summary>
 public class HitBoxManager : MonoBehaviour {
+    #region const variables
+    public const string HITBOX_LAYER = "Hitbox";
+    #endregion const variables
+
 
     #region main variables
     [Tooltip("The character stats that are associated with this hitbox manager. Any damage or effects taht are applied to this object will reference this character stats object")]
@@ -41,6 +45,18 @@ public class HitBoxManager : MonoBehaviour {
     public void OnResetHitBoxManager()
     {
         allManagersEffectedByCurrentAttack.Clear();
+    }
+
+    protected bool ContainsManager(HitBoxManager hitboxManager)
+    {
+        foreach (HitBoxManager hManager in allManagersEffectedByCurrentAttack)
+        {
+            if (hManager == hitboxManager)
+            {
+                return true;
+            }
+        }
+        return false;
     }
     #endregion event methods
 }

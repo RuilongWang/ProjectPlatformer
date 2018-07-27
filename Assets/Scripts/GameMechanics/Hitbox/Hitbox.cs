@@ -7,6 +7,9 @@ using UnityEngine;
 /// certain conditions, this class may also interact with other hitbox classes found in enemies
 /// </summary>
 public class HitBox : MonoBehaviour {
+    #region const variables
+    public const string HITBOX_LAYER = "Hitbox";
+    #endregion const variables
     #region main vairables
     [Tooltip("The base damage to apply to an enemy if hit by this hitbox")]
     public float damageToApply = 1;
@@ -20,7 +23,7 @@ public class HitBox : MonoBehaviour {
     #endregion main variables
 
     #region monobehaviour methods
-    private void Start()
+    protected virtual void Start()
     {
         associatedHitBoxManager = GetComponentInParent<HitBoxManager>();
         if (!associatedHitBoxManager)
@@ -41,7 +44,7 @@ public class HitBox : MonoBehaviour {
         
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         HitBox enemyHitbox = collision.GetComponent<HitBox>();
         HurtBox enemyHurtbox = collision.GetComponent<HurtBox>();
@@ -60,7 +63,7 @@ public class HitBox : MonoBehaviour {
     /// 
     /// </summary>
     /// <param name="enemyHitbox"></param>
-    protected void OnHitboxEnterEnemyHitbox(HitBox enemyHitbox)
+    protected virtual void OnHitboxEnterEnemyHitbox(HitBox enemyHitbox)
     {
 
     }

@@ -7,8 +7,14 @@ public class ProjectileHitbox : HitBox {
     public int rayCountForHitbox = 5;
     [Tooltip("Size of the projectile hitbox. It will use the up and down vector when calculating the width")]
     public float widthOfProjectileHitbox = 1;
+    //Sames as the hitbox manager, just casted to give us access to the associated projectile object
+    private ProjectileHitboxManager projectileHitboxManager;
 
     #region monobehaviour methods
+    protected override void Start()
+    {
+        projectileHitboxManager = (ProjectileHitboxManager)associatedHitBoxManager;
+    }
     private void Update()
     {
         
@@ -49,6 +55,33 @@ public class ProjectileHitbox : HitBox {
     /// </summary>
     private void UpdateProjectileHitboxRays()
     {
+        Vector3 topPoint = transform.position + (transform.up * widthOfProjectileHitbox / 2);
+        Vector3 bottomPoint = transform.position - (transform.up * widthOfProjectileHitbox / 2);
 
+        Vector3 intervalOffset = (bottomPoint - topPoint) / (rayCountForHitbox - 1f);
+        Vector3 currentPoint = topPoint;
+
+        Ray2D ray;
+        RaycastHit2D hit;
+        Projectile proj = projectileHitboxManager.associatedProjectile;
+        for (int i = 0; i < rayCountForHitbox; i++)
+        {
+            ray = new Ray2D(currentPoint, transform.right);
+            hit = Physics2D.Raycast(ray.origin, ray.direction, proj.rigid.velocity.x * Time.deltaTime, LayerMask.GetMask(HitBoxManager.HITBOX_LAYER));
+            if (hit)
+            {
+                HitBox hitbox = hit.collider.GetComponent<HitBox>();
+                HurtBox hurtbox = hit.collider.GetComponent<HurtBox>();
+
+                if (hitbox)
+                {
+                    OnHitboxEnterEnemyHitbox(hitbox);
+                }
+                if (hurtbox)
+                {
+                    OnHitboxEnterEnemyHurtbox(hurtbox);
+                }
+            }
+        }
     }
 }
