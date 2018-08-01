@@ -8,8 +8,16 @@ using UnityEngine;
 
 [RequireComponent(typeof(CustomPhysics2D))]
 public class Projectile : MonoBehaviour {
+    private enum ProjectileState
+    {
+        Active,
+        Dead,
+    }
+
     #region const varialbes
     public const string ANIMATION_HIT = "Hit";
+
+    private const float TIME_BEFORE_AUTOMATIC_DESTROY = 5f;
     #endregion const variables
 
     #region main variables
@@ -28,6 +36,9 @@ public class Projectile : MonoBehaviour {
     public CustomPhysics2D rigid { get; private set; }
     public Animator anim { get; private set; }
     private ProjectileHitboxManager hitboxManager;
+    private ProjectileState currentState;
+
+    private float timeBeforeAutomaticDestroy = TIME_BEFORE_AUTOMATIC_DESTROY;
 
     #endregion main variables
 
@@ -42,6 +53,12 @@ public class Projectile : MonoBehaviour {
     protected virtual void Update()
     {
         UpdateRotationBasedOnVelocity();
+
+        if (timeBeforeAutomaticDestroy < 0)
+        {
+            OnProjectileCollision(null, transform.position);
+        }
+        timeBeforeAutomaticDestroy -= Time.deltaTime;
     }
     #endregion monobehaviour methods
 
@@ -53,6 +70,11 @@ public class Projectile : MonoBehaviour {
     {
         this.transform.position = originPoint;
         this.associatedCharacterThatFiredProjectile = characterThatLaunchedProjectile;
+        rigid.enabled = true;
+        hitboxManager.ActivateHitboxManager();
+        anim.Rebind();
+        timeBeforeAutomaticDestroy = TIME_BEFORE_AUTOMATIC_DESTROY;
+        currentState = ProjectileState.Active;
     }
 
     /// <summary>
@@ -81,11 +103,24 @@ public class Projectile : MonoBehaviour {
     /// if needed
     /// </summary>
     /// <param name="collider"></param>
-    public void OnProjectileCollision(Collider2D collider, Vector3 positionOfImpact)
+    public virtual void OnProjectileCollision(Collider2D collider, Vector3 positionOfImpact)
     {
+        if (currentState == ProjectileState.Dead)
+        {
+            return;
+        }
         transform.position = positionOfImpact;
         anim.SetTrigger(ANIMATION_HIT);
         rigid.enabled = false;
         hitboxManager.DeactivateHitboxManager();
+        StartCoroutine(DespawnProjectileAfterTime());
+        currentState = ProjectileState.Dead;
+    }
+
+    private IEnumerator DespawnProjectileAfterTime()
+    {
+        float timeBeforeDespawn = 1;
+        yield return new WaitForSeconds(timeBeforeDespawn);
+        SpawnPool.Instance.Despawn(this);
     }
 }

@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour {
         {
             movementMechanics.isFastFalling = true;
         }
+
     }
     #endregion monobehaviour methods
     

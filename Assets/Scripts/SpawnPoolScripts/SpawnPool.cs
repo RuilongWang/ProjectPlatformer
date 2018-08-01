@@ -28,14 +28,15 @@ public class SpawnPool : MonoBehaviour  {
     private void Awake()
     {
         instance = this;
-    }
-
-    private void Start()
-    {
         if (!parentToStorePooledObjects)
         {
             parentToStorePooledObjects = this.transform;
         }
+    }
+
+    private void Start()
+    {
+        
         InitializeSpawnPool();
     }
     
@@ -112,6 +113,8 @@ public class SpawnPool : MonoBehaviour  {
             dictionayOfPooledObjects.Add(prefabToPool.name, new Queue<MonoBehaviour>());
         }
         newObjectToAddToPool.transform.SetParent(parentToStorePooledObjects);
+        string keyword = "(Clone)";
+        newObjectToAddToPool.name = newObjectToAddToPool.name.Substring(0, newObjectToAddToPool.name.Length - keyword.Length);
         dictionayOfPooledObjects[prefabToPool.name].Enqueue(newObjectToAddToPool);
     }
 
@@ -120,7 +123,7 @@ public class SpawnPool : MonoBehaviour  {
     /// </summary>
     public void AddObjectsToSpawnPoolIfNotAddedAlready(MonoBehaviour prefabToPool, int numberToAdd = 10)
     {
-        string prefabName = GetPrefabNameFromClonedObject(prefabToPool.name);
+        string prefabName = prefabToPool.name;
         int adjustedNumberToAdd = numberToAdd;
         if (dictionayOfPooledObjects.ContainsKey(prefabName))
         {
@@ -131,20 +134,6 @@ public class SpawnPool : MonoBehaviour  {
         {
             CreateNewObjectForSpawnPool(prefabToPool);
         }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    public string GetPrefabNameFromClonedObject(string clonedGameObjectName)
-    {
-        string keyword = "(Clone)";
-        if (!clonedGameObjectName.Contains(keyword))
-        {
-            return clonedGameObjectName;
-        }
-        else return clonedGameObjectName.Substring(0, clonedGameObjectName.Length - keyword.Length);
     }
 
     [System.Serializable]

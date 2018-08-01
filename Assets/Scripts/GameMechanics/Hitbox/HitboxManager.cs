@@ -53,6 +53,12 @@ public class HitBoxManager : MonoBehaviour {
         allManagersEffectedByCurrentAttack.Clear();
     }
 
+    /// <summary>
+    /// If we already hit an object with a hitbox, we may not want to hit it again within the same animation. In which case, we can use this
+    /// method to check if we have already hit them
+    /// </summary>
+    /// <param name="hitboxManager"></param>
+    /// <returns></returns>
     protected bool ContainsManager(HitBoxManager hitboxManager)
     {
         foreach (HitBoxManager hManager in allManagersEffectedByCurrentAttack)
@@ -68,7 +74,7 @@ public class HitBoxManager : MonoBehaviour {
     /// <summary>
     /// If this is called it will disable all the hitboxes and hurboxes that are attached to our manager
     /// </summary>
-    public void DeactivateHitboxManager()
+    public virtual void DeactivateHitboxManager()
     {
         foreach (HitBox hbox in allConnectedHitboxes)
         {
@@ -79,6 +85,14 @@ public class HitBoxManager : MonoBehaviour {
             hbox.gameObject.SetActive(false);
         }
         this.enabled = false;
+    }
+
+    /// <summary>
+    /// Enables the hitbox manager if it was turned off
+    /// </summary>
+    public virtual void ActivateHitboxManager()
+    {
+        this.enabled = true;
     }
     #endregion event methods
 }

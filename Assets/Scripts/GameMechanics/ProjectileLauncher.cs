@@ -40,4 +40,6 @@ public class ProjectileLauncher : MonoBehaviour {
         projectileToLaunch.SetUpProjectile(associatedCharacterStats, launchPoint.position);
         projectileToLaunch.LaunchProjectile(-Mathf.Sign(transform.parent.localScale.x) * this.transform.right);
     }
+
+
 }

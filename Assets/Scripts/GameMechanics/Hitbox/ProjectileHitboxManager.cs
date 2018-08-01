@@ -8,7 +8,14 @@ public class ProjectileHitboxManager : HitBoxManager {
 
 
     #region override methods
-
+    public override void ActivateHitboxManager()
+    {
+        base.ActivateHitboxManager();
+        foreach (HitBox hbox in allConnectedHitboxes)
+        {
+            hbox.gameObject.SetActive(true);
+        }
+    }
     #endregion override methods
 
 }
