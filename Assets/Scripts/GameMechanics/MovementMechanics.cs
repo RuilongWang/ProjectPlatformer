@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(CustomPhysics2D))]
 public class MovementMechanics : MonoBehaviour {
-
+    #region const variables
+    /// <summary>
+    /// The value of the horizontal axis on the joystick before our character can walk
+    /// </summary>
     public const float WALK_THRESHOLD = .1f;
+
+    /// <summary>
+    /// The value of the horizontal axis on the joystick before our character can run
+    /// </summary>
     public const float RUN_THRESHOLD = .65f;
+    #endregion const variables
 
     #region main variables
     [Header("Ground Speed Variables")]
@@ -38,6 +46,7 @@ public class MovementMechanics : MonoBehaviour {
     [Space(3)]
     [Header("Dashing Variables")]
     [Tooltip("The amount of time in seconds that our character will be dashing")]
+    [Range(.1f, 2f)]
     public float dashTime = 1f;
     [Tooltip("The speed of our character's dash movement")]
     public float dashSpeed = 8f;
@@ -49,10 +58,10 @@ public class MovementMechanics : MonoBehaviour {
 
     [Space(3)]
     [Header("Orientation Variables")]
-    public bool isFacingLeft;
+    public bool isFacingRight;
 
     /// <summary>
-    /// Indicates whethere or not our character can double jump in the air
+    /// Indicates whether or not our character can double jump in the air
     /// </summary>
     private bool doubleJumpAvailable = true;
 
@@ -146,14 +155,14 @@ public class MovementMechanics : MonoBehaviour {
             goalSpeed = maxRunSpeed * Mathf.Sign(horizontalInput);
         }
 
-        if (goalSpeed > 0 && isFacingLeft)
+        if (goalSpeed > 0 && isFacingRight)
         {
-            isFacingLeft = false;
+            isFacingRight = false;
             FlipSpriteToFaceDirection();
         }
-        else if (goalSpeed < 0 && !isFacingLeft)
+        else if (goalSpeed < 0 && !isFacingRight)
         {
-            isFacingLeft = true;
+            isFacingRight = true;
             FlipSpriteToFaceDirection();
         }
     }
@@ -224,21 +233,54 @@ public class MovementMechanics : MonoBehaviour {
     /// </summary>
     private void FlipSpriteToFaceDirection()
     {
-        float adjustedXScale = Mathf.Round(Mathf.Abs(this.transform.localScale.x) * (isFacingLeft ? 1 : -1) * 100) / 100;
+        float adjustedXScale = Mathf.Round(Mathf.Abs(this.transform.localScale.x) * (isFacingRight ? 1 : -1) * 100) / 100;
         this.transform.localScale = new Vector3(adjustedXScale, this.transform.localScale.y, this.transform.localScale.z);
     }
     #endregion orientation methods
 
     #region dash methods
-    public void Dash()
+    public void Dash(float horizontalInput, float verticalInput)
     {
+        isDashing = true;
+        StartCoroutine(DashCoroutine(horizontalInput, verticalInput));
+    }
 
+    /// <summary>
+    /// This coroutine will handle the speeds at which we will be moving in during the duration of our dash
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator DashCoroutine(float horizontalInput, float verticalInput)
+    {
+        float timeToDecelerate = .1f;
+        float timeAtFullSpeed = dashTime - timeToDecelerate;
+        Vector2 directionOfDash = new Vector2(Mathf.RoundToInt(horizontalInput), Mathf.RoundToInt(verticalInput));
+        if (directionOfDash == Vector2.zero)
+        {
+            directionOfDash = new Vector2(Mathf.Sign(transform.localScale.x), 0);//Just in case we are moving at 
+        }
+        directionOfDash = directionOfDash.normalized;
+
+        while (timeAtFullSpeed > 0)
+        {
+            if (!isDashing)
+            {
+                StartCoroutine(DashCoolDown(dashCoolDownTime));
+                yield break;
+            }
+            yield return null;
+        }
+        yield break;
     }
 
     public IEnumerator DashCoolDown(float timeBeforeCanDash)
     {
         yield return new WaitForSeconds(timeBeforeCanDash);
         dashAvailable = true;
+    }
+
+    public void CancelDash()
+    {
+        isDashing = false;
     }
     #endregion dash methods
 
