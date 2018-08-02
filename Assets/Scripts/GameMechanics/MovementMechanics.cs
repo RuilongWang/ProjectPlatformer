@@ -41,7 +41,10 @@ public class MovementMechanics : MonoBehaviour {
     public float dashTime = 1f;
     [Tooltip("The speed of our character's dash movement")]
     public float dashSpeed = 8f;
-
+    [Tooltip("The cool down time that will need to take place before you can use the dash mechanic again")]
+    public float dashCoolDownTime = .5f;
+    private bool dashAvailable = true;
+    public bool isDashing { get; private set; }
 
 
     [Space(3)]
@@ -100,7 +103,7 @@ public class MovementMechanics : MonoBehaviour {
 
     private void OnDestroy()
     {
-        rigid.OnGroundedEvent -= this.OnGroundedEvent;//Make sure to unsubscribe from the event avoid errors
+        rigid.OnGroundedEvent -= this.OnGroundedEvent;//Make sure to unsubscribe from the event avoid errors and memory leaks
     }
     #endregion monobehaviour methos
 
@@ -225,6 +228,19 @@ public class MovementMechanics : MonoBehaviour {
         this.transform.localScale = new Vector3(adjustedXScale, this.transform.localScale.y, this.transform.localScale.z);
     }
     #endregion orientation methods
+
+    #region dash methods
+    public void Dash()
+    {
+
+    }
+
+    public IEnumerator DashCoolDown(float timeBeforeCanDash)
+    {
+        yield return new WaitForSeconds(timeBeforeCanDash);
+        dashAvailable = true;
+    }
+    #endregion dash methods
 
 
 
