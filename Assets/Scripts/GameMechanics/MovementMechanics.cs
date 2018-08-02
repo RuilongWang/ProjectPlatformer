@@ -35,6 +35,13 @@ public class MovementMechanics : MonoBehaviour {
     [Tooltip("The velocity that our character will launch with upward when performing a jump")]
     private float jumpVelocity;
 
+    [Space(3)]
+    [Header("Dashing Variables")]
+    [Tooltip("The amount of time in seconds that our character will be dashing")]
+    public float dashTime = 1f;
+    [Tooltip("The speed of our character's dash movement")]
+    public float dashSpeed = 8f;
+
 
 
     [Space(3)]
