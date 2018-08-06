@@ -388,6 +388,34 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4574177464125060, guid: 9800e139e5f1d6a44b4b3e3095755b9c, type: 2}
+      propertyPath: m_LocalScale.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114101716665980264, guid: 9800e139e5f1d6a44b4b3e3095755b9c,
+        type: 2}
+      propertyPath: isFacingLeft
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114101716665980264, guid: 9800e139e5f1d6a44b4b3e3095755b9c,
+        type: 2}
+      propertyPath: dashTime
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 114101716665980264, guid: 9800e139e5f1d6a44b4b3e3095755b9c,
+        type: 2}
+      propertyPath: dashSpeed
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 212854314126170018, guid: 9800e139e5f1d6a44b4b3e3095755b9c,
+        type: 2}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4764182261499010, guid: 9800e139e5f1d6a44b4b3e3095755b9c, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.152
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9800e139e5f1d6a44b4b3e3095755b9c, type: 2}
   m_IsPrefabParent: 0
