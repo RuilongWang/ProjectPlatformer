@@ -38,7 +38,7 @@ public class ProjectileLauncher : MonoBehaviour {
     {
         Projectile projectileToLaunch = (Projectile)SpawnPool.Instance.Spawn(associatedProjectileToLaunch);
         projectileToLaunch.SetUpProjectile(associatedCharacterStats, launchPoint.position);
-        projectileToLaunch.LaunchProjectile(-Mathf.Sign(transform.parent.localScale.x) * this.transform.right);
+        projectileToLaunch.LaunchProjectile(Mathf.Sign(transform.parent.localScale.x) * this.transform.right);
     }
 
 
