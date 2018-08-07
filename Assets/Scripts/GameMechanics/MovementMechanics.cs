@@ -107,7 +107,10 @@ public class MovementMechanics : MonoBehaviour {
     private void Update()
     {
         UpdateGravityScaleWhenInAir();
-        UpdateVelocity();
+        if (!isDashing)
+        {
+            UpdateVelocity();
+        }
     }
 
     private void OnDestroy()
@@ -155,18 +158,19 @@ public class MovementMechanics : MonoBehaviour {
             goalSpeed = maxRunSpeed * Mathf.Sign(horizontalInput);
         }
 
-        if (goalSpeed > 0 && isFacingRight)
-        {
-            isFacingRight = false;
-            FlipSpriteToFaceDirection();
-        }
-        else if (goalSpeed < 0 && !isFacingRight)
+        if (goalSpeed > 0 && !isFacingRight)
         {
             isFacingRight = true;
             FlipSpriteToFaceDirection();
         }
+        else if (goalSpeed < 0 && isFacingRight)
+        {
+            isFacingRight = false;
+            FlipSpriteToFaceDirection();
+        }
     }
     #endregion set movement
+
     /// <summary>
     /// This method will update the velocity to the goal velocity by the 
     /// </summary>
@@ -259,17 +263,23 @@ public class MovementMechanics : MonoBehaviour {
             directionOfDash = new Vector2(Mathf.Sign(transform.localScale.x), 0);//Just in case we are moving at 
         }
         directionOfDash = directionOfDash.normalized;
-
+        rigid.useGravity = false;
+        rigid.velocity = directionOfDash * dashSpeed;
         while (timeAtFullSpeed > 0)
         {
             if (!isDashing)
             {
                 StartCoroutine(DashCoolDown(dashCoolDownTime));
+                isDashing = false;
+                rigid.useGravity = true;
                 yield break;
             }
+            timeAtFullSpeed -= Time.deltaTime;
             yield return null;
         }
-        yield break;
+        rigid.useGravity = true;
+        isDashing = false;
+        
     }
 
     public IEnumerator DashCoolDown(float timeBeforeCanDash)

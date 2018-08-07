@@ -72,6 +72,7 @@ public class GameOverseer : MonoBehaviour {
     #endregion monobehaviour methods
 
     #region save game methods
+    public bool shouldSaveAtNextAvailableTime { get; private set; }
     public bool gameCurrentlySaving { get; private set; }
 
 

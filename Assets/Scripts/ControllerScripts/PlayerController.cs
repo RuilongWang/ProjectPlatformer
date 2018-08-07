@@ -14,7 +14,8 @@ public class PlayerController : MonoBehaviour {
     {
         Jump,
         MeleeAttack,
-        Fire
+        Fire,
+        Dash
     }
 
     private string[] buttonActionNamesList;
@@ -33,9 +34,6 @@ public class PlayerController : MonoBehaviour {
 
     private void Update()
     {
-        
-
-
         movementMechanics.SetHorizontalInput(GetHorizontalAxisRaw());
         if (GetButtonDown(ButtonAction.Jump))
         {
@@ -48,6 +46,10 @@ public class PlayerController : MonoBehaviour {
         else if (!GetButton(ButtonAction.Jump) && !movementMechanics.isFastFalling)
         {
             movementMechanics.isFastFalling = true;
+        }
+        else if (GetButtonDown(ButtonAction.Dash))
+        {
+            movementMechanics.Dash(GetHorizontalAxisRaw(), GetVerticalAxisRaw());
         }
 
     }
