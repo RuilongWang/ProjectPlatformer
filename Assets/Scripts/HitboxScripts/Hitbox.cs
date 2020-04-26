@@ -45,27 +45,27 @@ public abstract class Hitbox : MonoBehaviour
     #region monobehaivour methods
     private void Awake()
     {
-        Overseer.Instance.HitboxManager.AddHitboxToList(this);
+        GameOverseer.Instance.HitboxManager.AddHitboxToList(this);
         InteractionHandler = GetComponentInParent<HitboxInteraction>();
 
     }
 
     private void OnDestroy()
     {
-        if (Overseer.Instance && Overseer.Instance.HitboxManager)
-            Overseer.Instance.HitboxManager.RemoveHitboxFromList(this);
+        if (GameOverseer.Instance && GameOverseer.Instance.HitboxManager)
+            GameOverseer.Instance.HitboxManager.RemoveHitboxFromList(this);
     }
 
     private void OnEnable()
     {
-        Overseer.Instance.HitboxManager.SetHitboxEnabled(this, true);
+        GameOverseer.Instance.HitboxManager.SetHitboxEnabled(this, true);
     }
 
     private void OnDisable()
     {
-        if (Overseer.Instance && Overseer.Instance.HitboxManager)
+        if (GameOverseer.Instance && GameOverseer.Instance.HitboxManager)
         {
-            Overseer.Instance.HitboxManager.SetHitboxEnabled(this, false);
+            GameOverseer.Instance.HitboxManager.SetHitboxEnabled(this, false);
         }
         else
         {
@@ -76,7 +76,7 @@ public abstract class Hitbox : MonoBehaviour
         {
             if (hbox)
             {
-                Overseer.Instance.HitboxManager.DetermineHitboxExitHitboxEvent(this, hbox);
+                GameOverseer.Instance.HitboxManager.DetermineHitboxExitHitboxEvent(this, hbox);
             }
         }
         currentIntersectingHitboxes.Clear();

@@ -113,20 +113,20 @@ public class CustomCapsuleCollider2D : CustomCollider2D
 
             if (rigid.Velocity.y > 0)
             {
-                verticalOffset = Vector2.up * Mathf.Max(colliderBuffer, rigid.Velocity.y * Overseer.DELTA_TIME);
+                verticalOffset = Vector2.up * Mathf.Max(colliderBuffer, rigid.Velocity.y * GameOverseer.DELTA_TIME);
             }
             else if(rigid.Velocity.y < 0)
             {
-                verticalOffset = Vector2.up * Mathf.Min(-colliderBuffer, rigid.Velocity.y * Overseer.DELTA_TIME);
+                verticalOffset = Vector2.up * Mathf.Min(-colliderBuffer, rigid.Velocity.y * GameOverseer.DELTA_TIME);
             }
 
             if (rigid.Velocity.x > 0)
             {
-                horizontalOffset = Vector2.right * Mathf.Max(colliderBuffer, rigid.Velocity.x*Overseer.DELTA_TIME);
+                horizontalOffset = Vector2.right * Mathf.Max(colliderBuffer, rigid.Velocity.x*GameOverseer.DELTA_TIME);
             }
             else if (rigid.Velocity.x < 0)
             {
-                horizontalOffset = Vector2.right * Mathf.Min(-colliderBuffer, rigid.Velocity.x*Overseer.DELTA_TIME);
+                horizontalOffset = Vector2.right * Mathf.Min(-colliderBuffer, rigid.Velocity.x*GameOverseer.DELTA_TIME);
             }
             
 

@@ -91,19 +91,19 @@ public class CustomCircleCollider2D : CustomCollider2D
 
             if (rigid.Velocity.y < 0)
             {
-                verticalBoundsFromVelocity.center = bounds.center + Vector2.up * Mathf.Min(-radiusBuffer,  rigid.Velocity.y * Overseer.DELTA_TIME);
+                verticalBoundsFromVelocity.center = bounds.center + Vector2.up * Mathf.Min(-radiusBuffer,  rigid.Velocity.y * GameOverseer.DELTA_TIME);
             }
             else if (rigid.Velocity.y > 0)
             {
-                verticalBoundsFromVelocity.center = bounds.center + Vector2.up * Mathf.Max(radiusBuffer, rigid.Velocity.y * Overseer.DELTA_TIME);
+                verticalBoundsFromVelocity.center = bounds.center + Vector2.up * Mathf.Max(radiusBuffer, rigid.Velocity.y * GameOverseer.DELTA_TIME);
             }
             if (rigid.Velocity.x < 0)
             {
-                horizontalBoundsFromVelocity.center = bounds.center + Vector2.right * Mathf.Min(-radiusBuffer, rigid.Velocity.x * Overseer.DELTA_TIME);
+                horizontalBoundsFromVelocity.center = bounds.center + Vector2.right * Mathf.Min(-radiusBuffer, rigid.Velocity.x * GameOverseer.DELTA_TIME);
             }
             else if (rigid.Velocity.x > 0)
             {
-                horizontalBoundsFromVelocity.center = bounds.center + Vector2.right * Mathf.Max(radiusBuffer, rigid.Velocity.x * Overseer.DELTA_TIME);
+                horizontalBoundsFromVelocity.center = bounds.center + Vector2.right * Mathf.Max(radiusBuffer, rigid.Velocity.x * GameOverseer.DELTA_TIME);
             }
         }
     }

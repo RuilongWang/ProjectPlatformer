@@ -107,12 +107,12 @@ public class CustomBoxCollider2D : CustomCollider2D
 
             if (Mathf.Abs(rigid.Velocity.y) > 0)
             {
-                verticalOffset = Mathf.Sign(rigid.Velocity.y) * Mathf.Max(VerticalBuffer, Mathf.Abs(rigid.Velocity.y * Overseer.DELTA_TIME));
+                verticalOffset = Mathf.Sign(rigid.Velocity.y) * Mathf.Max(VerticalBuffer, Mathf.Abs(rigid.Velocity.y * GameOverseer.DELTA_TIME));
             }
 
             if (Mathf.Abs(rigid.Velocity.x) > 0)
             {
-                horizontalOffset = Mathf.Sign(rigid.Velocity.x) * Mathf.Max(HorizontalBuffer, Mathf.Abs(rigid.Velocity.x * Overseer.DELTA_TIME));
+                horizontalOffset = Mathf.Sign(rigid.Velocity.x) * Mathf.Max(HorizontalBuffer, Mathf.Abs(rigid.Velocity.x * GameOverseer.DELTA_TIME));
             }
             verticalCheckBounds.SetOffset(Vector2.up * verticalOffset);
             horizontalCheckBounds.SetOffset(Vector2.right * horizontalOffset);

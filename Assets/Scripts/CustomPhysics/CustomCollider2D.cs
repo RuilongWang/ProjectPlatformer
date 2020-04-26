@@ -56,15 +56,15 @@ public abstract class CustomCollider2D : MonoBehaviour {
         UpdateBoundsOfCollider();
         rigid = GetComponent<CustomPhysics2D>();
         
-        Overseer.Instance.PhysicsManager.AddColliderToManager(this);
+        GameOverseer.Instance.PhysicsManager.AddColliderToManager(this);
     }
 
 
     protected virtual void OnDestroy()
     {
-        if (Overseer.Instance && Overseer.Instance.PhysicsManager)
+        if (GameOverseer.Instance && GameOverseer.Instance.PhysicsManager)
         {
-            Overseer.Instance.PhysicsManager.RemoveColliderFromManager(this);
+            GameOverseer.Instance.PhysicsManager.RemoveColliderFromManager(this);
         }
     }
     /// <summary>
@@ -136,7 +136,7 @@ public abstract class CustomCollider2D : MonoBehaviour {
         HashSet<CustomCollider2D> allLines = new HashSet<CustomCollider2D>();
         for (int i = 0; i < rayCount; i++)
         {
-            Overseer.Instance.PhysicsManager.CheckLineIntersectWithCollider(v1 + offset * i, direction, distance, out lineColliders);
+            GameOverseer.Instance.PhysicsManager.CheckLineIntersectWithCollider(v1 + offset * i, direction, distance, out lineColliders);
             foreach (CustomCollider2D c in lineColliders)
             {
                 if (c != this)

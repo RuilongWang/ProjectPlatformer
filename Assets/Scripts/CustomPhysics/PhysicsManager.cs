@@ -89,7 +89,7 @@ public class PhysicsManager : MonoBehaviour
         {
             collider.rigid.Velocity = collider.originalVelocity;
         }
-        Overseer.Instance.HitboxManager.UpdateHitboxManager();
+        GameOverseer.Instance.HitboxManager.UpdateHitboxManager();
 
     }
 
@@ -117,11 +117,11 @@ public class PhysicsManager : MonoBehaviour
                     collidedHorizontallyWithAnyStatic = true;
                     if (nonStaticCollider.rigid.Velocity.x > 0 && nonStaticCollider.rigid.isTouchingSide.x == 0)
                     {
-                        nonStaticCollider.rigid.isTouchingSide.x = (int)Overseer.FRAME_COUNT;
+                        nonStaticCollider.rigid.isTouchingSide.x = (int)GameOverseer.FRAME_COUNT;
                     }
                     else if (nonStaticCollider.rigid.Velocity.x < 0 && nonStaticCollider.rigid.isTouchingSide.x == 0)
                     {
-                        nonStaticCollider.rigid.isTouchingSide.x = -(int)Overseer.FRAME_COUNT;
+                        nonStaticCollider.rigid.isTouchingSide.x = -(int)GameOverseer.FRAME_COUNT;
                     }
                     nonStaticCollider.rigid.Velocity.x = 0;
                     nonStaticCollider.originalVelocity.x = 0;
@@ -139,11 +139,11 @@ public class PhysicsManager : MonoBehaviour
                     }
                     if (nonStaticCollider.rigid.Velocity.y > 0 && nonStaticCollider.rigid.isTouchingSide.y == 0)
                     {
-                        nonStaticCollider.rigid.isTouchingSide.y = (int)Overseer.FRAME_COUNT;
+                        nonStaticCollider.rigid.isTouchingSide.y = (int)GameOverseer.FRAME_COUNT;
                     }
                     else if (nonStaticCollider.rigid.Velocity.y < 0 && nonStaticCollider.rigid.isTouchingSide.y == 0)
                     {
-                        nonStaticCollider.rigid.isTouchingSide.y = -(int)Overseer.FRAME_COUNT;
+                        nonStaticCollider.rigid.isTouchingSide.y = -(int)GameOverseer.FRAME_COUNT;
                     }
                     nonStaticCollider.rigid.Velocity.y = 0;
                     nonStaticCollider.originalVelocity.y = 0;

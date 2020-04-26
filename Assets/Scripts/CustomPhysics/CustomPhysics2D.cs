@@ -63,14 +63,14 @@ public class CustomPhysics2D : MonoBehaviour {
     private void Awake()
     {
         allCustomColliders = new List<CustomCollider2D>();
-        Overseer.Instance.PhysicsManager.AddCustomPhysics(this);
+        GameOverseer.Instance.PhysicsManager.AddCustomPhysics(this);
     }
 
     private void OnDestroy()
     {
-        if (Overseer.Instance && Overseer.Instance.PhysicsManager)
+        if (GameOverseer.Instance && GameOverseer.Instance.PhysicsManager)
         {
-            Overseer.Instance.PhysicsManager.RemoveCustomPhysics(this);
+            GameOverseer.Instance.PhysicsManager.RemoveCustomPhysics(this);
         }
     }
 
@@ -129,7 +129,7 @@ public class CustomPhysics2D : MonoBehaviour {
                 Velocity = rightComponent + gravityDown * terminalVelocity;
             }
         }
-        float gravityValueToApply = gravityScale * GRAVITY_CONSTANT * Overseer.DELTA_TIME;
+        float gravityValueToApply = gravityScale * GRAVITY_CONSTANT * GameOverseer.DELTA_TIME;
         Velocity += gravityValueToApply * gravityVector;
     }
 
@@ -141,7 +141,7 @@ public class CustomPhysics2D : MonoBehaviour {
         
         Vector3 velocityVector3 = new Vector3(Velocity.x, Velocity.y, 0);
         
-        this.transform.position += velocityVector3 * Overseer.DELTA_TIME;
+        this.transform.position += velocityVector3 * GameOverseer.DELTA_TIME;
 
     }
 

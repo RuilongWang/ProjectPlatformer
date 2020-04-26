@@ -6,7 +6,7 @@ using UnityEngine;
 /// Our overseer acts as the primary In-Game Manager. This method should be included in any scene where
 /// our game is playing. Menus will not need this overseer object
 /// </summary>
-public class Overseer : MonoBehaviour
+public class GameOverseer : MonoBehaviour
 {
     #region static variables
     public static float DELTA_TIME
@@ -19,15 +19,15 @@ public class Overseer : MonoBehaviour
 
     public static int FRAME_COUNT { get; private set; }
 
-    private static Overseer instance;
+    private static GameOverseer instance;
 
-    public static Overseer Instance
+    public static GameOverseer Instance
     {
         get
         {
             if (instance == null)
             {
-                instance = GameObject.FindObjectOfType<Overseer>();
+                instance = GameObject.FindObjectOfType<GameOverseer>();
             }
             return instance;
         }
@@ -43,12 +43,12 @@ public class Overseer : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        Overseer.FRAME_COUNT = 0;
+        GameOverseer.FRAME_COUNT = 0;
     }
 
     private void Update()
     {
-        ++Overseer.FRAME_COUNT;
+        ++GameOverseer.FRAME_COUNT;
     }
 
     #endregion monobehaviour methods
