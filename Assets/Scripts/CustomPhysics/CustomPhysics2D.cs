@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Typically will only interact with the environment. Interactions with enemies or projectiles or other hitboxes should take place with a
@@ -89,17 +90,8 @@ public class CustomPhysics2D : MonoBehaviour {
     #endregion monobehaviour methods
 
     #region event methods
-    /// <summary>
-    /// This event will be called anytime our object lands on a ground tile after being considered airborne
-    /// </summary>
-    public delegate void PhysicsObjectGroundedEvent();
-    public event PhysicsObjectGroundedEvent OnGroundedEvent;
-
-    /// <summary>
-    /// This event will be called anytime our object becomes airborne after being considered grounded
-    /// </summary>
-    public delegate void PhysicsObjectAirborneEvent();
-    public event PhysicsObjectAirborneEvent OnAirborneEvent;
+    public UnityAction OnGroundedEvent;
+    public UnityAction OnAirborneEvent;
     #endregion event methods
 
     /// <summary>
@@ -160,7 +152,7 @@ public class CustomPhysics2D : MonoBehaviour {
     public void OnPhysicsObjectGrounded()
     {
         if (OnGroundedEvent == null) return;
-        OnGroundedEvent();
+        OnGroundedEvent.Invoke();
     }
 
     /// <summary>
@@ -169,7 +161,7 @@ public class CustomPhysics2D : MonoBehaviour {
     public void OnPhysicsObjectAirborne()
     {
         if (OnAirborneEvent == null) return;
-        OnAirborneEvent();
+        OnAirborneEvent.Invoke();
     }
  
 }
