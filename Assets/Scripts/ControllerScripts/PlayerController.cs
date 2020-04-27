@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     {
         JUMP_BUTTON,
         ATTACK_BUTTON,
-        PAUSE_GAME,
+        PAUSE_BUTTON,
     }
 
     #region const variables
@@ -65,14 +65,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
     private void OnValidate()
     {
         for (int i = 0; i < DefaultInputs.Length; ++i)
         {
             DefaultInputs[i].InputName = (ButtonInputID)i;
+            DefaultInputs[i].ButtonName = DefaultInputs[i].InputName.ToString();
         }
     }
-    #endregion monobehaviour methods
+#endif
+#endregion monobehaviour methods
 
 
     /// <summary>
@@ -189,10 +192,15 @@ public class PlayerController : MonoBehaviour
         /// The two types of valid key types that you can assign
         /// </summary>
         public enum BindingType { Keyboard, GamePad}
+        [Tooltip("This value is entirely for organization purposes in the editor and should not be used")]
+        public string ButtonName;
         public ButtonInputID InputName;
-
         public KeyCode[] ValidKeyCodeBindings = new KeyCode[2];
 
+        /// <summary>
+        /// Are any of the valid keys for this input pressed (true for one frame)
+        /// </summary>
+        /// <returns></returns>
         public bool IsButtonPressed()
         {
             foreach (KeyCode KeycodeToCheck in ValidKeyCodeBindings)
@@ -205,6 +213,10 @@ public class PlayerController : MonoBehaviour
             return false;
         }
 
+        /// <summary>
+        /// Are any of the valid keys for this input released (true for one frame)
+        /// </summary>
+        /// <returns></returns>
         public bool IsButtonReleased()
         {
             foreach (KeyCode KeycodeToCheck in ValidKeyCodeBindings)
