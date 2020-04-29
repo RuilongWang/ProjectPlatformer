@@ -27,10 +27,10 @@ public class CustomCapsuleCollider2D : CustomCollider2D
 #if UNITY_EDITOR
         if (!drawHorizontal)
         {
-            DebugSettings.DrawLine(bounds.rectBounds.topLeft, bounds.rectBounds.bottomLeft, colorToDraw);
-            DebugSettings.DrawLine(bounds.rectBounds.topRight, bounds.rectBounds.bottomRight, colorToDraw);
+            DebugSettings.DrawLine(bounds.rectBounds.TopLeft, bounds.rectBounds.BottomLeft, colorToDraw);
+            DebugSettings.DrawLine(bounds.rectBounds.TopRight, bounds.rectBounds.BottomRight, colorToDraw);
 
-            Vector2 offsetToCenter = (bounds.rectBounds.topRight - bounds.rectBounds.topLeft) / 2f;
+            Vector2 offsetToCenter = (bounds.rectBounds.TopRight - bounds.rectBounds.TopLeft) / 2f;
             UnityEditor.Handles.color = colorToDraw;
             UnityEditor.Handles.DrawWireDisc(bounds.topCircleBounds.center, Vector3.forward, radius);
             UnityEditor.Handles.DrawWireDisc(bounds.bottomCircleBounds.center, Vector3.forward, radius);
@@ -72,19 +72,19 @@ public class CustomCapsuleCollider2D : CustomCollider2D
         float ySize = drawHorizontal ? radius * 2 : size;
 
 
-        b.topLeft = origin + Vector2.up * ySize / 2 - Vector2.right * xSize / 2;
-        b.topRight = origin + Vector2.up * ySize / 2 + Vector2.right * xSize / 2;
-        b.bottomLeft = origin - Vector2.up * ySize / 2 - Vector2.right * xSize / 2;
-        b.bottomRight = origin - Vector2.up * ySize / 2 + Vector2.right * xSize / 2;
+        b.TopLeft = origin + Vector2.up * ySize / 2 - Vector2.right * xSize / 2;
+        b.TopRight = origin + Vector2.up * ySize / 2 + Vector2.right * xSize / 2;
+        b.BottomLeft = origin - Vector2.up * ySize / 2 - Vector2.right * xSize / 2;
+        b.BottomRight = origin - Vector2.up * ySize / 2 + Vector2.right * xSize / 2;
         bounds.rectBounds = b;
 
         BoundsCircle topCircle = new BoundsCircle();
-        topCircle.center = b.topLeft + (b.topRight - b.topLeft) / 2f;
+        topCircle.center = b.TopLeft + (b.TopRight - b.TopLeft) / 2f;
         topCircle.radius = radius;
         bounds.topCircleBounds = topCircle;
 
         BoundsCircle bottomCircle = new BoundsCircle();
-        bottomCircle.center = b.bottomLeft + (b.bottomRight - b.bottomLeft) / 2f;
+        bottomCircle.center = b.BottomLeft + (b.BottomRight - b.BottomLeft) / 2f;
         bottomCircle.radius = radius;
         bounds.bottomCircleBounds = bottomCircle;
 
@@ -94,10 +94,10 @@ public class CustomCapsuleCollider2D : CustomCollider2D
 
             verticalBounds.topCircleBounds.radius = bounds.topCircleBounds.radius - colliderBuffer;
             verticalBounds.bottomCircleBounds.radius = bounds.bottomCircleBounds.radius - colliderBuffer;
-            verticalBounds.rectBounds.topLeft.x = bounds.rectBounds.topLeft.x + colliderBuffer / 2;
-            verticalBounds.rectBounds.topRight.x = bounds.rectBounds.topRight.x - colliderBuffer / 2;
-            verticalBounds.rectBounds.bottomLeft.x = verticalBounds.rectBounds.topLeft.x;
-            verticalBounds.rectBounds.bottomRight.x = verticalBounds.rectBounds.topRight.x;
+            verticalBounds.rectBounds.TopLeft.x = bounds.rectBounds.TopLeft.x + colliderBuffer / 2;
+            verticalBounds.rectBounds.TopRight.x = bounds.rectBounds.TopRight.x - colliderBuffer / 2;
+            verticalBounds.rectBounds.BottomLeft.x = verticalBounds.rectBounds.TopLeft.x;
+            verticalBounds.rectBounds.BottomRight.x = verticalBounds.rectBounds.TopRight.x;
             
 
 
@@ -147,11 +147,11 @@ public class CustomCapsuleCollider2D : CustomCollider2D
 
     public override Vector2 GetRightBoundAtYValue(float y)
     {
-        if (y > bounds.rectBounds.topLeft.y)
+        if (y > bounds.rectBounds.TopLeft.y)
         {
             return CustomCollider2D.GetRighBoundAtYValueCircle(bounds.topCircleBounds, y);
         }
-        else if (y < bounds.rectBounds.bottomLeft.y)
+        else if (y < bounds.rectBounds.BottomLeft.y)
         {
             return CustomCollider2D.GetRighBoundAtYValueCircle(bounds.bottomCircleBounds, y);
         }
@@ -163,11 +163,11 @@ public class CustomCapsuleCollider2D : CustomCollider2D
 
     public override Vector2 GetLeftBoundAtYValue(float y)
     {
-        if (y > bounds.rectBounds.topLeft.y)
+        if (y > bounds.rectBounds.TopLeft.y)
         {
             return CustomCollider2D.GetLeftBoundAtYValueCircle(bounds.topCircleBounds, y);
         }
-        else if (y < bounds.rectBounds.bottomLeft.y)
+        else if (y < bounds.rectBounds.BottomLeft.y)
         {
             return CustomCollider2D.GetLeftBoundAtYValueCircle(bounds.bottomCircleBounds, y);
         }
@@ -186,7 +186,7 @@ public class CustomCapsuleCollider2D : CustomCollider2D
     {
         if (colliderToCheck is CustomBoxCollider2D)
         {
-            return CapsuleIntersectRect(boundsToCheck, ((CustomBoxCollider2D)colliderToCheck).bounds);
+            return CapsuleIntersectRect(boundsToCheck, ((CustomBoxCollider2D)colliderToCheck).Bounds);
         }
         else if (colliderToCheck is CustomCircleCollider2D)
         {
@@ -213,7 +213,7 @@ public class CustomCapsuleCollider2D : CustomCollider2D
     {
         if (colliderToCheck is CustomBoxCollider2D)
         {
-            return CapsuleIntersectRect(capsuleBounds, ((CustomBoxCollider2D)colliderToCheck).bounds);
+            return CapsuleIntersectRect(capsuleBounds, ((CustomBoxCollider2D)colliderToCheck).Bounds);
         }
         else if (colliderToCheck is CustomCircleCollider2D)
         {

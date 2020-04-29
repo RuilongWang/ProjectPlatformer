@@ -25,6 +25,8 @@ public class CharacterMovement : MonoBehaviour
         IN_AIR,
     }
     #endregion enum values
+
+    #region member variables
     [Header("Grounded Movement")]
     [Tooltip("The acceleration of our character toward their goal speed")]
     public float GroundAcceleration;
@@ -42,12 +44,18 @@ public class CharacterMovement : MonoBehaviour
 
     [Header("Jump Values")]
     [Tooltip("The height that our character will reach at the highest point of their jump")]
-    public float JumpHeight;
+    public float JumpHeight = 3.5f;
     [Tooltip("The time it will take for the character to reach the highest part of their jump")]
-    public float TimeToReachJumpApex;
+    public float TimeToReachJumpApex = 1;
     [Tooltip("The number of jumps that can be performed after the player is deemed in the air")]
     public int DoubleJumpCount = 1;
+    public float FastFallScaled = 1.75f;
+    /// <summary>
+    /// This is the launch spaeed that we will use when calling the Jump method
+    /// </summary>
     private float JumpVelocity = 5;
+
+    private float JumpingAcceleration = 1;
 
     /// <summary>
     /// Input variable that store the intended directions based on what our controllers pass in
@@ -59,7 +67,8 @@ public class CharacterMovement : MonoBehaviour
     /// <summary>
     /// The current movement state of our character
     /// </summary>
-    public MovementState CurrentMovementState;
+    public MovementState CurrentMovementState { get; private set; }
+    #endregion member variables
 
     #region component references
     /// <summary>
@@ -73,7 +82,11 @@ public class CharacterMovement : MonoBehaviour
 
     private void Awake()
     {
-        
+        Rigid = GetComponent<CustomPhysics2D>();
+        Rigid.OnGroundedEvent += OnCharacterLanded;
+        Rigid.OnAirborneEvent += OnCharacterAirborne;
+        DoubleJumpsRemaining = DoubleJumpCount;
+        AdjustGravityBasedOnJumpValues();
     }
 
     private void Update()
@@ -85,7 +98,19 @@ public class CharacterMovement : MonoBehaviour
     {
         
     }
-    #endregion monobehaviour methods
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (!Rigid)
+        {
+            Rigid = GetComponent<CustomPhysics2D>();
+        }
+        TimeToReachJumpApex = Mathf.Max(0.05f, TimeToReachJumpApex);
+        AdjustGravityBasedOnJumpValues();
+    }
+#endif
+#endregion monobehaviour methods
 
     #region private helper methods
     /// <summary>
@@ -181,6 +206,7 @@ public class CharacterMovement : MonoBehaviour
             float GoalSpeed = Mathf.Sign(HorizontalInput) * MaxRunSpeed;
 
             CurrentVelocity.x = Mathf.MoveTowards(CurrentVelocity.x, GoalSpeed, GameOverseer.DELTA_TIME * AirAcceleration * Mathf.Abs(HorizontalInput));
+            Rigid.Velocity = CurrentVelocity;
         }
     }
     #endregion in air methods
@@ -200,6 +226,11 @@ public class CharacterMovement : MonoBehaviour
             --DoubleJumpsRemaining;
             Rigid.Velocity.y = JumpVelocity;
         }
+        else
+        {
+            return;
+        }
+        SetGravityScaleToFastFallScale(false);
     }
 
     /// <summary>
@@ -207,7 +238,19 @@ public class CharacterMovement : MonoBehaviour
     /// </summary>
     public void JumpReleased()
     {
+        
+    }
 
+    private void SetGravityScaleToFastFallScale(bool ShouldSetGravityScaleToFastFallScale)
+    {
+        if (ShouldSetGravityScaleToFastFallScale)
+        {
+            Rigid.gravityScale = FastFallScaled * JumpingAcceleration;
+        }
+        else
+        {
+            Rigid.gravityScale = JumpingAcceleration;
+        }
     }
 
     /// <summary>
@@ -217,6 +260,31 @@ public class CharacterMovement : MonoBehaviour
     private void OnCharacterLanded()
     {
         DoubleJumpsRemaining = DoubleJumpCount;
+        CurrentMovementState = MovementState.STANDING_GROUNDED;
+        SetGravityScaleToFastFallScale(false);
+    }
+
+    private void OnCharacterAirborne()
+    {
+        CurrentMovementState = MovementState.IN_AIR;
+    }
+
+    private void AdjustGravityBasedOnJumpValues()
+    {
+        float gravity = (2 * JumpHeight) / Mathf.Pow(TimeToReachJumpApex, 2);
+        JumpVelocity = Mathf.Abs(gravity * TimeToReachJumpApex);
+        JumpingAcceleration = gravity / CustomPhysics2D.GRAVITY_CONSTANT;
+        Rigid.gravityScale = JumpingAcceleration;        
+    }
+
+    private IEnumerator AccelerateToZeroGravityVelocity(int FramesToReachZero)
+    {
+        float gravitySpeedAtStart = Rigid.Velocity.y;
+        
+        while (Rigid.Velocity.y < 0)
+        {
+            yield return null;
+        }
     }
     #endregion jumping methods
 }

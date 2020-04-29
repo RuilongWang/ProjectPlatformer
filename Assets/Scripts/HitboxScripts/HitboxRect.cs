@@ -76,10 +76,10 @@ public class HitboxRect : Hitbox
         else
             charLocalScale = Vector2.one;
         
-        bounds.topLeft = origin + (charLocalScale.y * Vector2.up * boxColliderSize.y / 2) - (charLocalScale.x * Vector2.right * boxColliderSize.x / 2);
-        bounds.topRight = origin + (charLocalScale.y * Vector2.up * boxColliderSize.y / 2) + (charLocalScale.x * Vector2.right * boxColliderSize.x / 2);
-        bounds.bottomLeft = origin - (charLocalScale.y * Vector2.up * boxColliderSize.y / 2) - (charLocalScale.x * Vector2.right * boxColliderSize.x / 2);
-        bounds.bottomRight = origin - (charLocalScale.y * Vector2.up * boxColliderSize.y / 2) + (charLocalScale.x * Vector2.right * boxColliderSize.x / 2);
+        bounds.TopLeft = origin + (charLocalScale.y * Vector2.up * boxColliderSize.y / 2) - (charLocalScale.x * Vector2.right * boxColliderSize.x / 2);
+        bounds.TopRight = origin + (charLocalScale.y * Vector2.up * boxColliderSize.y / 2) + (charLocalScale.x * Vector2.right * boxColliderSize.x / 2);
+        bounds.BottomLeft = origin - (charLocalScale.y * Vector2.up * boxColliderSize.y / 2) - (charLocalScale.x * Vector2.right * boxColliderSize.x / 2);
+        bounds.BottomRight = origin - (charLocalScale.y * Vector2.up * boxColliderSize.y / 2) + (charLocalScale.x * Vector2.right * boxColliderSize.x / 2);
     }
 
     public override bool CheckHitboxIntersect(Hitbox hboxToCheck)

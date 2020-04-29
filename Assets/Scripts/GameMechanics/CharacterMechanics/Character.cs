@@ -18,14 +18,25 @@ public class Character : MonoBehaviour
     /// The current health of our character. This can only be set through method in this class
     /// </summary>
     public float CharacterCurrentHealth { get; private set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public CharacterMovement CharacterMovement { get; private set; }
+
+    /// <summary>
+    /// The associated animator component for our character class
+    /// </summary>
+    public Animator CharacterAnimator { get; private set; }
 
     #endregion main varialbes
 
 
     #region monobehaivour methods
-    private void Awake()
+    protected virtual void Awake()
     {
         CharacterCurrentHealth = CharacterCurrentHealth;
+        CharacterMovement = GetComponent<CharacterMovement>();
+        CharacterAnimator = GetComponent<Animator>();
     }
     #endregion monobehaviour methods
 

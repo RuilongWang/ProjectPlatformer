@@ -156,35 +156,35 @@ public abstract class CustomCollider2D : MonoBehaviour {
     /// </summary>
     public struct BoundsRect
     {
-        public Vector2 topLeft;
-        public Vector2 topRight;
-        public Vector2 bottomLeft;
-        public Vector2 bottomRight;
+        public Vector2 TopLeft;
+        public Vector2 TopRight;
+        public Vector2 BottomLeft;
+        public Vector2 BottomRight;
         public Vector2 center;
 
         public Vector3[] GetVertices()
         {
             return new Vector3[]
             {
-                topLeft,
-                topRight,
-                bottomRight,
-                bottomLeft,
+                TopLeft,
+                TopRight,
+                BottomRight,
+                BottomLeft,
             };
         }
 
         public void SetOffset(Vector2 offset)
         {
-            topLeft += offset;
-            topRight += offset;
-            bottomLeft += offset;
-            bottomRight += offset;
+            TopLeft += offset;
+            TopRight += offset;
+            BottomLeft += offset;
+            BottomRight += offset;
             center += offset;
         }
 
         public override string ToString()
         {
-            return "TL: " + topLeft + "\nTR: " + topRight + "\nBL: " + bottomLeft + "\nBR: " + bottomRight;
+            return "TL: " + TopLeft + "\nTR: " + TopRight + "\nBL: " + BottomLeft + "\nBR: " + BottomRight;
         }
     }
 
@@ -221,10 +221,10 @@ public abstract class CustomCollider2D : MonoBehaviour {
     /// <returns></returns>
     public static bool RectIntersectRect(BoundsRect r1, BoundsRect r2)
     {
-        Vector2 tl1 = r1.topLeft;
-        Vector2 br1 = r1.bottomRight;
-        Vector2 tl2 = r2.topLeft;
-        Vector2 br2 = r2.bottomRight;
+        Vector2 tl1 = r1.TopLeft;
+        Vector2 br1 = r1.BottomRight;
+        Vector2 tl2 = r2.TopLeft;
+        Vector2 br2 = r2.BottomRight;
 
         if (tl1.x > br2.x || tl2.x > br1.x)
         {
@@ -250,11 +250,11 @@ public abstract class CustomCollider2D : MonoBehaviour {
 
         Vector2 point = c.center;
 
-        Vector2 A = r.topLeft;
-        Vector2 B = r.topRight;
-        Vector2 D = r.bottomLeft;
-        float height = r.topLeft.y - r.bottomLeft.y;
-        float width = r.topRight.x - r.topRight.x;
+        Vector2 A = r.TopLeft;
+        Vector2 B = r.TopRight;
+        Vector2 D = r.BottomLeft;
+        float height = r.TopLeft.y - r.BottomLeft.y;
+        float width = r.TopRight.x - r.TopRight.x;
         float APdotAB = Vector2.Dot(point - A, B - A);
         float ABdotAB = Vector2.Dot(B - A, B - A);
         float APdotAD = Vector2.Dot(point - A, D - A);
@@ -265,7 +265,7 @@ public abstract class CustomCollider2D : MonoBehaviour {
 
         }
         
-        return LineIntersectCircle(c, r.bottomLeft, r.topRight);
+        return LineIntersectCircle(c, r.BottomLeft, r.TopRight);
         //float rectX = r.bottomLeft.x;
         //float recty = r.bottomLeft.y;
 
@@ -419,8 +419,8 @@ public abstract class CustomCollider2D : MonoBehaviour {
         Vector2 v0 = direction * length;
         Vector2 endpoint = origin + v0;
 
-        Vector2 tr = bounds.topRight;
-        Vector2 bl = bounds.bottomLeft;
+        Vector2 tr = bounds.TopRight;
+        Vector2 bl = bounds.BottomLeft;
 
         if (bl.x < origin.x && origin.x < tr.x && bl.y < origin.y && origin.y < tr.y)
         {
@@ -428,19 +428,19 @@ public abstract class CustomCollider2D : MonoBehaviour {
         }
 
 
-        if (LineCrossLine(origin, v0, bounds.bottomLeft, (bounds.bottomRight - bounds.bottomLeft)))
+        if (LineCrossLine(origin, v0, bounds.BottomLeft, (bounds.BottomRight - bounds.BottomLeft)))
         {
             return true;
         }
-        if (LineCrossLine(origin, v0, bounds.bottomRight, (bounds.topRight - bounds.bottomRight)))
+        if (LineCrossLine(origin, v0, bounds.BottomRight, (bounds.TopRight - bounds.BottomRight)))
         {
             return true;
         }
-        if (LineCrossLine(origin, v0, bounds.topRight, (bounds.topLeft - bounds.topRight)))
+        if (LineCrossLine(origin, v0, bounds.TopRight, (bounds.TopLeft - bounds.TopRight)))
         {
             return true;
         }
-        if (LineCrossLine(origin, v0, bounds.topLeft, (bounds.bottomLeft - bounds.topLeft)))
+        if (LineCrossLine(origin, v0, bounds.TopLeft, (bounds.BottomLeft - bounds.TopLeft)))
         {
             return true;
         }
@@ -518,12 +518,12 @@ public abstract class CustomCollider2D : MonoBehaviour {
         float xPoint;
         if (collidedVertically)
         {
-            xPoint = nonstaticCollider.bounds.topLeft.x;
+            xPoint = nonstaticCollider.Bounds.TopLeft.x;
             return IntersectionPointColliderVerticalAtXPoint(nonstaticCollider, staticCollider, xPoint);
         }
         else
         {
-            yPoint = nonstaticCollider.bounds.bottomRight.y;
+            yPoint = nonstaticCollider.Bounds.BottomRight.y;
             return IntersectionPointColliderHorizontalAtYPoint(nonstaticCollider, staticCollider, yPoint);
         }
     }
@@ -536,7 +536,7 @@ public abstract class CustomCollider2D : MonoBehaviour {
     /// <returns></returns>
     public static Vector2 IntersectionPointNonstaticRectOnStaticCircle(CustomBoxCollider2D nonstaticRectCollider, CustomCircleCollider2D staticCircleCollider, bool collidedVertically = true)
     {
-        BoundsRect r1 = nonstaticRectCollider.bounds;
+        BoundsRect r1 = nonstaticRectCollider.Bounds;
         BoundsCircle c1 = staticCircleCollider.bounds;
 
         Vector2 centerPointOfCircle = c1.center;
@@ -544,13 +544,13 @@ public abstract class CustomCollider2D : MonoBehaviour {
 
         if (collidedVertically)
         {
-            if (centerPointOfCircle.x < r1.bottomLeft.x)
+            if (centerPointOfCircle.x < r1.BottomLeft.x)
             {
-                collisionPoint.x = r1.bottomLeft.x;
+                collisionPoint.x = r1.BottomLeft.x;
             }
-            else if (centerPointOfCircle.x > r1.bottomRight.x)
+            else if (centerPointOfCircle.x > r1.BottomRight.x)
             {
-                collisionPoint.x = r1.bottomRight.x;
+                collisionPoint.x = r1.BottomRight.x;
             }
             else
             {
@@ -561,13 +561,13 @@ public abstract class CustomCollider2D : MonoBehaviour {
         }
         else
         {
-            if (centerPointOfCircle.y < r1.bottomLeft.y)
+            if (centerPointOfCircle.y < r1.BottomLeft.y)
             {
-                collisionPoint.y = r1.bottomLeft.y;
+                collisionPoint.y = r1.BottomLeft.y;
             }
-            else if (centerPointOfCircle.y > r1.topLeft.y)
+            else if (centerPointOfCircle.y > r1.TopLeft.y)
             {
-                collisionPoint.y = r1.topLeft.y;
+                collisionPoint.y = r1.TopLeft.y;
             }
             else
             {
@@ -579,7 +579,7 @@ public abstract class CustomCollider2D : MonoBehaviour {
 
     public Vector2 IntersectionPointStaticRectOnNonstaticCircle(CustomBoxCollider2D staticRect, CustomCircleCollider2D nonstaticCircle, bool collidedVertically)
     {
-        BoundsRect r1 = staticRect.bounds;
+        BoundsRect r1 = staticRect.Bounds;
         BoundsCircle c1 = nonstaticCircle.bounds;
 
         Vector2 centerPointOfCircle = c1.center;
@@ -587,13 +587,13 @@ public abstract class CustomCollider2D : MonoBehaviour {
 
         if (collidedVertically)
         {
-            if (centerPointOfCircle.x < r1.bottomLeft.x)
+            if (centerPointOfCircle.x < r1.BottomLeft.x)
             {
-                collisionPoint.x = r1.bottomLeft.x;
+                collisionPoint.x = r1.BottomLeft.x;
             }
-            else if (centerPointOfCircle.x > r1.bottomRight.x)
+            else if (centerPointOfCircle.x > r1.BottomRight.x)
             {
-                collisionPoint.x = r1.bottomRight.x;
+                collisionPoint.x = r1.BottomRight.x;
             }
             else
             {
@@ -603,13 +603,13 @@ public abstract class CustomCollider2D : MonoBehaviour {
         }
         else
         {
-            if (centerPointOfCircle.y < r1.bottomLeft.y)
+            if (centerPointOfCircle.y < r1.BottomLeft.y)
             {
-                collisionPoint.y = r1.bottomLeft.y;
+                collisionPoint.y = r1.BottomLeft.y;
             }
-            else if (centerPointOfCircle.y > r1.topLeft.y)
+            else if (centerPointOfCircle.y > r1.TopLeft.y)
             {
-                collisionPoint.y = r1.topLeft.y;
+                collisionPoint.y = r1.TopLeft.y;
             }
             else
             {
@@ -669,11 +669,11 @@ public abstract class CustomCollider2D : MonoBehaviour {
         }
         else
         {
-            if (cCenter.y > nonstaticCapsule.bounds.rectBounds.topLeft.y)
+            if (cCenter.y > nonstaticCapsule.bounds.rectBounds.TopLeft.y)
             {
                 collisionPoint = CollisionPointCircleOnCircleBounds(nonstaticCapsule.bounds.topCircleBounds, staticCircle.bounds);
             }
-            else if (cCenter.y < nonstaticCapsule.bounds.rectBounds.bottomLeft.y)
+            else if (cCenter.y < nonstaticCapsule.bounds.rectBounds.BottomLeft.y)
             {
                 collisionPoint = CollisionPointCircleOnCircleBounds(nonstaticCapsule.bounds.bottomCircleBounds, staticCircle.bounds);
             }
@@ -712,11 +712,11 @@ public abstract class CustomCollider2D : MonoBehaviour {
         }
         else
         {
-            if (cCenter.y > staticCapsule.bounds.rectBounds.topLeft.y)
+            if (cCenter.y > staticCapsule.bounds.rectBounds.TopLeft.y)
             {
                 collisionPoint = CollisionPointCircleOnCircleBounds(staticCapsule.bounds.topCircleBounds, nonstaticCircle.bounds);
             }
-            else if (cCenter.y < staticCapsule.bounds.rectBounds.bottomLeft.y)
+            else if (cCenter.y < staticCapsule.bounds.rectBounds.BottomLeft.y)
             {
                 collisionPoint = CollisionPointCircleOnCircleBounds(staticCapsule.bounds.bottomCircleBounds, nonstaticCircle.bounds);
             }
@@ -737,26 +737,26 @@ public abstract class CustomCollider2D : MonoBehaviour {
         if (collidedVertically)
         {
             float xPoint = capCenter.x;
-            if (staticRect.bounds.topRight.x < capCenter.x)
+            if (staticRect.Bounds.TopRight.x < capCenter.x)
             {
-                xPoint = staticRect.bounds.topRight.x;
+                xPoint = staticRect.Bounds.TopRight.x;
             }
-            else if (staticRect.bounds.topLeft.x > capCenter.x)
+            else if (staticRect.Bounds.TopLeft.x > capCenter.x)
             {
-                xPoint = staticRect.bounds.topLeft.x;
+                xPoint = staticRect.Bounds.TopLeft.x;
             }
             return IntersectionPointColliderVerticalAtXPoint(nonstaticCapsule, staticRect, xPoint);
         }
         else
         {
             float yPoint = capCenter.y;
-            if (staticRect.bounds.topLeft.y < nonstaticCapsule.bounds.rectBounds.bottomLeft.y)
+            if (staticRect.Bounds.TopLeft.y < nonstaticCapsule.bounds.rectBounds.BottomLeft.y)
             {
-                yPoint = staticRect.bounds.topLeft.y;
+                yPoint = staticRect.Bounds.TopLeft.y;
             }
-            else if (staticRect.bounds.bottomLeft.y > nonstaticCapsule.bounds.rectBounds.topLeft.y)
+            else if (staticRect.Bounds.BottomLeft.y > nonstaticCapsule.bounds.rectBounds.TopLeft.y)
             {
-                yPoint = staticRect.bounds.bottomLeft.y;
+                yPoint = staticRect.Bounds.BottomLeft.y;
             }
 
             return IntersectionPointColliderHorizontalAtYPoint(nonstaticCapsule, staticRect, yPoint);
@@ -770,13 +770,13 @@ public abstract class CustomCollider2D : MonoBehaviour {
         if (collidedVertically)
         {
             float xPoint = rCenter.x;
-            if (nonstaticRect.bounds.topRight.x < rCenter.x)
+            if (nonstaticRect.Bounds.TopRight.x < rCenter.x)
             {
-                xPoint = nonstaticRect.bounds.topRight.x;
+                xPoint = nonstaticRect.Bounds.TopRight.x;
             }
-            else if (nonstaticRect.bounds.topLeft.x > rCenter.x)
+            else if (nonstaticRect.Bounds.TopLeft.x > rCenter.x)
             {
-                xPoint = nonstaticRect.bounds.topLeft.x;
+                xPoint = nonstaticRect.Bounds.TopLeft.x;
             }
 
             return IntersectionPointColliderVerticalAtXPoint(nonstaticRect, staticCapsule, xPoint);
@@ -784,13 +784,13 @@ public abstract class CustomCollider2D : MonoBehaviour {
         else
         {
             float yPoint = rCenter.y;
-            if (nonstaticRect.bounds.topLeft.y < staticCapsule.bounds.rectBounds.bottomLeft.y)
+            if (nonstaticRect.Bounds.TopLeft.y < staticCapsule.bounds.rectBounds.BottomLeft.y)
             {
-                yPoint = nonstaticRect.bounds.topLeft.y;
+                yPoint = nonstaticRect.Bounds.TopLeft.y;
             }
-            else if (nonstaticRect.bounds.bottomLeft.y > staticCapsule.bounds.rectBounds.topLeft.y)
+            else if (nonstaticRect.Bounds.BottomLeft.y > staticCapsule.bounds.rectBounds.TopLeft.y)
             {
-                yPoint = nonstaticRect.bounds.bottomLeft.y;
+                yPoint = nonstaticRect.Bounds.BottomLeft.y;
             }
 
             return IntersectionPointColliderHorizontalAtYPoint(nonstaticRect, staticCapsule, yPoint);
@@ -960,7 +960,7 @@ public abstract class CustomCollider2D : MonoBehaviour {
     /// <returns></returns>
     public static Vector2 GetLowerBoundsAtXValueRect(BoundsRect rBounds, float x)
     {
-        return new Vector2(x, rBounds.bottomLeft.y);
+        return new Vector2(x, rBounds.BottomLeft.y);
     }
 
     /// <summary>
@@ -970,7 +970,7 @@ public abstract class CustomCollider2D : MonoBehaviour {
     /// <returns></returns>
     public static Vector2 GetUpperBoundsAtXValueRect(BoundsRect rBounds, float x)
     {
-        return new Vector2(x, rBounds.topRight.y);
+        return new Vector2(x, rBounds.TopRight.y);
     }
 
     /// <summary>
@@ -980,7 +980,7 @@ public abstract class CustomCollider2D : MonoBehaviour {
     /// <returns></returns>
     public static Vector2 GetRighBoundAtYValueRect(BoundsRect rBounds, float y)
     {
-        return new Vector2(rBounds.topRight.x, y);
+        return new Vector2(rBounds.TopRight.x, y);
     }
 
     /// <summary>
@@ -990,7 +990,7 @@ public abstract class CustomCollider2D : MonoBehaviour {
     /// <returns></returns>
     public static Vector2 GetLeftBoundAtYValueRect(BoundsRect rBounds, float y)
     {
-        return new Vector2(rBounds.bottomLeft.x, y);
+        return new Vector2(rBounds.BottomLeft.x, y);
     }
     #endregion get outter bounds of collider
     #endregion static methods

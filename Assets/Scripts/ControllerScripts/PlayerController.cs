@@ -194,7 +194,7 @@ public class PlayerController : MonoBehaviour
         public enum BindingType { Keyboard, GamePad}
         [Tooltip("This value is entirely for organization purposes in the editor and should not be used")]
         public string ButtonName;
-        public ButtonInputID InputName;
+        public ButtonInputID InputName { get; set; }
         public KeyCode[] ValidKeyCodeBindings = new KeyCode[2];
 
         /// <summary>

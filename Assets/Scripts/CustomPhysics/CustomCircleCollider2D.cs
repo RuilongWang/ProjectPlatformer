@@ -158,7 +158,7 @@ public class CustomCircleCollider2D : CustomCollider2D
     {
         if (colliderToCheck is CustomBoxCollider2D)
         {
-            return RectIntersectCircle(((CustomBoxCollider2D)colliderToCheck).bounds, cBounds);
+            return RectIntersectCircle(((CustomBoxCollider2D)colliderToCheck).Bounds, cBounds);
         }
         else if (colliderToCheck is CustomCircleCollider2D)
         {

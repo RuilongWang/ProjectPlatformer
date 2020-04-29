@@ -16,12 +16,12 @@ public class CustomBoxCollider2D : CustomCollider2D
     /// <summary>
     /// 
     /// </summary>
-    public BoundsRect bounds { get; set; }
+    public BoundsRect Bounds { get; set; }
 
     
 
-    protected BoundsRect horizontalCheckBounds;
-    protected BoundsRect verticalCheckBounds;
+    protected BoundsRect HorizontalCheckBounds;
+    protected BoundsRect VerticalCheckBounds;
 
     private void OnValidate()
     {
@@ -35,31 +35,19 @@ public class CustomBoxCollider2D : CustomCollider2D
             UpdateBoundsOfCollider();
         }
 
-
-        
-
-#if UNITY_EDITOR
-        //if (!isStatic)
-        //{
-        //    UnityEditor.Handles.DrawSolidRectangleWithOutline(new Rect(this.verticalCheckBounds.topLeft.x, this.verticalCheckBounds.topLeft.y, verticalCheckBounds.bottomRight.x - verticalCheckBounds.topLeft.x, verticalCheckBounds.bottomRight.y - verticalCheckBounds.topLeft.y),
-        //        Color.cyan, Color.blue);
-        //    UnityEditor.Handles.DrawSolidRectangleWithOutline(new Rect(this.horizontalCheckBounds.topLeft.x, this.horizontalCheckBounds.topLeft.y, horizontalCheckBounds.bottomRight.x - horizontalCheckBounds.topLeft.x, horizontalCheckBounds.bottomRight.y - horizontalCheckBounds.topLeft.y),
-        //        Color.red, Color.yellow);
-        //}
-
-#endif
         Color colorToDraw = GIZMO_COLOR;
 
-        DebugSettings.DrawLine(bounds.bottomLeft, bounds.bottomRight, colorToDraw);
-        DebugSettings.DrawLine(bounds.bottomRight, bounds.topRight, colorToDraw);
-        DebugSettings.DrawLine(bounds.topRight, bounds.topLeft, colorToDraw);
-        DebugSettings.DrawLine(bounds.topLeft, bounds.bottomLeft, colorToDraw);
+        DebugSettings.DrawLine(Bounds.BottomLeft, Bounds.BottomRight, colorToDraw);
+        DebugSettings.DrawLine(Bounds.BottomRight, Bounds.TopRight, colorToDraw);
+        DebugSettings.DrawLine(Bounds.TopRight, Bounds.TopLeft, colorToDraw);
+        DebugSettings.DrawLine(Bounds.TopLeft, Bounds.BottomLeft, colorToDraw);
     }
 
 
 
     /// <summary>
-    /// This should be called by our HitboxManager
+    /// Updates the bounds of our box collider. This should be called every frame if you are using a nonstatic
+    /// collider
     /// </summary>
     public override void UpdateBoundsOfCollider()
     {
@@ -80,30 +68,30 @@ public class CustomBoxCollider2D : CustomCollider2D
         
 
 
-        b.topLeft = origin + (Vector2.up * scaledBoxColliderSize.y / 2) - (Vector2.right * scaledBoxColliderSize.x / 2);
-        b.topRight = origin + (Vector2.up * scaledBoxColliderSize.y / 2) + (Vector2.right * scaledBoxColliderSize.x / 2);
-        b.bottomLeft = origin - (Vector2.up * scaledBoxColliderSize.y / 2) - (Vector2.right * scaledBoxColliderSize.x / 2);
-        b.bottomRight = origin - (Vector2.up * scaledBoxColliderSize.y / 2) + (Vector2.right * scaledBoxColliderSize.x / 2);
+        b.TopLeft = origin + (Vector2.up * scaledBoxColliderSize.y / 2) - (Vector2.right * scaledBoxColliderSize.x / 2);
+        b.TopRight = origin + (Vector2.up * scaledBoxColliderSize.y / 2) + (Vector2.right * scaledBoxColliderSize.x / 2);
+        b.BottomLeft = origin - (Vector2.up * scaledBoxColliderSize.y / 2) - (Vector2.right * scaledBoxColliderSize.x / 2);
+        b.BottomRight = origin - (Vector2.up * scaledBoxColliderSize.y / 2) + (Vector2.right * scaledBoxColliderSize.x / 2);
 
-        this.bounds = b;
+        this.Bounds = b;
 
         if (!isStatic)
         {
-            verticalCheckBounds = this.bounds;
-            horizontalCheckBounds = this.bounds;
+            VerticalCheckBounds = this.Bounds;
+            HorizontalCheckBounds = this.Bounds;
 
             float verticalOffset = 0;
             float horizontalOffset = 0;
 
-            verticalCheckBounds.topLeft.x += HorizontalBuffer / 2;
-            verticalCheckBounds.bottomLeft.x += HorizontalBuffer / 2;
-            verticalCheckBounds.topRight.x -= HorizontalBuffer / 2;
-            verticalCheckBounds.bottomRight.x -= HorizontalBuffer / 2;
+            VerticalCheckBounds.TopLeft.x += HorizontalBuffer / 2;
+            VerticalCheckBounds.BottomLeft.x += HorizontalBuffer / 2;
+            VerticalCheckBounds.TopRight.x -= HorizontalBuffer / 2;
+            VerticalCheckBounds.BottomRight.x -= HorizontalBuffer / 2;
 
-            horizontalCheckBounds.topLeft.y -= VerticalBuffer / 2;
-            horizontalCheckBounds.topRight.y -= VerticalBuffer / 2;
-            horizontalCheckBounds.bottomLeft.y += VerticalBuffer / 2;
-            horizontalCheckBounds.bottomRight.y += VerticalBuffer / 2;
+            HorizontalCheckBounds.TopLeft.y -= VerticalBuffer / 2;
+            HorizontalCheckBounds.TopRight.y -= VerticalBuffer / 2;
+            HorizontalCheckBounds.BottomLeft.y += VerticalBuffer / 2;
+            HorizontalCheckBounds.BottomRight.y += VerticalBuffer / 2;
 
             if (Mathf.Abs(rigid.Velocity.y) > 0)
             {
@@ -114,8 +102,8 @@ public class CustomBoxCollider2D : CustomCollider2D
             {
                 horizontalOffset = Mathf.Sign(rigid.Velocity.x) * Mathf.Max(HorizontalBuffer, Mathf.Abs(rigid.Velocity.x * GameOverseer.DELTA_TIME));
             }
-            verticalCheckBounds.SetOffset(Vector2.up * verticalOffset);
-            horizontalCheckBounds.SetOffset(Vector2.right * horizontalOffset);
+            VerticalCheckBounds.SetOffset(Vector2.up * verticalOffset);
+            HorizontalCheckBounds.SetOffset(Vector2.right * horizontalOffset);
 
         }
     }
@@ -130,7 +118,7 @@ public class CustomBoxCollider2D : CustomCollider2D
     /// <returns></returns>
     public override bool LineIntersectWithCollider(Vector2 origin, Vector2 direction, float length)
     {
-        return LineIntersectRect(this.bounds, origin, direction, length);
+        return LineIntersectRect(this.Bounds, origin, direction, length);
     }
 
     
@@ -152,7 +140,7 @@ public class CustomBoxCollider2D : CustomCollider2D
     /// <returns></returns>
     public override Vector2 GetLowerBoundsAtXValue(float x)
     {
-        return GetLowerBoundsAtXValueRect(this.bounds, x);
+        return GetLowerBoundsAtXValueRect(this.Bounds, x);
     }
 
     /// <summary>
@@ -162,7 +150,7 @@ public class CustomBoxCollider2D : CustomCollider2D
     /// <returns></returns>
     public override Vector2 GetUpperBoundsAtXValue(float x)
     {
-        return GetUpperBoundsAtXValueRect(this.bounds, x);
+        return GetUpperBoundsAtXValueRect(this.Bounds, x);
     }
 
     /// <summary>
@@ -172,7 +160,7 @@ public class CustomBoxCollider2D : CustomCollider2D
     /// <returns></returns>
     public override Vector2 GetRightBoundAtYValue(float y)
     {
-        return GetRighBoundAtYValueRect(this.bounds, y);
+        return GetRighBoundAtYValueRect(this.Bounds, y);
     }
 
     /// <summary>
@@ -182,12 +170,12 @@ public class CustomBoxCollider2D : CustomCollider2D
     /// <returns></returns>
     public override Vector2 GetLeftBoundAtYValue(float y)
     {
-        return GetLeftBoundAtYValueRect(this.bounds, y);
+        return GetLeftBoundAtYValueRect(this.Bounds, y);
     }
 
     public override Vector2 GetCenter()
     {
-        return bounds.center;
+        return Bounds.center;
     }
 
     /// <summary>
@@ -197,7 +185,7 @@ public class CustomBoxCollider2D : CustomCollider2D
     /// <returns></returns>
     public override bool ColliderIntersect(CustomCollider2D colliderToCheck)
     {
-        return ColliderIntersectBounds(this.bounds, colliderToCheck);
+        return ColliderIntersectBounds(this.Bounds, colliderToCheck);
     }
 
 
@@ -211,7 +199,7 @@ public class CustomBoxCollider2D : CustomCollider2D
     {
         if (colliderToCheck is CustomBoxCollider2D)
         {
-            return RectIntersectRect(boundsToCheck, ((CustomBoxCollider2D)colliderToCheck).bounds);
+            return RectIntersectRect(boundsToCheck, ((CustomBoxCollider2D)colliderToCheck).Bounds);
         }
         else if (colliderToCheck is CustomCircleCollider2D)
         {
@@ -243,7 +231,7 @@ public class CustomBoxCollider2D : CustomCollider2D
             return false;
         }
 
-        if (ColliderIntersectBounds(verticalCheckBounds, colliderToCheck))
+        if (ColliderIntersectBounds(VerticalCheckBounds, colliderToCheck))
         {
             if (colliderToCheck is CustomBoxCollider2D)
             {
@@ -277,7 +265,7 @@ public class CustomBoxCollider2D : CustomCollider2D
         if (colliderToCheck == this || GetIngoreLayerCollision(colliderToCheck)) return false;
 
 
-        if (ColliderIntersectBounds(horizontalCheckBounds, colliderToCheck))
+        if (ColliderIntersectBounds(HorizontalCheckBounds, colliderToCheck))
         {
             if (colliderToCheck is CustomBoxCollider2D)
             {
