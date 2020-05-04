@@ -9,93 +9,46 @@ using UnityEngine;
 /// </summary>
 public class HitboxRect : Hitbox
 {
-    public Vector2 boxColliderSize = Vector2.one;
+    public Vector2 PositionOffset;
+    public Vector2 BoxSize = Vector2.one;
 
-    public CustomCollider2D.BoundsRect bounds;
-
-    
+    private CollisionFactory.Box2DBounds Box2DBounds;
 
     #region monobehaviour methods
-
-
-    private void OnValidate()
+    protected override void Awake()
     {
-        if (boxColliderSize.x < 0)
-        {
-            boxColliderSize.x = 0;
-        }
-        if (boxColliderSize.y < 0)
-        {
-            boxColliderSize.y = 0;
-        }
+        base.Awake();
+        Box2DBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.Box);
     }
 
-    protected virtual void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
+        if (Box2DBounds == null)
+        {
+            Box2DBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.Box);
+        }
         if (!Application.isPlaying)
         {
-            
-            UpdateColliderBoundsForGizmos(transform.root);
+            UpdateHitboxBounds();
         }
-        Color colorToDraw = GetColorToDrawGizmos();
-        
-        Color colorWithTransparency = colorToDraw;
-        colorWithTransparency.a = .2f;
+        Color ColorWithTransparency = DebugDrawColor;
+        ColorWithTransparency.a = .2f;
         #if UNITY_EDITOR
-        UnityEditor.Handles.DrawSolidRectangleWithOutline(bounds.GetVertices(), colorWithTransparency, colorToDraw);
+        UnityEditor.Handles.DrawSolidRectangleWithOutline(Box2DBounds.GetVerticies(), ColorWithTransparency, DebugDrawColor);
         #endif
+
     }
     #endregion monobehaviour methods
 
-   
-
-
+    #region override methods
     /// <summary>
-    /// This should be called by our HitboxManager
+    /// Updates the bounds of our hitbox rect objects
     /// </summary>
-    public override void UpdateColliderBounds()
+    public override void UpdateHitboxBounds()
     {
-        UpdateColliderBoundsForGizmos(this.transform.root);
+        Vector2 TransformPositionVector2 = this.transform.position;
+        //The updated bounds is based on the size, offset, and root transform local scale
+        Box2DBounds.UpdateColliderBounds(TransformPositionVector2 + PositionOffset * this.transform.root.localScale, this.BoxSize * this.transform.root.localScale);
     }
-
-    /// <summary>
-    /// This functions similarly to how our update bounds works but removes the need for an interaction handler but replacing it with their parent
-    /// most object
-    /// </summary>
-    public void UpdateColliderBoundsForGizmos(Transform transformToUseAsScale)
-    {
-        bounds = new CustomCollider2D.BoundsRect();
-        Vector2 origin = this.transform.position; //new Vector3(boxColliderOffset.x, boxColliderOffset.y);
-        Vector2 charLocalScale;
-
-        if (transformToUseAsScale && !ignoreParentScale)
-        {
-            charLocalScale = transformToUseAsScale.localScale; //We need this to properly scale the hitboxes to our parent object
-            charLocalScale = new Vector2(Mathf.Abs(charLocalScale.x), Mathf.Abs(charLocalScale.y));
-        }
-        else
-            charLocalScale = Vector2.one;
-        
-        bounds.TopLeft = origin + (charLocalScale.y * Vector2.up * boxColliderSize.y / 2) - (charLocalScale.x * Vector2.right * boxColliderSize.x / 2);
-        bounds.TopRight = origin + (charLocalScale.y * Vector2.up * boxColliderSize.y / 2) + (charLocalScale.x * Vector2.right * boxColliderSize.x / 2);
-        bounds.BottomLeft = origin - (charLocalScale.y * Vector2.up * boxColliderSize.y / 2) - (charLocalScale.x * Vector2.right * boxColliderSize.x / 2);
-        bounds.BottomRight = origin - (charLocalScale.y * Vector2.up * boxColliderSize.y / 2) + (charLocalScale.x * Vector2.right * boxColliderSize.x / 2);
-    }
-
-    public override bool CheckHitboxIntersect(Hitbox hboxToCheck)
-    {
-        if (hboxToCheck is HitboxRect)
-        {
-            return CustomCollider2D.RectIntersectRect(this.bounds, ((HitboxRect)hboxToCheck).bounds);
-
-            
-        }
-        if (hboxToCheck is HitboxCircle)
-        {
-            return CustomCollider2D.RectIntersectCircle(this.bounds, ((HitboxCircle)hboxToCheck).bounds);
-        }
-        return false;
-    }
-
-    
+    #endregion override methods
 }
