@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,9 +40,33 @@ public class CollisionFactory
         public Vector2 MinBounds { get { return GetMinBounds(); } }
         public Vector2 MaxBounds { get { return GetMaxBounds(); } }
 
+        /// <summary>
+        /// This checks our bounds are currently overlapping with the bounds that
+        /// are passed in
+        /// </summary>
+        /// <param name="BoundsToCheck"></param>
+        /// <returns></returns>
+        public bool IsOverlappingBounds(Bounds BoundsToCheck)
+        {
+            if (BoundsToCheck is Box2DBounds)
+            {
+                return IsOverlappingBox2DBounds((Box2DBounds)BoundsToCheck);
+            }
+
+            return false;
+        }
+
+        #region abstract methods
         protected abstract Vector2 GetMinBounds();
         protected abstract Vector2 GetMaxBounds();
         protected abstract Vector2 GetCenterPoint();
+        /// <summary>
+        /// Method to check whether or now we are overlapping a Box@DBounds object
+        /// </summary>
+        /// <param name="BoxBounds"></param>
+        /// <returns></returns>
+        protected abstract bool IsOverlappingBox2DBounds(Box2DBounds BoxBounds);
+        #endregion abstract methods
     }
 
     /// <summary>
@@ -72,7 +97,18 @@ public class CollisionFactory
 
         protected override Vector2 GetCenterPoint()
         {
-            return new Vector2();
+            return (DownLeft + UpRight) / 2f;
+        }
+
+        protected override bool IsOverlappingBox2DBounds(Box2DBounds BoxBounds)
+        {
+            Vector2 CenterA = this.GetCenterPoint();
+            Vector2 CenterB = BoxBounds.GetCenterPoint();
+            Vector2 SizeA = this.GetMaxBounds() - this.GetMinBounds();
+            Vector2 SizeB = BoxBounds.GetMaxBounds() - BoxBounds.GetMinBounds();
+
+            return (Mathf.Abs(CenterA.x - CenterB.x) * 2) < (SizeA.x + SizeB.x) &&
+                Mathf.Abs(CenterA.y - CenterB.y) * 2 < (SizeA.y + SizeB.y);
         }
 
         /// <summary>
@@ -99,6 +135,8 @@ public class CollisionFactory
                 DownLeft,
             };
         }
+
+       
     }
 
     /// <summary>
@@ -130,6 +168,11 @@ public class CollisionFactory
             this.Center = CenterPoint;
             this.Radius = Radius;
         }
+
+        protected override bool IsOverlappingBox2DBounds(Box2DBounds BoxBounds)
+        {
+            throw new System.NotImplementedException();
+        }
         #endregion override methods
     }
 
@@ -151,7 +194,7 @@ public class CollisionFactory
             throw new System.NotImplementedException();
         }
 
-        public void UpdateColliderBounds(Vector2 CenterPoint, Vector2 Size)
+        protected override bool IsOverlappingBox2DBounds(Box2DBounds BoxBounds)
         {
             throw new System.NotImplementedException();
         }

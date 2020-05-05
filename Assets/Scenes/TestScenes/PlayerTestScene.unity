@@ -121,6 +121,52 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &201019505
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 201019506}
+  - component: {fileID: 201019507}
+  m_Layer: 0
+  m_Name: Hurtbox02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &201019506
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201019505}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1022579279}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &201019507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201019505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a32929069bf8dc45be52764096943c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AssignedHitboxType: 1
+  PositionOffset: {x: 0, y: 0}
+  BoxSize: {x: 1.59, y: 1.57}
 --- !u!1 &466981199
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,7 +210,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a32929069bf8dc45be52764096943c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mHitboxType: 0
+  AssignedHitboxType: 0
+  PositionOffset: {x: 0, y: 0}
+  BoxSize: {x: 1, y: 1}
+--- !u!1 &711108998
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 711108999}
+  - component: {fileID: 711109000}
+  m_Layer: 0
+  m_Name: Hurtbox01 (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &711108999
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711108998}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.03, y: 1.02, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1022579279}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &711109000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711108998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a32929069bf8dc45be52764096943c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AssignedHitboxType: 0
   PositionOffset: {x: 0, y: 0}
   BoxSize: {x: 1, y: 1}
 --- !u!1 &723695495
@@ -250,12 +342,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &876116164 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5895057180388670320, guid: 023f024913ec1594b858a0947da9261f,
-    type: 3}
-  m_PrefabInstance: {fileID: 5895057181213182914}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1022579278
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,6 +351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1022579279}
+  - component: {fileID: 1022579280}
   m_Layer: 0
   m_Name: HurtboxContainer
   m_TagString: Untagged
@@ -279,13 +366,71 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1022579278}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.34, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 466981200}
-  m_Father: {fileID: 876116164}
-  m_RootOrder: 1
+  - {fileID: 201019506}
+  - {fileID: 711108999}
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1022579280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1022579278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d650975d0d1f584fafd48db56bc7856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1629077535
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1629077537}
+  - component: {fileID: 1629077536}
+  m_Layer: 0
+  m_Name: HurtboxContainer (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1629077536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629077535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d650975d0d1f584fafd48db56bc7856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1629077537
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629077535}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.22, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1788972637}
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1630216748
 GameObject:
@@ -297,7 +442,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1630216750}
   - component: {fileID: 1630216749}
-  - component: {fileID: 1630216751}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -369,27 +513,52 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1630216751
+--- !u!1 &1788972636
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1788972637}
+  - component: {fileID: 1788972638}
+  m_Layer: 0
+  m_Name: Hurtbox01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1788972637
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1788972636}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1629077537}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1788972638
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1630216748}
+  m_GameObject: {fileID: 1788972636}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c996b8232709f14f84eb2f27ae7bb1e, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a32929069bf8dc45be52764096943c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colliderOffset: {x: 0, y: 0}
-  isTrigger: 0
-  ignoreParentScale: 0
-  colliderLayer: 0
-  <rigid>k__BackingField: {fileID: 0}
-  originalVelocity: {x: 0, y: 0}
-  boxColliderSize: {x: 1, y: 1}
-  HorizontalBuffer: 0.02
-  VerticalBuffer: 0.02
+  AssignedHitboxType: 1
+  PositionOffset: {x: 0, y: 0}
+  BoxSize: {x: 1, y: 1}
 --- !u!1001 &4011470936324682814
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -536,6 +705,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5895057180388670320, guid: 023f024913ec1594b858a0947da9261f,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5895057180388670323, guid: 023f024913ec1594b858a0947da9261f,
         type: 3}

@@ -9,8 +9,21 @@ using UnityEngine.Events;
 public class HitboxInteraction : MonoBehaviour
 {
     #region action events
-    public UnityAction<Hitbox, Hitbox> OnHitEnemy;
-    public UnityAction<Hitbox, Hitbox> OnHitByEnemy;
-    public UnityAction<Hitbox, Hitbox> OnClashHitboxWithEnemy;
+    /// <summary>
+    /// Our hitbox has overlapped with an outside hurtbox. We have hit something
+    /// </summary>
+    public UnityAction<Hitbox, Hitbox> OnHitboxOverlapOtherHurtbox;
+    /// <summary>
+    /// Our hurtbox has overlapped with an outside hitbox, We have been hit
+    /// </summary>
+    public UnityAction<Hitbox, Hitbox> OnHurtboxOverlapOtherHitbox;
+    /// <summary>
+    /// Our hitbox is no longer overlapping with another hurtbox
+    /// </summary>
+    public UnityAction<Hitbox, Hitbox> OnHitboxEndOverlapOtherHurtbox;
+    /// <summary>
+    /// Our hurtbox has ended its overlap with another hitbox
+    /// </summary>
+    public UnityAction<Hitbox, Hitbox> OnHurtboxEndOverlapOtherHitbox;
     #endregion action events
 }

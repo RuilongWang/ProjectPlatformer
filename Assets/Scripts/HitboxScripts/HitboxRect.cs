@@ -19,10 +19,13 @@ public class HitboxRect : Hitbox
     {
         base.Awake();
         Box2DBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.Box);
+        AssignHitboxBounds(Box2DBounds);
     }
 
     private void OnDrawGizmos()
     {
+        #if UNITY_EDITOR
+
         if (Box2DBounds == null)
         {
             Box2DBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.Box);
@@ -33,7 +36,6 @@ public class HitboxRect : Hitbox
         }
         Color ColorWithTransparency = DebugDrawColor;
         ColorWithTransparency.a = .2f;
-        #if UNITY_EDITOR
         UnityEditor.Handles.DrawSolidRectangleWithOutline(Box2DBounds.GetVerticies(), ColorWithTransparency, DebugDrawColor);
         #endif
 
