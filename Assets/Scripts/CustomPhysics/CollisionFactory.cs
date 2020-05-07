@@ -133,6 +133,7 @@ public class CollisionFactory
                 UpRight,
                 DownRight,
                 DownLeft,
+                UpLeft,
             };
         }
 

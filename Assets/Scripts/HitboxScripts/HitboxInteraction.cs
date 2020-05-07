@@ -8,6 +8,12 @@ using UnityEngine.Events;
 /// </summary>
 public class HitboxInteraction : MonoBehaviour
 {
+    /// <summary>
+    /// This is the character that is associated with this hitbox interaction component.
+    /// </summary>
+    public Character AssociatedCharacter;
+
+
     #region action events
     /// <summary>
     /// Our hitbox has overlapped with an outside hurtbox. We have hit something

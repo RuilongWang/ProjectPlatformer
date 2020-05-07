@@ -1,5 +1,88 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &723695495
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 723695498}
+  - component: {fileID: 723695497}
+  - component: {fileID: 723695496}
+  m_Layer: 0
+  m_Name: Main Camera
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &723695498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723695495}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.7, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5895057180388670320}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &723695497
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723695495}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.1791118, g: 0.17996117, b: 0.3301887, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_FocalLength: 50
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 1
+  orthographic size: 2
+  m_Depth: -1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!81 &723695496
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723695495}
+  m_Enabled: 1
 --- !u!1 &5745269964394695304
 GameObject:
   m_ObjectHideFlags: 0
@@ -70,7 +153,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c1f226daad372cd49ad8f052931ae6e7, type: 3}
+  m_Sprite: {fileID: -1533599258430409839, guid: df6c623a89f4504419512827ca340a7c,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -93,8 +177,8 @@ GameObject:
   - component: {fileID: 4997645472869531205}
   - component: {fileID: 1333620914}
   - component: {fileID: 1107087085971122761}
-  - component: {fileID: 1970153105159298681}
   - component: {fileID: 1333620915}
+  - component: {fileID: 1379680479}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -114,6 +198,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 710147001395032356}
+  - {fileID: 723695498}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -167,28 +252,8 @@ MonoBehaviour:
   useTerminalVelocity: 1
   UseAnimatorVelocity: 0
   gravityVector: {x: 0, y: -1}
-  gravityScale: 0.10204081
+  gravityScale: 0.07496876
   terminalVelocity: 10
---- !u!114 &1970153105159298681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5895057180388670323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c996b8232709f14f84eb2f27ae7bb1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colliderOffset: {x: 0, y: 0}
-  isTrigger: 0
-  ignoreParentScale: 0
-  colliderLayer: 0
-  originalVelocity: {x: 0, y: 0}
-  boxColliderSize: {x: 1, y: 1}
-  HorizontalBuffer: 0.02
-  VerticalBuffer: 0.02
 --- !u!114 &1333620915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,8 +269,25 @@ MonoBehaviour:
   GroundAcceleration: 25
   MaxWalkSpeed: 1
   MaxRunSpeed: 2.25
-  MaxCrouchSpeed: 2.5
+  MaxCrouchSpeed: 0.7
   AirAcceleration: 25
-  JumpHeight: 2
-  TimeToReachJumpApex: 2
-  DoubleJumpCount: 2
+  JumpHeight: 4.5
+  TimeToReachJumpApex: 3.5
+  DoubleJumpCount: 1
+  FastFallScaled: 1.75
+--- !u!114 &1379680479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5895057180388670323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfc48f27435e85048b5b7d687cc51a40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AssignedCollisionType: 2
+  IsCharacterCollider: 0
+  ColliderOffset: {x: 0, y: 0}
+  BoxColliderSize: {x: 1, y: 1}
