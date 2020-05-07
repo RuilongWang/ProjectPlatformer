@@ -49,25 +49,59 @@ public class CharacterMovement : MonoBehaviour
     public float TimeToReachJumpApex = 1;
     [Tooltip("The number of jumps that can be performed after the player is deemed in the air")]
     public int DoubleJumpCount = 1;
+    [Tooltip("This is the scaled acceleration of our fall speed. This will be applied when you let go of the jump button or hold the down input")]
     public float FastFallScaled = 1.75f;
+
+    
     /// <summary>
     /// This is the launch spaeed that we will use when calling the Jump method
     /// </summary>
     private float JumpVelocity = 5;
-
+    /// <summary>
+    /// 
+    /// </summary>
     private float JumpingAcceleration = 1;
 
     /// <summary>
     /// Input variable that store the intended directions based on what our controllers pass in
     /// </summary>
     private float HorizontalInput;
+
+    /// <summary>
+    /// 
+    /// </summary>
     private float VerticalInput;
+    /// <summary>
+    /// The remaining number jumps that we can execute in the air 
+    /// </summary>
     private int DoubleJumpsRemaining;
 
+    /// <summary>
+    /// Is our character currently in the air. This will be marked false if the character is currently grounded
+    /// </summary>
+    private bool IsInAir;
     /// <summary>
     /// The current movement state of our character
     /// </summary>
     public MovementState CurrentMovementState { get; private set; }
+
+    private Character AssociatedCharacter;
+
+    #region animator variables
+    /// <summary>
+    /// Reference to our character's animator component
+    /// </summary>
+    private Animator CharacterAnimator { get { return AssociatedCharacter.CharacterAnimator; } }
+
+    /// <summary>
+    /// Overrides our velocity update with the desired velocity from our animation. There will still be acceleration applied, but goal velocity is strictly set from our animation
+    /// </summary>
+    public bool OverrideMovementWithAnimation;
+    /// <summary>
+    /// The desired velocity based on our Animation. If 'Override MovementWithAnimation is set to true. This value is what will be set as our goal velocity.
+    /// </summary>
+    public Vector2 DesiredVelocityFromAnimation;
+    #endregion animator varialbes
     #endregion member variables
 
     #region component references
@@ -82,6 +116,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void Awake()
     {
+        AssociatedCharacter = GetComponent<Character>();
         Rigid = GetComponent<CustomPhysics2D>();
         Rigid.OnGroundedEvent += OnCharacterLanded;
         Rigid.OnAirborneEvent += OnCharacterAirborne;
@@ -217,7 +252,7 @@ public class CharacterMovement : MonoBehaviour
     /// </summary>
     public void Jump()
     {
-        if (!Rigid.isInAir)
+        if (!IsInAir)
         {
             Rigid.Velocity.y = JumpVelocity;
         }

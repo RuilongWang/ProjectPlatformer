@@ -21,11 +21,18 @@ public abstract class CustomCollider2D : MonoBehaviour {
     {
         STATIC,//Never expected to move. Good for most environmental colliders
         MOVABLE,//Can move, but does not trace for collision.
-        PHYSICS,//
+        PHYSICS,//This collider contains a physics component and will collide with objects due to physics.
     }
 
-
+    /// <summary>
+    /// The generic reference to our collider's bounds component
+    /// </summary>
     private CollisionFactory.Bounds AssociatedBounds;
+    /// <summary>
+    /// The associated physics component of our collider. If this is a static or moveable object, you more than likely should not have a physics component attached to this object.
+    /// </summary>
+    private CustomPhysics2D AssociatePhysicsComponent;
+
     [Tooltip("The assigned collision type of our collision component. This will determine how we handle updates in our Collision manager for optimization")]
     public CollisionType AssignedCollisionType;
     [Tooltip("Mark this true if you are using a character. This will make it so that our collider is formed around their feet as a center point. This makes it easier for scaling while in game")]
@@ -34,6 +41,19 @@ public abstract class CustomCollider2D : MonoBehaviour {
     [Tooltip("The offset of our collider bounds.")]
     public Vector2 ColliderOffset;
     #region monobehaivour methods
+    protected virtual void Awake()
+    {
+        AssociatePhysicsComponent = GetComponent<CustomPhysics2D>();
+        if (AssociatePhysicsComponent && AssignedCollisionType != CollisionType.PHYSICS)
+        {
+            Debug.LogWarning("Your collider contains a physics component, but is not set to CollisionType - 'Physics'. Are you sure this is correct?");
+        }
+        else if (!AssociatePhysicsComponent && AssignedCollisionType == CollisionType.PHYSICS)
+        {
+            Debug.LogWarning("You collider does not contain a Physics component, but is assigned to CollisionType - 'Physics'. This can not work");
+        }
+    }
+
     protected virtual void Start()
     {
 

@@ -41,11 +41,6 @@ public class CustomPhysics2D : MonoBehaviour {
     
 
     /// <summary>
-    /// A boolean value that indicates whether or not our character is currently in the 
-    /// </summary>
-    public bool isInAir { get; set; }
-
-    /// <summary>
     /// 
     /// </summary>
     public Vector2 gravityRight { get { return new Vector2(-gravityVector.y, gravityVector.x); } }
@@ -99,11 +94,6 @@ public class CustomPhysics2D : MonoBehaviour {
     /// </summary>
     public void UpdateVelocityFromGravity()
     {
-        if (!isInAir && Mathf.Abs(Velocity.y) > 0)
-        {
-            OnPhysicsObjectAirborne();
-            this.isInAir = true;
-        }
 
         if (!useGravity || UseAnimatorVelocity)
         {
@@ -145,23 +135,4 @@ public class CustomPhysics2D : MonoBehaviour {
     {
         this.gravityVector = gravityVector.normalized;
     }
-
-    /// <summary>
-    /// Used to activate our character grounded trigger
-    /// </summary>
-    public void OnPhysicsObjectGrounded()
-    {
-        if (OnGroundedEvent == null) return;
-        OnGroundedEvent.Invoke();
-    }
-
-    /// <summary>
-    /// Used to activate our character airborne trigger
-    /// </summary>
-    public void OnPhysicsObjectAirborne()
-    {
-        if (OnAirborneEvent == null) return;
-        OnAirborneEvent.Invoke();
-    }
- 
 }
