@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Analytics;
 
 /// <summary>
 /// Base class of our custom collider. This will check to see if there are any points where our collider intersects
@@ -28,6 +28,7 @@ public abstract class CustomCollider2D : MonoBehaviour {
     /// The generic reference to our collider's bounds component
     /// </summary>
     private CollisionFactory.Bounds AssociatedBounds;
+
     /// <summary>
     /// The associated physics component of our collider. If this is a static or moveable object, you more than likely should not have a physics component attached to this object.
     /// </summary>
@@ -43,6 +44,7 @@ public abstract class CustomCollider2D : MonoBehaviour {
     #region monobehaivour methods
     protected virtual void Awake()
     {
+        GameOverseer.Instance.PhysicsManager.AddCollider2DToPhysicsManager(this);
         AssociatePhysicsComponent = GetComponent<CustomPhysics2D>();
         if (AssociatePhysicsComponent && AssignedCollisionType != CollisionType.PHYSICS)
         {
@@ -52,12 +54,22 @@ public abstract class CustomCollider2D : MonoBehaviour {
         {
             Debug.LogWarning("You collider does not contain a Physics component, but is assigned to CollisionType - 'Physics'. This can not work");
         }
+        UpdateColliderBounds();//We want to update the collider bounds on awake
     }
 
     protected virtual void Start()
     {
 
     }
+
+    private void OnDestroy()
+    {
+        if (GameOverseer.Instance && GameOverseer.Instance.PhysicsManager)
+        {
+            GameOverseer.Instance.PhysicsManager.RemoveCollider2DFromPhysicsManager(this);
+        }
+    }
+
     private void OnValidate()
     {
 #if UNITY_EDITOR
@@ -84,6 +96,16 @@ public abstract class CustomCollider2D : MonoBehaviour {
     /// This should be called every frame to appropiately update the collision bounds based on position, scale, etc.
     /// </summary>
     public abstract void UpdateColliderBounds();
+
+    /// <summary>
+    /// Is our Collider overlapping the collider that is passed in
+    /// </summary>
+    /// <param name="OtherCollider"></param>
+    /// <returns></returns>
+    public virtual bool IsOverlappingCollider(CustomCollider2D OtherCollider)
+    {
+        return this.AssociatedBounds.IsOverlappingBounds(OtherCollider.AssociatedBounds);
+    }
     #endregion virtual methods
 
 }

@@ -56,6 +56,38 @@ public class CollisionFactory
             return false;
         }
 
+        /// <summary>
+        /// You can cast or 'stretch' our collider to see if anything in the direction and magnitude of our CastOffset is in our way.
+        /// If you are using physics collisions, CastOffset should equal the value of how much we are going to move in the next frame
+        /// which would be DeltaTime * Velocity
+        /// </summary>
+        /// <param name="BoundsToCheck"></param>
+        /// <param name="CastOffset"></param>
+        /// <param name="BufferAmount"></param>
+        /// <returns></returns>
+        public bool CastCollisionForPhysicsOverlap(Bounds BoundsToCheck, Vector2 CastOffset, Vector2 BufferAmount)
+        {
+            if (BoundsToCheck is Box2DBounds)
+            {
+                 
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// This method will find the nearest point on the collider that is passed in to snap to. 
+        /// </summary>
+        /// <param name="BoundsToSnapTo"></param>
+        public Vector2 SnapToNearestPointOnCollider(Bounds BoundsToSnapTo)
+        {
+            if (BoundsToSnapTo is Box2DBounds)
+            {
+                return GetNearestPointOnBounds((Box2DBounds)BoundsToSnapTo);
+            }
+            return Vector2.zero;
+        }
+
         #region abstract methods
         protected abstract Vector2 GetMinBounds();
         protected abstract Vector2 GetMaxBounds();
@@ -66,6 +98,8 @@ public class CollisionFactory
         /// <param name="BoxBounds"></param>
         /// <returns></returns>
         protected abstract bool IsOverlappingBox2DBounds(Box2DBounds BoxBounds);
+
+        protected abstract Vector2 GetNearestPointOnBounds(Box2DBounds BoxBounds);
         #endregion abstract methods
     }
 
@@ -112,6 +146,16 @@ public class CollisionFactory
         }
 
         /// <summary>
+        /// Find
+        /// </summary>
+        /// <param name="BoxBounds"></param>
+        /// <returns></returns>
+        protected override Vector2 GetNearestPointOnBounds(Box2DBounds BoxBounds)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="CenterPoint"></param>
@@ -136,8 +180,6 @@ public class CollisionFactory
                 UpLeft,
             };
         }
-
-       
     }
 
     /// <summary>
@@ -174,6 +216,11 @@ public class CollisionFactory
         {
             throw new System.NotImplementedException();
         }
+
+        protected override Vector2 GetNearestPointOnBounds(Box2DBounds BoxBounds)
+        {
+            throw new NotImplementedException();
+        }
         #endregion override methods
     }
 
@@ -198,6 +245,11 @@ public class CollisionFactory
         protected override bool IsOverlappingBox2DBounds(Box2DBounds BoxBounds)
         {
             throw new System.NotImplementedException();
+        }
+
+        protected override Vector2 GetNearestPointOnBounds(Box2DBounds BoxBounds)
+        {
+            throw new NotImplementedException();
         }
         #endregion override methods
     }

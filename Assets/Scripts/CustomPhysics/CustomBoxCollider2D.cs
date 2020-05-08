@@ -13,13 +13,12 @@ public class CustomBoxCollider2D : CustomCollider2D
 
     public CollisionFactory.Box2DBounds Box2DBounds;
     public Vector2 BoxColliderSize = Vector2.one;
-    private CustomPhysics2D AssociatePhysicsComponent;
 
     #region monobehaviour methods
     protected override void Awake()
     {
-        base.Awake();
         Box2DBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.Box);
+        base.Awake();
         
     }
 
@@ -60,6 +59,11 @@ public class CustomBoxCollider2D : CustomCollider2D
         }
 
         Box2DBounds.UpdateColliderBounds(AdjustedCeneterPoint, BoxSize);
+    }
+
+    public override bool IsOverlappingCollider(CustomCollider2D OtherCollider)
+    {
+        return base.IsOverlappingCollider(OtherCollider);
     }
     #endregion override methods
 }

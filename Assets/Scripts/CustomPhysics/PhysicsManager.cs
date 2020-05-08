@@ -30,12 +30,28 @@ public class PhysicsManager : MonoBehaviour
     {
         GameOverseer.Instance.HitboxManager.UpdateHitboxManager();
 
+        UpdateBoundsOfColliders();
+        
+
         UpdateAllValidPhysicsComponents();
     }
     #endregion monobehaivour methods
 
 
     #region custom physics methods
+    private void UpdateBoundsOfColliders()
+    {
+        foreach (KeyValuePair<CustomCollider2D.CollisionType, HashSet<CustomCollider2D>> KeyValueColliderDictionaryData in AllActiveCollider2DComponentsInLevel)
+        {
+            foreach (CustomCollider2D Collider2D in KeyValueColliderDictionaryData.Value)
+            {
+                Collider2D.UpdateColliderBounds();
+            }
+        }
+    }
+
+
+
     /// <summary>
     /// 
     /// </summary>
@@ -60,7 +76,7 @@ public class PhysicsManager : MonoBehaviour
     /// <param name="Collider2D"></param>
     public void AddCollider2DToPhysicsManager(CustomCollider2D Collider2D)
     {
-        if (AllActiveCollider2DComponentsInLevel.ContainsKey(Collider2D.AssignedCollisionType))
+        if (!AllActiveCollider2DComponentsInLevel.ContainsKey(Collider2D.AssignedCollisionType))
         {
             AllActiveCollider2DComponentsInLevel.Add(Collider2D.AssignedCollisionType, new HashSet<CustomCollider2D>());
         }
@@ -79,6 +95,7 @@ public class PhysicsManager : MonoBehaviour
         if (!AllActiveCollider2DComponentsInLevel.ContainsKey(Collider2D.AssignedCollisionType))
         {
             Debug.LogWarning("You are trying to remove a collider before the collision type has been added. Something may have gone wrong here");
+            return;
         }
 
         if (!AllActiveCollider2DComponentsInLevel[Collider2D.AssignedCollisionType].Remove(Collider2D))
