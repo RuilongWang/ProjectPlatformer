@@ -29,11 +29,10 @@ public class PhysicsManager : MonoBehaviour
     private void LateUpdate()
     {
         GameOverseer.Instance.HitboxManager.UpdateHitboxManager();
+        UpdateAllValidPhysicsComponents();
 
         UpdateBoundsOfColliders();
-        
-
-        UpdateAllValidPhysicsComponents();
+        CheckOfrOverlappingColliders();
     }
     #endregion monobehaivour methods
 
@@ -46,6 +45,26 @@ public class PhysicsManager : MonoBehaviour
             foreach (CustomCollider2D Collider2D in KeyValueColliderDictionaryData.Value)
             {
                 Collider2D.UpdateColliderBounds();
+            }
+        }
+
+        foreach (CustomCollider2D PhysicsCollider in AllActiveCollider2DComponentsInLevel[CustomCollider2D.CollisionType.PHYSICS])
+        {
+            PhysicsCollider.UpdatePhysicsColliderBounds();
+        }
+    }
+
+    private void CheckOfrOverlappingColliders()
+    {
+        foreach (CustomCollider2D PhysicsCollider in AllActiveCollider2DComponentsInLevel[CustomCollider2D.CollisionType.PHYSICS])
+        {
+            foreach (CustomCollider2D StaticCollider in AllActiveCollider2DComponentsInLevel[CustomCollider2D.CollisionType.STATIC])
+            {
+                if (!Physics2D.GetIgnoreLayerCollision(PhysicsCollider.CollisionLayer, StaticCollider.CollisionLayer) &&
+                    PhysicsCollider.IsPhysicsColliderOverlapping(StaticCollider))
+                {
+                    StaticCollider.VerticallyPushOutCollider(PhysicsCollider);
+                }
             }
         }
     }

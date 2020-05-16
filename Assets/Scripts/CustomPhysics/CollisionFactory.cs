@@ -78,12 +78,26 @@ public class CollisionFactory
         /// <summary>
         /// This method will find the nearest point on the collider that is passed in to snap to. 
         /// </summary>
-        /// <param name="BoundsToSnapTo"></param>
-        public Vector2 SnapToNearestPointOnCollider(Bounds BoundsToSnapTo)
+        /// <param name="BoundsSnappingToUs"></param>
+        public Vector2 GetOffsetToClosestHorizontalPointOnBounds(Bounds BoundsSnappingToUs)
         {
-            if (BoundsToSnapTo is Box2DBounds)
+            if (BoundsSnappingToUs is Box2DBounds)
             {
-                return GetNearestPointOnBounds((Box2DBounds)BoundsToSnapTo);
+                return GetOffsetForNearestHorizontalPointOnBoundsForBox2DBounds((Box2DBounds)BoundsSnappingToUs);
+            }
+            return Vector2.zero;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="BoundsSnappingToUs"></param>
+        /// <returns></returns>
+        public Vector2 GetOffsetToClosestVerticalPointOnBounds(Bounds BoundsSnappingToUs)
+        {
+            if (BoundsSnappingToUs is Box2DBounds)
+            {
+                return GetOffsetForNearestVerticalPointOnBoundsForBox2DBounds((Box2DBounds)BoundsSnappingToUs);
             }
             return Vector2.zero;
         }
@@ -99,7 +113,19 @@ public class CollisionFactory
         /// <returns></returns>
         protected abstract bool IsOverlappingBox2DBounds(Box2DBounds BoxBounds);
 
-        protected abstract Vector2 GetNearestPointOnBounds(Box2DBounds BoxBounds);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="BoxBounds"></param>
+        /// <returns></returns>
+        protected abstract Vector2 GetOffsetForNearestHorizontalPointOnBoundsForBox2DBounds(Box2DBounds BoxBounds);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="BoxBounds"></param>
+        /// <returns></returns>
+        protected abstract Vector2 GetOffsetForNearestVerticalPointOnBoundsForBox2DBounds(Box2DBounds BoxBounds);
         #endregion abstract methods
     }
 
@@ -116,7 +142,7 @@ public class CollisionFactory
         /// <summary>
         /// Returns a vector2 values that represents the Box size based on the 
         /// </summary>
-        public Vector2 BoxSize { get { return new Vector2(UpRight.x - UpLeft.x, UpLeft.y - DownLeft.y); } }
+        public Vector2 BoxSize { get { return UpRight - DownLeft; } }
 
         #region override methods
         protected override Vector2 GetMinBounds()
@@ -145,14 +171,44 @@ public class CollisionFactory
                 Mathf.Abs(CenterA.y - CenterB.y) * 2 < (SizeA.y + SizeB.y);
         }
 
-        /// <summary>
-        /// Find
-        /// </summary>
-        /// <param name="BoxBounds"></param>
-        /// <returns></returns>
-        protected override Vector2 GetNearestPointOnBounds(Box2DBounds BoxBounds)
+        protected override Vector2 GetOffsetForNearestHorizontalPointOnBoundsForBox2DBounds(Box2DBounds BoxBounds)
         {
-            throw new NotImplementedException();
+            if (this.MinBounds.x > BoxBounds.MinBounds.x)
+            {
+                return new Vector2(BoxBounds.MaxBounds.x - this.MinBounds.x, 0);
+            }
+            else if (this.MaxBounds.x < BoxBounds.MaxBounds.x)
+            {
+                return new Vector2(BoxBounds.MinBounds.x - this.MaxBounds.x, 0);
+            }
+            else if(this.CenterPoint.x < BoxBounds.CenterPoint.x)
+            {
+                return new Vector2(BoxBounds.MinBounds.x - this.MaxBounds.x, 0);
+            }
+            else
+            {
+                return new Vector2(BoxBounds.MaxBounds.x - this.MinBounds.x, 0);
+            }
+        }
+
+        protected override Vector2 GetOffsetForNearestVerticalPointOnBoundsForBox2DBounds(Box2DBounds BoxBounds)
+        {
+            if (this.MinBounds.y > BoxBounds.MinBounds.y)
+            {
+                return new Vector2(0, this.MinBounds.y - BoxBounds.MaxBounds.y);
+            }
+            else if (this.MaxBounds.y < BoxBounds.MaxBounds.y)
+            {
+                return new Vector2(0, this.MaxBounds.y - BoxBounds.MinBounds.y);
+            }
+            else if (this.CenterPoint.y < BoxBounds.CenterPoint.y)
+            {
+                return new Vector2(0, BoxBounds.MinBounds.y - this.MaxBounds.y);
+            }
+            else
+            {
+                return new Vector2(0, BoxBounds.MaxBounds.y - this.MinBounds.y);
+            }
         }
 
         /// <summary>
@@ -160,7 +216,7 @@ public class CollisionFactory
         /// </summary>
         /// <param name="CenterPoint"></param>
         /// <param name="Size"></param>
-        public void UpdateColliderBounds(Vector2 CenterPoint, Vector2 Size)
+        public void SetColliderBoundsForBox2D(ref Vector2 CenterPoint, ref Vector2 Size)
         {
             UpLeft = CenterPoint + Vector2.up * Size.y / 2 + Vector2.left * Size.x / 2;
             UpRight = CenterPoint + Vector2.up * Size.y / 2 + Vector2.right * Size.x / 2;
@@ -180,6 +236,8 @@ public class CollisionFactory
                 UpLeft,
             };
         }
+
+        
     }
 
     /// <summary>
@@ -217,7 +275,12 @@ public class CollisionFactory
             throw new System.NotImplementedException();
         }
 
-        protected override Vector2 GetNearestPointOnBounds(Box2DBounds BoxBounds)
+        protected override Vector2 GetOffsetForNearestHorizontalPointOnBoundsForBox2DBounds(Box2DBounds BoxBounds)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Vector2 GetOffsetForNearestVerticalPointOnBoundsForBox2DBounds(Box2DBounds BoxBounds)
         {
             throw new NotImplementedException();
         }
@@ -247,7 +310,12 @@ public class CollisionFactory
             throw new System.NotImplementedException();
         }
 
-        protected override Vector2 GetNearestPointOnBounds(Box2DBounds BoxBounds)
+        protected override Vector2 GetOffsetForNearestHorizontalPointOnBoundsForBox2DBounds(Box2DBounds BoxBounds)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Vector2 GetOffsetForNearestVerticalPointOnBoundsForBox2DBounds(Box2DBounds BoxBounds)
         {
             throw new NotImplementedException();
         }

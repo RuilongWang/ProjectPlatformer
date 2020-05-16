@@ -16,11 +16,13 @@ public abstract class CustomCollider2D : MonoBehaviour {
 
     /// <summary>
     /// The assigned type of collision this collision component is using
+    /// 
+    /// NOTE: This value cannot be changed after a collider is first created
     /// </summary>
     public enum CollisionType
     {
         STATIC,//Never expected to move. Good for most environmental colliders
-        MOVABLE,//Can move, but does not trace for collision.
+        MOVABLE,//Can move, but does not trace for collision. Will also not be affected by other colliders it passes through
         PHYSICS,//This collider contains a physics component and will collide with objects due to physics.
     }
 
@@ -32,34 +34,32 @@ public abstract class CustomCollider2D : MonoBehaviour {
     /// <summary>
     /// The associated physics component of our collider. If this is a static or moveable object, you more than likely should not have a physics component attached to this object.
     /// </summary>
-    private CustomPhysics2D AssociatePhysicsComponent;
+    protected CustomPhysics2D AssociatedPhysicsComponent;
 
-    [Tooltip("The assigned collision type of our collision component. This will determine how we handle updates in our Collision manager for optimization")]
+    [Tooltip("The assigned collision type of our collision component. This will determine how we handle updates in our Collision Manager for optimization")]
     public CollisionType AssignedCollisionType;
     [Tooltip("Mark this true if you are using a character. This will make it so that our collider is formed around their feet as a center point. This makes it easier for scaling while in game")]
     public bool IsCharacterCollider;
     
     [Tooltip("The offset of our collider bounds.")]
     public Vector2 ColliderOffset;
+
+    [Tooltip("The collision's assigned physics layer. You can set what layers will collide with other layers using the Layer Collision Matrix in Unity")]
+    public int CollisionLayer;
     #region monobehaivour methods
     protected virtual void Awake()
     {
         GameOverseer.Instance.PhysicsManager.AddCollider2DToPhysicsManager(this);
-        AssociatePhysicsComponent = GetComponent<CustomPhysics2D>();
-        if (AssociatePhysicsComponent && AssignedCollisionType != CollisionType.PHYSICS)
+        AssociatedPhysicsComponent = GetComponent<CustomPhysics2D>();
+        if (AssociatedPhysicsComponent && AssignedCollisionType != CollisionType.PHYSICS)
         {
             Debug.LogWarning("Your collider contains a physics component, but is not set to CollisionType - 'Physics'. Are you sure this is correct?");
         }
-        else if (!AssociatePhysicsComponent && AssignedCollisionType == CollisionType.PHYSICS)
+        else if (!AssociatedPhysicsComponent && AssignedCollisionType == CollisionType.PHYSICS)
         {
             Debug.LogWarning("You collider does not contain a Physics component, but is assigned to CollisionType - 'Physics'. This can not work");
         }
         UpdateColliderBounds();//We want to update the collider bounds on awake
-    }
-
-    protected virtual void Start()
-    {
-
     }
 
     private void OnDestroy()
@@ -77,9 +77,12 @@ public abstract class CustomCollider2D : MonoBehaviour {
         {
             UpdateColliderBounds();
         }
+
+        CollisionLayer = this.gameObject.layer;
 #endif 
     }
     #endregion monobehaviour methods
+    public CollisionFactory.Bounds GetAssociatedBounds() { return AssociatedBounds; }
 
     /// <summary>
     /// This method needs to be called to appropriately run collision methods for our collider
@@ -90,12 +93,24 @@ public abstract class CustomCollider2D : MonoBehaviour {
         this.AssociatedBounds = BoundsToAssign;
     }
 
+    protected Vector2 GetOffsetForNearestHorizontalPointOnBoundsForCollider(CustomCollider2D OtherCollider)
+    {
+        return this.AssociatedBounds.GetOffsetToClosestHorizontalPointOnBounds(OtherCollider.AssociatedBounds);
+    }
+
+    protected Vector2 GetOffsetForNearesVerticalPointOnBoundsForCollider(CustomCollider2D OtherCollider)
+    {
+        return this.AssociatedBounds.GetOffsetToClosestVerticalPointOnBounds(OtherCollider.AssociatedBounds);
+    }
+
 
     #region virtual methods
     /// <summary>
     /// This should be called every frame to appropiately update the collision bounds based on position, scale, etc.
     /// </summary>
     public abstract void UpdateColliderBounds();
+
+    public abstract void UpdatePhysicsColliderBounds();
 
     /// <summary>
     /// Is our Collider overlapping the collider that is passed in
@@ -106,6 +121,20 @@ public abstract class CustomCollider2D : MonoBehaviour {
     {
         return this.AssociatedBounds.IsOverlappingBounds(OtherCollider.AssociatedBounds);
     }
+
+    public abstract bool IsPhysicsColliderOverlapping(CustomCollider2D OtherCollider);
+
+    /// <summary>
+    /// This method will move the collider component that is passed in to the nearest horizontal position that is along its bounds
+    /// </summary>
+    /// <param name="OtherCollider"></param>
+    public abstract void HorizontallyPushOutCollider(CustomCollider2D OtherCollider);
+
+    /// <summary>
+    /// This method will move the collider component that is passed in to the nearest vertical position that is along its bounds
+    /// </summary>
+    /// <param name="OtherCollider"></param>
+    public abstract void VerticallyPushOutCollider(CustomCollider2D OtherCollider);
     #endregion virtual methods
 
 }

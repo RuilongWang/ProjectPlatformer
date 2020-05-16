@@ -84,11 +84,6 @@ public class CustomPhysics2D : MonoBehaviour {
     }
     #endregion monobehaviour methods
 
-    #region event methods
-    public UnityAction OnGroundedEvent;
-    public UnityAction OnAirborneEvent;
-    #endregion event methods
-
     /// <summary>
     /// Updates the current velocity that is caused by gravitational force
     /// </summary>

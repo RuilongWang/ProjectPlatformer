@@ -118,9 +118,8 @@ public class CharacterMovement : MonoBehaviour
     {
         AssociatedCharacter = GetComponent<Character>();
         Rigid = GetComponent<CustomPhysics2D>();
-        Rigid.OnGroundedEvent += OnCharacterLanded;
-        Rigid.OnAirborneEvent += OnCharacterAirborne;
         DoubleJumpsRemaining = DoubleJumpCount;
+
         AdjustGravityBasedOnJumpValues();
     }
 
