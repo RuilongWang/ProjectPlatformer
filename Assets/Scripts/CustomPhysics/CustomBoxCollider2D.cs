@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.SocialPlatforms;
 
 public class CustomBoxCollider2D : CustomCollider2D
 {
@@ -15,14 +16,17 @@ public class CustomBoxCollider2D : CustomCollider2D
     public CollisionFactory.Box2DBounds Box2DBounds;
     public CollisionFactory.Box2DBounds PhysicsBoxBounds;
     public Vector2 BoxColliderSize = Vector2.one;
+    [Tooltip("This is the buffer that we will give our physics colliders so that we do not run into instances where we collide with a wall in the opposite direction of our movement.")]
+    public Vector2 BufferSizePhysicsCollision = Vector2.zero;
 
     #region monobehaviour methods
     protected override void Awake()
     {
-        Box2DBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.Box);
+        Box2DBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.BOX);
         if (AssignedCollisionType == CollisionType.PHYSICS)
         {
-            PhysicsBoxBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.Box);
+            Box2DBounds.BufferBounds = BufferSizePhysicsCollision;
+            PhysicsBoxBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.BOX);
         }
         AssignBoundsToCollider(Box2DBounds);
         base.Awake();
@@ -65,8 +69,8 @@ public class CustomBoxCollider2D : CustomCollider2D
     public override void UpdateColliderBounds()
     {
         Vector2 AdjustedCeneterPoint = transform.position;
-        AdjustedCeneterPoint += (ColliderOffset * transform.root.localScale);
-        Vector2 BoxSize = BoxColliderSize * transform.root.localScale;
+        AdjustedCeneterPoint += (ColliderOffset * transform.localScale);
+        Vector2 BoxSize = BoxColliderSize * transform.localScale;
 
         if (IsCharacterCollider)//If this is a character, we will move the base of the collider to the character's feet
         {
@@ -78,7 +82,8 @@ public class CustomBoxCollider2D : CustomCollider2D
 
     public override void UpdatePhysicsColliderBounds()
     {
-        Vector2 OffsetFromVelocity = AssociatedPhysicsComponent.Velocity * GameOverseer.DELTA_TIME;
+
+        Vector2 OffsetFromVelocity = (AssociatedPhysicsComponent.Velocity * GameOverseer.DELTA_TIME);
         Vector2 NewBoxSize = Box2DBounds.BoxSize + new Vector2(Mathf.Abs(OffsetFromVelocity.x), Mathf.Abs(OffsetFromVelocity.y));
         Vector2 NewBoxCenter = Box2DBounds.CenterPoint + OffsetFromVelocity / 2f;
         PhysicsBoxBounds.SetColliderBoundsForBox2D(ref NewBoxCenter, ref NewBoxSize);
@@ -104,7 +109,7 @@ public class CustomBoxCollider2D : CustomCollider2D
     /// 
     /// </summary>
     /// <param name="OtherCollider"></param>
-    public override void HorizontallyPushOutCollider(CustomCollider2D OtherCollider)
+    protected override void HorizontallyPushOutCollider(CustomCollider2D OtherCollider)
     {
         Vector3 Offset = GetOffsetForNearestHorizontalPointOnBoundsForCollider(OtherCollider);
         OtherCollider.transform.position = OtherCollider.transform.position + Offset;
@@ -114,7 +119,7 @@ public class CustomBoxCollider2D : CustomCollider2D
     /// 
     /// </summary>
     /// <param name="OtherCollider"></param>
-    public override void VerticallyPushOutCollider(CustomCollider2D OtherCollider)
+    protected override void VerticallyPushOutCollider(CustomCollider2D OtherCollider)
     {
         Vector3 Offset = GetOffsetForNearesVerticalPointOnBoundsForCollider(OtherCollider);
         OtherCollider.transform.position = OtherCollider.transform.position + Offset;

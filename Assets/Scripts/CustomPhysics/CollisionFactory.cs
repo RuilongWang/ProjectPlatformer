@@ -7,9 +7,10 @@ public class CollisionFactory
 {
     public enum ECollisionShape
     {
-        Box,
-        Circle,//NOT IMPLEMENTED
-        Capsule,//NOT IMPLEMENTED
+        NONE,
+        BOX,
+        CIRCLE,//NOT IMPLEMENTED
+        CAPSULE,//NOT IMPLEMENTED
     }
 
     /// <summary>
@@ -20,13 +21,14 @@ public class CollisionFactory
     {
         switch (BoundsCollisionShape)
         {
-            case ECollisionShape.Box:
+            case ECollisionShape.BOX:
                 return new Box2DBounds();
-            case ECollisionShape.Circle:
-                return new CircleBounds();
-            case ECollisionShape.Capsule:
+            case ECollisionShape.CIRCLE:
+                return new Circle2DBounds();
+            case ECollisionShape.CAPSULE:
                 return new Capsule2DBounds();
             default:
+                Debug.LogWarning("You passed in an unsupported Collision Shape.");
                 return new Box2DBounds();
         }
     }
@@ -35,8 +37,12 @@ public class CollisionFactory
     #region collision bounds refs
     public abstract class Bounds
     {
-        public Vector2 CenterPoint { get { return GetCenterPoint(); } }
+        /// <summary>
+        /// This value identifies the shape of our collider. This is primarily for optimization when checking what type of shape we are using rather than comparing against the class type
+        /// </summary>
+        protected ECollisionShape CollisionShape = ECollisionShape.NONE;
 
+        public Vector2 CenterPoint { get { return GetCenterPoint(); } }
         public Vector2 MinBounds { get { return GetMinBounds(); } }
         public Vector2 MaxBounds { get { return GetMaxBounds(); } }
 
@@ -48,32 +54,39 @@ public class CollisionFactory
         /// <returns></returns>
         public bool IsOverlappingBounds(Bounds BoundsToCheck)
         {
-            if (BoundsToCheck is Box2DBounds)
+            switch (BoundsToCheck.CollisionShape)
             {
-                return IsOverlappingBox2DBounds((Box2DBounds)BoundsToCheck);
+                case ECollisionShape.BOX:
+                    return IsOverlappingBox2DBounds((Box2DBounds)BoundsToCheck);
+                default:
+                    Debug.LogWarning("The Bounds shape you have passed in is not supported");
+                    return false;
             }
-
-            return false;
         }
-
         /// <summary>
-        /// You can cast or 'stretch' our collider to see if anything in the direction and magnitude of our CastOffset is in our way.
-        /// If you are using physics collisions, CastOffset should equal the value of how much we are going to move in the next frame
-        /// which would be DeltaTime * Velocity
+        /// This method will return whether or not we should push our our collider in the vertical direction or the horizontal direction. You can also check for overlaps
+        /// with an overlap applied to it
         /// </summary>
-        /// <param name="BoundsToCheck"></param>
-        /// <param name="CastOffset"></param>
-        /// <param name="BufferAmount"></param>
-        /// <returns></returns>
-        public bool CastCollisionForPhysicsOverlap(Bounds BoundsToCheck, Vector2 CastOffset, Vector2 BufferAmount)
+        /// <param name="OtherBounds"></param>
+        /// <param name="ShouldPushOutVertically"></param>
+        /// <param name="ShouldPushOutHorizontally"></param>
+        /// <param name="UseBufferForOverlap"></param>
+        public void ShouldPushOutBounds(Bounds OtherBounds, out bool ShouldPushOutVertically, out bool ShouldPushOutHorizontally, bool UseBufferForOverlap = false)
         {
-            if (BoundsToCheck is Box2DBounds)
+            switch (OtherBounds.CollisionShape)
             {
-                 
+                case ECollisionShape.BOX:
+                    ShouldPushOutBox2dBounds((Box2DBounds)OtherBounds, out ShouldPushOutVertically, out ShouldPushOutHorizontally, UseBufferForOverlap);
+                    return;
+                default:
+                    Debug.LogWarning("The bounds shape that you have passed in is not supported");
+                    ShouldPushOutVertically = false;
+                    ShouldPushOutHorizontally = false;
+                    return;
             }
-
-            return false;
         }
+
+        protected abstract void ShouldPushOutBox2dBounds(Box2DBounds OtherBounds, out bool ShouldPushOutVertically, out bool ShouldPushOutHorizontally, bool UseBufferForOverlap = false);
 
         /// <summary>
         /// This method will find the nearest point on the collider that is passed in to snap to. 
@@ -81,11 +94,14 @@ public class CollisionFactory
         /// <param name="BoundsSnappingToUs"></param>
         public Vector2 GetOffsetToClosestHorizontalPointOnBounds(Bounds BoundsSnappingToUs)
         {
-            if (BoundsSnappingToUs is Box2DBounds)
+            switch (BoundsSnappingToUs.CollisionShape)
             {
-                return GetOffsetForNearestHorizontalPointOnBoundsForBox2DBounds((Box2DBounds)BoundsSnappingToUs);
+                case ECollisionShape.BOX:
+                    return GetOffsetForNearestHorizontalPointOnBoundsForBox2DBounds((Box2DBounds)BoundsSnappingToUs);
+                default:
+                    Debug.LogWarning("The bounds shape you have passed in is not currently supproted");
+                    return Vector2.zero;
             }
-            return Vector2.zero;
         }
 
         /// <summary>
@@ -95,11 +111,14 @@ public class CollisionFactory
         /// <returns></returns>
         public Vector2 GetOffsetToClosestVerticalPointOnBounds(Bounds BoundsSnappingToUs)
         {
-            if (BoundsSnappingToUs is Box2DBounds)
+            switch (BoundsSnappingToUs.CollisionShape)
             {
-                return GetOffsetForNearestVerticalPointOnBoundsForBox2DBounds((Box2DBounds)BoundsSnappingToUs);
+                case ECollisionShape.BOX:
+                    return GetOffsetForNearestVerticalPointOnBoundsForBox2DBounds((Box2DBounds)BoundsSnappingToUs);
+                default:
+                    Debug.LogWarning("The bounds shape that you have passed in is not currently supported");
+                    return Vector2.zero;
             }
-            return Vector2.zero;
         }
 
         #region abstract methods
@@ -138,11 +157,18 @@ public class CollisionFactory
         public Vector2 UpRight;
         public Vector2 DownLeft;
         public Vector2 DownRight;
+        public Vector2 BufferBounds;
+
 
         /// <summary>
         /// Returns a vector2 values that represents the Box size based on the 
         /// </summary>
         public Vector2 BoxSize { get { return UpRight - DownLeft; } }
+
+        public Box2DBounds()
+        {
+            this.CollisionShape = ECollisionShape.BOX;
+        }
 
         #region override methods
         protected override Vector2 GetMinBounds()
@@ -160,15 +186,29 @@ public class CollisionFactory
             return (DownLeft + UpRight) / 2f;
         }
 
-        protected override bool IsOverlappingBox2DBounds(Box2DBounds BoxBounds)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="OtherBoxBounds"></param>
+        /// <returns></returns>
+        protected override bool IsOverlappingBox2DBounds(Box2DBounds OtherBoxBounds)
+        {
+            bool ShouldPushOutVertically, ShouldPushOutHorizontally;
+            ShouldPushOutBox2dBounds(OtherBoxBounds, out ShouldPushOutVertically, out ShouldPushOutHorizontally);
+
+            return ShouldPushOutVertically && ShouldPushOutHorizontally;
+                
+        }
+
+        protected override void ShouldPushOutBox2dBounds(Box2DBounds OtherBoxBounds, out bool ShouldPushOutVertically, out bool ShouldPushOutHorizontally, bool UseBufferForOverlap = false)
         {
             Vector2 CenterA = this.GetCenterPoint();
-            Vector2 CenterB = BoxBounds.GetCenterPoint();
+            Vector2 CenterB = OtherBoxBounds.GetCenterPoint();
             Vector2 SizeA = this.GetMaxBounds() - this.GetMinBounds();
-            Vector2 SizeB = BoxBounds.GetMaxBounds() - BoxBounds.GetMinBounds();
+            Vector2 SizeB = (OtherBoxBounds.GetMaxBounds() - OtherBoxBounds.GetMinBounds()) - OtherBoxBounds.BufferBounds;
 
-            return (Mathf.Abs(CenterA.x - CenterB.x) * 2) < (SizeA.x + SizeB.x) &&
-                Mathf.Abs(CenterA.y - CenterB.y) * 2 < (SizeA.y + SizeB.y);
+            ShouldPushOutVertically = (Mathf.Abs(CenterA.x - CenterB.x) * 2) < (SizeA.x + SizeB.x);
+            ShouldPushOutHorizontally = Mathf.Abs(CenterA.y - CenterB.y) * 2 < (SizeA.y + SizeB.y);
         }
 
         protected override Vector2 GetOffsetForNearestHorizontalPointOnBoundsForBox2DBounds(Box2DBounds BoxBounds)
@@ -236,17 +276,20 @@ public class CollisionFactory
                 UpLeft,
             };
         }
-
-        
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public class CircleBounds : Bounds
+    public class Circle2DBounds : Bounds
     {
+        public Vector2 Center;
         public float Radius;
-        private Vector2 Center;
+
+        public Circle2DBounds()
+        {
+            this.CollisionShape = ECollisionShape.CIRCLE;
+        }
 
         #region override methods
         protected override Vector2 GetCenterPoint()
@@ -275,6 +318,11 @@ public class CollisionFactory
             throw new System.NotImplementedException();
         }
 
+        protected override void ShouldPushOutBox2dBounds(Box2DBounds OtherBounds, out bool ShouldPushOutVertically, out bool ShouldPushOutHorizontally, bool UseBufferForOverlap = false)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override Vector2 GetOffsetForNearestHorizontalPointOnBoundsForBox2DBounds(Box2DBounds BoxBounds)
         {
             throw new NotImplementedException();
@@ -289,6 +337,9 @@ public class CollisionFactory
 
     public class Capsule2DBounds : Bounds
     {
+        public float Radius;
+        public float Size;
+
         #region override methods
         protected override Vector2 GetCenterPoint()
         {
@@ -308,6 +359,11 @@ public class CollisionFactory
         protected override bool IsOverlappingBox2DBounds(Box2DBounds BoxBounds)
         {
             throw new System.NotImplementedException();
+        }
+
+        protected override void ShouldPushOutBox2dBounds(Box2DBounds OtherBounds, out bool ShouldPushOutVertically, out bool ShouldPushOutHorizontally, bool UseBufferForOverlap = false)
+        {
+            throw new NotImplementedException();
         }
 
         protected override Vector2 GetOffsetForNearestHorizontalPointOnBoundsForBox2DBounds(Box2DBounds BoxBounds)

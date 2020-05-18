@@ -18,7 +18,7 @@ public class HitboxRect : Hitbox
     protected override void Awake()
     {
         base.Awake();
-        Box2DBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.Box);
+        Box2DBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.BOX);
         AssignHitboxBounds(Box2DBounds);
     }
 
@@ -28,7 +28,7 @@ public class HitboxRect : Hitbox
 
         if (Box2DBounds == null)
         {
-            Box2DBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.Box);
+            Box2DBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.BOX);
         }
         if (!Application.isPlaying)
         {

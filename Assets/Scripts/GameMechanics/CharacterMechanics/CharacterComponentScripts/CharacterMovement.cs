@@ -89,11 +89,6 @@ public class CharacterMovement : MonoBehaviour
 
     #region animator variables
     /// <summary>
-    /// Reference to our character's animator component
-    /// </summary>
-    private Animator CharacterAnimator { get { return AssociatedCharacter.CharacterAnimator; } }
-
-    /// <summary>
     /// Overrides our velocity update with the desired velocity from our animation. There will still be acceleration applied, but goal velocity is strictly set from our animation
     /// </summary>
     public bool OverrideMovementWithAnimation;

@@ -9,6 +9,7 @@ using UnityEngine;
 /// </summary>
 public class Character : MonoBehaviour
 {
+
     #region main variables
     [Tooltip("The name associated with the character. This is primarily for any dialogue conversations that we may encounter, but it can also be used to to keep track of types of enemies we kill for stats")]
     public string CharacterName = "No Name";
@@ -29,7 +30,6 @@ public class Character : MonoBehaviour
     public Animator CharacterAnimator { get; private set; }
 
     #endregion main varialbes
-
 
     #region monobehaivour methods
     protected virtual void Awake()

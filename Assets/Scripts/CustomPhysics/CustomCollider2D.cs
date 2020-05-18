@@ -124,17 +124,33 @@ public abstract class CustomCollider2D : MonoBehaviour {
 
     public abstract bool IsPhysicsColliderOverlapping(CustomCollider2D OtherCollider);
 
+    public void PushOutCollider(CustomCollider2D OtherCollider, bool UseBufferForOverlap = false)
+    {
+        bool ShouldPushOutVertically, ShouldPushOutHorizontally;
+        AssociatedBounds.ShouldPushOutBounds(OtherCollider.AssociatedBounds, out ShouldPushOutVertically, out ShouldPushOutHorizontally, UseBufferForOverlap);
+        if (ShouldPushOutVertically)
+        {
+            VerticallyPushOutCollider(OtherCollider);
+            if (OtherCollider.AssignedCollisionType == CollisionType.PHYSICS) OtherCollider.AssociatedPhysicsComponent.Velocity.y = 0;
+        }
+        if (ShouldPushOutHorizontally)
+        {
+            HorizontallyPushOutCollider(OtherCollider);
+            if (OtherCollider.AssignedCollisionType == CollisionType.PHYSICS) OtherCollider.AssociatedPhysicsComponent.Velocity.x = 0;
+        }
+    }
+
     /// <summary>
     /// This method will move the collider component that is passed in to the nearest horizontal position that is along its bounds
     /// </summary>
     /// <param name="OtherCollider"></param>
-    public abstract void HorizontallyPushOutCollider(CustomCollider2D OtherCollider);
+    protected abstract void HorizontallyPushOutCollider(CustomCollider2D OtherCollider);
 
     /// <summary>
     /// This method will move the collider component that is passed in to the nearest vertical position that is along its bounds
     /// </summary>
     /// <param name="OtherCollider"></param>
-    public abstract void VerticallyPushOutCollider(CustomCollider2D OtherCollider);
+    protected abstract void VerticallyPushOutCollider(CustomCollider2D OtherCollider);
     #endregion virtual methods
 
 }

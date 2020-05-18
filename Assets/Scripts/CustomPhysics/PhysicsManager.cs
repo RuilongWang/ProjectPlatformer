@@ -29,15 +29,26 @@ public class PhysicsManager : MonoBehaviour
     private void LateUpdate()
     {
         GameOverseer.Instance.HitboxManager.UpdateHitboxManager();
-        UpdateAllValidPhysicsComponents();
-
+        UpdateGravityForPhysicsComponents();
         UpdateBoundsOfColliders();
         CheckOfrOverlappingColliders();
+        UpdateAllValidPhysicsComponents();
     }
     #endregion monobehaivour methods
 
 
     #region custom physics methods
+    private void UpdateGravityForPhysicsComponents()
+    {
+        foreach (CustomPhysics2D PhysicsComponent in AllActivePhysicsComponents)
+        {
+            if (PhysicsComponent.gameObject.activeInHierarchy)
+            {
+                PhysicsComponent.UpdateVelocityFromGravity();
+            }
+        }
+    }
+
     private void UpdateBoundsOfColliders()
     {
         foreach (KeyValuePair<CustomCollider2D.CollisionType, HashSet<CustomCollider2D>> KeyValueColliderDictionaryData in AllActiveCollider2DComponentsInLevel)
@@ -63,7 +74,7 @@ public class PhysicsManager : MonoBehaviour
                 if (!Physics2D.GetIgnoreLayerCollision(PhysicsCollider.CollisionLayer, StaticCollider.CollisionLayer) &&
                     PhysicsCollider.IsPhysicsColliderOverlapping(StaticCollider))
                 {
-                    StaticCollider.VerticallyPushOutCollider(PhysicsCollider);
+                    StaticCollider.PushOutCollider(PhysicsCollider, true);
                 }
             }
         }
@@ -80,7 +91,6 @@ public class PhysicsManager : MonoBehaviour
         {
             if (PhysicsComponent.gameObject.activeInHierarchy)
             {
-                PhysicsComponent.UpdateVelocityFromGravity();
                 PhysicsComponent.UpdatePhysics();
             }
         }
