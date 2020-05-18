@@ -19,7 +19,7 @@ public abstract class CustomCollider2D : MonoBehaviour {
     /// 
     /// NOTE: This value cannot be changed after a collider is first created
     /// </summary>
-    public enum CollisionType
+    public enum ECollisionType
     {
         STATIC,//Never expected to move. Good for most environmental colliders
         MOVABLE,//Can move, but does not trace for collision. Will also not be affected by other colliders it passes through
@@ -37,7 +37,7 @@ public abstract class CustomCollider2D : MonoBehaviour {
     protected CustomPhysics2D AssociatedPhysicsComponent;
 
     [Tooltip("The assigned collision type of our collision component. This will determine how we handle updates in our Collision Manager for optimization")]
-    public CollisionType AssignedCollisionType;
+    public ECollisionType AssignedCollisionType;
     [Tooltip("Mark this true if you are using a character. This will make it so that our collider is formed around their feet as a center point. This makes it easier for scaling while in game")]
     public bool IsCharacterCollider;
     
@@ -51,11 +51,11 @@ public abstract class CustomCollider2D : MonoBehaviour {
     {
         GameOverseer.Instance.PhysicsManager.AddCollider2DToPhysicsManager(this);
         AssociatedPhysicsComponent = GetComponent<CustomPhysics2D>();
-        if (AssociatedPhysicsComponent && AssignedCollisionType != CollisionType.PHYSICS)
+        if (AssociatedPhysicsComponent && AssignedCollisionType != ECollisionType.PHYSICS)
         {
             Debug.LogWarning("Your collider contains a physics component, but is not set to CollisionType - 'Physics'. Are you sure this is correct?");
         }
-        else if (!AssociatedPhysicsComponent && AssignedCollisionType == CollisionType.PHYSICS)
+        else if (!AssociatedPhysicsComponent && AssignedCollisionType == ECollisionType.PHYSICS)
         {
             Debug.LogWarning("You collider does not contain a Physics component, but is assigned to CollisionType - 'Physics'. This can not work");
         }
@@ -131,12 +131,12 @@ public abstract class CustomCollider2D : MonoBehaviour {
         if (ShouldPushOutVertically)
         {
             VerticallyPushOutCollider(OtherCollider);
-            if (OtherCollider.AssignedCollisionType == CollisionType.PHYSICS) OtherCollider.AssociatedPhysicsComponent.Velocity.y = 0;
+            if (OtherCollider.AssignedCollisionType == ECollisionType.PHYSICS) OtherCollider.AssociatedPhysicsComponent.Velocity.y = 0;
         }
         if (ShouldPushOutHorizontally)
         {
             HorizontallyPushOutCollider(OtherCollider);
-            if (OtherCollider.AssignedCollisionType == CollisionType.PHYSICS) OtherCollider.AssociatedPhysicsComponent.Velocity.x = 0;
+            if (OtherCollider.AssignedCollisionType == ECollisionType.PHYSICS) OtherCollider.AssociatedPhysicsComponent.Velocity.x = 0;
         }
     }
 

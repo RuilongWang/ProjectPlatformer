@@ -17,7 +17,7 @@ public class PhysicsManager : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    public Dictionary<CustomCollider2D.CollisionType, HashSet<CustomCollider2D>> AllActiveCollider2DComponentsInLevel = new Dictionary<CustomCollider2D.CollisionType, HashSet<CustomCollider2D>>();
+    public Dictionary<CustomCollider2D.ECollisionType, HashSet<CustomCollider2D>> AllActiveCollider2DComponentsInLevel = new Dictionary<CustomCollider2D.ECollisionType, HashSet<CustomCollider2D>>();
     #endregion main variables
 
     #region monobehaviour methods
@@ -51,7 +51,7 @@ public class PhysicsManager : MonoBehaviour
 
     private void UpdateBoundsOfColliders()
     {
-        foreach (KeyValuePair<CustomCollider2D.CollisionType, HashSet<CustomCollider2D>> KeyValueColliderDictionaryData in AllActiveCollider2DComponentsInLevel)
+        foreach (KeyValuePair<CustomCollider2D.ECollisionType, HashSet<CustomCollider2D>> KeyValueColliderDictionaryData in AllActiveCollider2DComponentsInLevel)
         {
             foreach (CustomCollider2D Collider2D in KeyValueColliderDictionaryData.Value)
             {
@@ -59,7 +59,7 @@ public class PhysicsManager : MonoBehaviour
             }
         }
 
-        foreach (CustomCollider2D PhysicsCollider in AllActiveCollider2DComponentsInLevel[CustomCollider2D.CollisionType.PHYSICS])
+        foreach (CustomCollider2D PhysicsCollider in AllActiveCollider2DComponentsInLevel[CustomCollider2D.ECollisionType.PHYSICS])
         {
             PhysicsCollider.UpdatePhysicsColliderBounds();
         }
@@ -67,9 +67,9 @@ public class PhysicsManager : MonoBehaviour
 
     private void CheckOfrOverlappingColliders()
     {
-        foreach (CustomCollider2D PhysicsCollider in AllActiveCollider2DComponentsInLevel[CustomCollider2D.CollisionType.PHYSICS])
+        foreach (CustomCollider2D PhysicsCollider in AllActiveCollider2DComponentsInLevel[CustomCollider2D.ECollisionType.PHYSICS])
         {
-            foreach (CustomCollider2D StaticCollider in AllActiveCollider2DComponentsInLevel[CustomCollider2D.CollisionType.STATIC])
+            foreach (CustomCollider2D StaticCollider in AllActiveCollider2DComponentsInLevel[CustomCollider2D.ECollisionType.STATIC])
             {
                 if (!Physics2D.GetIgnoreLayerCollision(PhysicsCollider.CollisionLayer, StaticCollider.CollisionLayer) &&
                     PhysicsCollider.IsPhysicsColliderOverlapping(StaticCollider))

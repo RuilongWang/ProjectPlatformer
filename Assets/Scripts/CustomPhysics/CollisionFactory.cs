@@ -215,11 +215,11 @@ public class CollisionFactory
         {
             if (this.MinBounds.x > BoxBounds.MinBounds.x)
             {
-                return new Vector2(BoxBounds.MaxBounds.x - this.MinBounds.x, 0);
+                return new Vector2(this.MinBounds.x - BoxBounds.MaxBounds.x, 0);
             }
             else if (this.MaxBounds.x < BoxBounds.MaxBounds.x)
             {
-                return new Vector2(BoxBounds.MinBounds.x - this.MaxBounds.x, 0);
+                return new Vector2(this.MaxBounds.x - BoxBounds.MinBounds.x, 0);
             }
             else if(this.CenterPoint.x < BoxBounds.CenterPoint.x)
             {

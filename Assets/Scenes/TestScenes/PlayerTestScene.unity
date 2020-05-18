@@ -1127,6 +1127,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1333620915, guid: 023f024913ec1594b858a0947da9261f, type: 3}
+      propertyPath: JumpHeight
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1333620915, guid: 023f024913ec1594b858a0947da9261f, type: 3}
+      propertyPath: TimeToReachJumpApex
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 5895057180388670320, guid: 023f024913ec1594b858a0947da9261f,
         type: 3}
       propertyPath: m_LocalPosition.x

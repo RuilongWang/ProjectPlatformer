@@ -13,8 +13,9 @@ public class CustomBoxCollider2D : CustomCollider2D
     public Vector2 DownRightBounds { get { return Box2DBounds.DownRight; } }
     #endregion bounding variables
 
-    public CollisionFactory.Box2DBounds Box2DBounds;
-    public CollisionFactory.Box2DBounds PhysicsBoxBounds;
+
+    protected CollisionFactory.Box2DBounds Box2DBounds;
+    protected CollisionFactory.Box2DBounds PhysicsBoxBounds;
     public Vector2 BoxColliderSize = Vector2.one;
     [Tooltip("This is the buffer that we will give our physics colliders so that we do not run into instances where we collide with a wall in the opposite direction of our movement.")]
     public Vector2 BufferSizePhysicsCollision = Vector2.zero;
@@ -23,7 +24,7 @@ public class CustomBoxCollider2D : CustomCollider2D
     protected override void Awake()
     {
         Box2DBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.BOX);
-        if (AssignedCollisionType == CollisionType.PHYSICS)
+        if (AssignedCollisionType == ECollisionType.PHYSICS)
         {
             Box2DBounds.BufferBounds = BufferSizePhysicsCollision;
             PhysicsBoxBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.BOX);
@@ -54,6 +55,11 @@ public class CustomBoxCollider2D : CustomCollider2D
     }
 #endif
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="BoxBounds"></param>
+    /// <param name="ColorToDraw"></param>
     private void DrawBoxColliderBounds(CollisionFactory.Box2DBounds BoxBounds, Color ColorToDraw)
     {
         UnityEditor.Handles.color = ColorToDraw;
@@ -80,12 +86,24 @@ public class CustomBoxCollider2D : CustomCollider2D
         Box2DBounds.SetColliderBoundsForBox2D(ref AdjustedCeneterPoint, ref BoxSize);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public override void UpdatePhysicsColliderBounds()
     {
-
         Vector2 OffsetFromVelocity = (AssociatedPhysicsComponent.Velocity * GameOverseer.DELTA_TIME);
         Vector2 NewBoxSize = Box2DBounds.BoxSize + new Vector2(Mathf.Abs(OffsetFromVelocity.x), Mathf.Abs(OffsetFromVelocity.y));
         Vector2 NewBoxCenter = Box2DBounds.CenterPoint + OffsetFromVelocity / 2f;
+        if (AssociatedPhysicsComponent.Velocity.y != 0)
+        {
+            NewBoxCenter.y += Mathf.Sign(AssociatedPhysicsComponent.Velocity.y) * BufferSizePhysicsCollision.y;
+            NewBoxSize.y -= BufferSizePhysicsCollision.y / 2;
+        }
+        if (AssociatedPhysicsComponent.Velocity.x != 0)
+        {
+            NewBoxCenter.x += Mathf.Sign(AssociatedPhysicsComponent.Velocity.x) * BufferSizePhysicsCollision.x;
+            NewBoxSize.x -= BufferSizePhysicsCollision.x / 2;
+        }
         PhysicsBoxBounds.SetColliderBoundsForBox2D(ref NewBoxCenter, ref NewBoxSize);
     }
 
