@@ -8,12 +8,18 @@ using UnityEngine;
 /// </summary>
 public class GameOverseer : MonoBehaviour
 {
+    #region const variables
+    public const int TARGET_FRAME_RATE = 60;
+    #endregion const variables
+
+
     #region static variables
     public static float DELTA_TIME
     {
         get
         {
-            return 1f / 60f * Time.timeScale;
+            //return Time.deltaTime;
+            return 1f / TARGET_FRAME_RATE * Time.timeScale;
         }
     }
 
@@ -44,6 +50,7 @@ public class GameOverseer : MonoBehaviour
     {
         instance = this;
         GameOverseer.FRAME_COUNT = 0;
+        Application.targetFrameRate = TARGET_FRAME_RATE;
     }
 
     private void Update()
