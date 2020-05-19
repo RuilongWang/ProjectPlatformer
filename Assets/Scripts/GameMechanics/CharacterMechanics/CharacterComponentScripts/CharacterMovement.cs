@@ -65,12 +65,12 @@ public class CharacterMovement : MonoBehaviour
     /// <summary>
     /// Input variable that store the intended directions based on what our controllers pass in
     /// </summary>
-    private float HorizontalInput;
+    public float HorizontalInput { get; private set; }
 
     /// <summary>
     /// 
     /// </summary>
-    private float VerticalInput;
+    public float VerticalInput { get; private set; }
     /// <summary>
     /// The remaining number jumps that we can execute in the air 
     /// </summary>
@@ -84,6 +84,11 @@ public class CharacterMovement : MonoBehaviour
     /// The current movement state of our character
     /// </summary>
     public MovementState CurrentMovementState { get; private set; }
+
+    [Header("Character Orientation")]
+    [Tooltip("This will indicate that our character is facing in the 'Right' direction. This translates to our character's sprite renderer object have a positive localscale on the x-axis")]
+    public bool IsCharacterFacingRight = true;
+
 
     private Character AssociatedCharacter;
 
@@ -171,6 +176,11 @@ public class CharacterMovement : MonoBehaviour
     public virtual void ApplyHorizontalInput(float HorizontalInput)
     {
         this.HorizontalInput = HorizontalInput;
+
+        if (HorizontalInput < 0 && IsCharacterFacingRight) 
+            IsCharacterFacingRight = false;
+        else if (HorizontalInput > 0 && !IsCharacterFacingRight) 
+            IsCharacterFacingRight = true;
     }
 
     /// <summary>
