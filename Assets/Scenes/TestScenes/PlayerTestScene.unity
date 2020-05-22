@@ -339,8 +339,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 523531928}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.387, y: -2.696, z: 0}
-  m_LocalScale: {x: 1.5, y: 1, z: 1}
+  m_LocalPosition: {x: 2.6, y: -2.857, z: 0}
+  m_LocalScale: {x: 3, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1599012973}
   m_RootOrder: 4
@@ -933,7 +933,7 @@ Animator:
   m_GameObject: {fileID: 1740934666}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: be5e81e883c04f64380a64ba8a2f8c99, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1014,7 +1014,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1834944067}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.633, y: -3.7, z: 0}
+  m_LocalPosition: {x: 2.6, y: -4.09, z: 0}
   m_LocalScale: {x: 3, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1599012973}
@@ -1184,10 +1184,15 @@ PrefabInstance:
       propertyPath: GroundAcceleration
       value: 75
       objectReference: {fileID: 0}
+    - target: {fileID: 1107087085971122761, guid: 023f024913ec1594b858a0947da9261f,
+        type: 3}
+      propertyPath: gravityScale
+      value: 0.6235828
+      objectReference: {fileID: 0}
     - target: {fileID: 5895057180388670320, guid: 023f024913ec1594b858a0947da9261f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 5.47
       objectReference: {fileID: 0}
     - target: {fileID: 5895057180388670320, guid: 023f024913ec1594b858a0947da9261f,
         type: 3}

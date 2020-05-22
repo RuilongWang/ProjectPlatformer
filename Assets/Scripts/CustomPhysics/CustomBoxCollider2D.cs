@@ -43,15 +43,22 @@ public class CustomBoxCollider2D : CustomCollider2D
             {
                 Box2DBounds = new CollisionFactory.Box2DBounds();
             }
-            UpdateColliderBounds();
         }
     }
 
     private void OnDrawGizmos()
     {
+        if (!Application.isPlaying)
+        {
+            if (Box2DBounds == null) Box2DBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.BOX);
+            UpdateColliderBounds();
+        }
+
         DrawBoxColliderBounds(Box2DBounds, DebugColliderColor);
         if (PhysicsBoxBounds != null)
             DrawBoxColliderBounds(PhysicsBoxBounds, Color.red);
+
+        
     }
 #endif
 
@@ -114,7 +121,6 @@ public class CustomBoxCollider2D : CustomCollider2D
     /// <returns></returns>
     public override bool IsOverlappingCollider(CustomCollider2D OtherCollider)
     {
-        
         return base.IsOverlappingCollider(OtherCollider);
     }
 
@@ -123,24 +129,6 @@ public class CustomBoxCollider2D : CustomCollider2D
         return this.PhysicsBoxBounds.IsOverlappingBounds(OtherCollider.GetAssociatedBounds());
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="OtherCollider"></param>
-    protected override void HorizontallyPushOutCollider(CustomCollider2D OtherCollider)
-    {
-        Vector3 Offset = GetOffsetForNearestHorizontalPointOnBoundsForCollider(OtherCollider);
-        OtherCollider.transform.position = OtherCollider.transform.position + Offset;
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="OtherCollider"></param>
-    protected override void VerticallyPushOutCollider(CustomCollider2D OtherCollider)
-    {
-        Vector3 Offset = GetOffsetForNearesVerticalPointOnBoundsForCollider(OtherCollider);
-        OtherCollider.transform.position = OtherCollider.transform.position + Offset;
-    }
+    
     #endregion override methods
 }

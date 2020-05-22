@@ -124,33 +124,22 @@ public abstract class CustomCollider2D : MonoBehaviour {
 
     public abstract bool IsPhysicsColliderOverlapping(CustomCollider2D OtherCollider);
 
-    public void PushOutCollider(CustomCollider2D OtherCollider, bool UseBufferForOverlap = false)
+    public Vector2 PushOutCollider(CustomCollider2D OtherCollider, out bool ShouldPushOutVertically, out bool ShouldPushOutHorizontally, bool UseBufferForOverlap = false)
     {
-        bool ShouldPushOutVertically, ShouldPushOutHorizontally;
+        Vector2 OffsetToBePushedOut = Vector2.zero;
         AssociatedBounds.ShouldPushOutBounds(OtherCollider.AssociatedBounds, out ShouldPushOutVertically, out ShouldPushOutHorizontally, UseBufferForOverlap);
         if (ShouldPushOutVertically)
         {
-            VerticallyPushOutCollider(OtherCollider);
+            OffsetToBePushedOut += AssociatedBounds.GetOffsetToClosestVerticalPointOnBounds(OtherCollider.AssociatedBounds);
             if (OtherCollider.AssignedCollisionType == ECollisionType.PHYSICS) OtherCollider.AssociatedPhysicsComponent.Velocity.y = 0;
         }
         if (ShouldPushOutHorizontally)
         {
-            HorizontallyPushOutCollider(OtherCollider);
+            OffsetToBePushedOut += AssociatedBounds.GetOffsetToClosestHorizontalPointOnBounds(OtherCollider.AssociatedBounds);
             if (OtherCollider.AssignedCollisionType == ECollisionType.PHYSICS) OtherCollider.AssociatedPhysicsComponent.Velocity.x = 0;
         }
+        return OffsetToBePushedOut;
     }
-
-    /// <summary>
-    /// This method will move the collider component that is passed in to the nearest horizontal position that is along its bounds
-    /// </summary>
-    /// <param name="OtherCollider"></param>
-    protected abstract void HorizontallyPushOutCollider(CustomCollider2D OtherCollider);
-
-    /// <summary>
-    /// This method will move the collider component that is passed in to the nearest vertical position that is along its bounds
-    /// </summary>
-    /// <param name="OtherCollider"></param>
-    protected abstract void VerticallyPushOutCollider(CustomCollider2D OtherCollider);
     #endregion virtual methods
 
 }

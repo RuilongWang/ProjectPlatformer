@@ -80,6 +80,7 @@ public class CharacterMovement : MonoBehaviour
     /// Is our character currently in the air. This will be marked false if the character is currently grounded
     /// </summary>
     private bool IsInAir;
+
     /// <summary>
     /// The current movement state of our character
     /// </summary>
@@ -210,7 +211,7 @@ public class CharacterMovement : MonoBehaviour
         {
             GoalSpeed = Mathf.Sign(HorizontalInput) * MaxWalkSpeed;
         }
-
+        //GoalSpeed = -1 * MaxRunSpeed;
         CurrentVelocity.x = Mathf.MoveTowards(CurrentVelocity.x, GoalSpeed, GameOverseer.DELTA_TIME * GroundAcceleration);
         Rigid.Velocity = CurrentVelocity;
         
