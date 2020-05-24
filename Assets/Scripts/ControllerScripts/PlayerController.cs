@@ -3,230 +3,138 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.Events;
-
+using UnityEngine.UI;
 
 /// <summary>
 /// Script that handles all the player controlled input for our game
+/// 
+/// The purpose of this class is to allow an easier time when giving the player an option to change their controller layout
 /// </summary>
-public class PlayerController : MonoBehaviour
+public class PlayerController : CharacterController
 {
-    public enum ButtonInputID
-    {
-        JUMP_BUTTON,
-        ATTACK_BUTTON,
-        PAUSE_BUTTON,
-    }
-
     #region const variables
-    [SerializeField]
-    private InputBinding[] DefaultInputs = new InputBinding[3];
+    private const string KEYBOARD_HORIZONTAL_AXIS = "KeyboardHorizontal";
+    private const string KEYBOARD_VERTICAL_AXIS = "KeyboardVertical";
 
-    /// <summary>
-    /// Axes bindings for now will just be hardcoded. There is no reason to make that bindable
-    /// </summary>
-    public const string HORIZONTAL_AXIS = "MoveLeftRight";
-    public const string VERTICAL_AXIS = "MoveUpDown";
+    private const string JOYSTICK_HORIZONTAL_AXIS = "JoyHorizontal";
+    private const string JOYSTICK_VERTICAL_AXIS = "JoyVertical";
+
     #endregion const variables
 
-    private Dictionary<ButtonInputID, UnityAction> ButtonPressedActionEventDictionary = new Dictionary<ButtonInputID, UnityAction>();
-    private Dictionary<ButtonInputID, UnityAction> ButtonReleasedActionEventDictionary = new Dictionary<ButtonInputID, UnityAction>();
-    private Dictionary<string, UnityAction<float>> AxisEventDictionary = new Dictionary<string, UnityAction<float>>();
-
-
+    private List<PlayerActionCommand> ButtonEventList;
+    private List<PlayerAxisCommand> AxesEventList;
+    private PlayerCharacter AssociatedPlayerCharacter;
 
     #region monobehaviour methods
-    private void Awake()
+    protected override void Awake()
     {
-        
+        base.Awake();
+        SetupDefaultControllerInputs();
+        AssociatedPlayerCharacter = (PlayerCharacter)AssocoatedCharacter;
     }
 
     private void Update()
     {
-        foreach (KeyValuePair<ButtonInputID, UnityAction> ButtonPressedEvents in ButtonPressedActionEventDictionary)
+        foreach (PlayerActionCommand PlayerAction in ButtonEventList)
         {
-            if (DefaultInputs[(int)ButtonPressedEvents.Key].IsButtonPressed())
-            {
-                ButtonPressedEvents.Value.Invoke();
-            }
+            if (PlayerAction.WasButtonPressed()) PlayerAction.ExecutePressedCommand(AssociatedPlayerCharacter);
         }
 
-        foreach (KeyValuePair<ButtonInputID, UnityAction> ButtonReleasedEvent in ButtonReleasedActionEventDictionary)
+        foreach (PlayerAxisCommand PlayerAxis in AxesEventList)
         {
-            if (DefaultInputs[(int)ButtonReleasedEvent.Key].IsButtonReleased())
-            {
-                ButtonReleasedEvent.Value.Invoke();
-            }
-        }
-
-        foreach (KeyValuePair<string, UnityAction<float>> AxisEvent in AxisEventDictionary)
-        {
-            AxisEvent.Value.Invoke(Input.GetAxisRaw(AxisEvent.Key));
+            PlayerAxis.ExecuteAxisAction(AssociatedPlayerCharacter, PlayerAxis.GetClampedAxisRaw());
         }
     }
-
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        for (int i = 0; i < DefaultInputs.Length; ++i)
-        {
-            DefaultInputs[i].InputName = (ButtonInputID)i;
-            DefaultInputs[i].ButtonName = DefaultInputs[i].InputName.ToString();
-        }
-    }
-#endif
-#endregion monobehaviour methods
-
-
+    #endregion monobehaivour methods
     /// <summary>
-    /// 
+    /// Setup our default controlls
     /// </summary>
-    /// <param name="InputName"></param>
-    /// <param name="IsPressedEvent"></param>
-    /// <param name="FunctionToPerform"></param>
-    public void BindInputToAction(ButtonInputID ButtonIDToBind, bool IsPressedEvent, UnityAction FunctionToPerform)
+    private void SetupDefaultControllerInputs()
     {
-        if (IsPressedEvent)
-        {
-            BindInputActionHelper(ButtonPressedActionEventDictionary, ButtonIDToBind, FunctionToPerform);   
-        }
-        else
-        {
-            BindInputActionHelper(ButtonReleasedActionEventDictionary, ButtonIDToBind, FunctionToPerform);
-        }
-    }
+        ButtonEventList = new List<PlayerActionCommand>();
+        AxesEventList = new List<PlayerAxisCommand>();
 
-    /// <summary>
-    /// Since this action is done exactly the same to multiple dictionaries it seemed fitting to have
-    /// a bind input action helper to assist with binding an action to the passed in ButtonInputID
-    /// </summary>
-    /// <param name="DictionaryToBindInputEventTo"></param>
-    /// <param name="ButtonInputToBind"></param>
-    /// <param name="FunctionToPerform"></param>
-    private void BindInputActionHelper(Dictionary<ButtonInputID, UnityAction> DictionaryToBindInputEventTo, ButtonInputID ButtonInputToBind, UnityAction FunctionToPerform)
-    {
-        if (!DictionaryToBindInputEventTo.ContainsKey(ButtonInputToBind))
-        {
-            DictionaryToBindInputEventTo.Add(ButtonInputToBind, null);
-        }
-        DictionaryToBindInputEventTo[ButtonInputToBind] += FunctionToPerform;
-    }
+        //Button Events
+        ButtonEventList.Add(new PlayerActionCommand(new CommandJump(), KeyCode.Space, KeyCode.JoystickButton0));
 
-    /// <summary>
-    /// Unbinds an action from the ButtonInputID that is passed in
-    /// </summary>
-    /// <param name="InputName"></param>
-    /// <param name="IsPressedEvent"></param>
-    public void UnbindActionFromUntityInputEvent(ButtonInputID ButtonIDToBind, bool IsPressedEvent, UnityAction FunctionToUnbind)
-    {
-        if (IsPressedEvent)
-        {
-            UnbindActionFromUnityInputEventHelper(ButtonPressedActionEventDictionary, ButtonIDToBind, FunctionToUnbind);
-        }
-        else
-        {
-            UnbindActionFromUnityInputEventHelper(ButtonReleasedActionEventDictionary, ButtonIDToBind, FunctionToUnbind); 
-        }
+
+        //Axis Value Events
+        AxesEventList.Add(new PlayerAxisCommand(new AxisHorizontalMovement(), 
+            KEYBOARD_HORIZONTAL_AXIS, JOYSTICK_HORIZONTAL_AXIS));
+        AxesEventList.Add(new PlayerAxisCommand(new AxisVerticalMovement(),
+            KEYBOARD_VERTICAL_AXIS, JOYSTICK_VERTICAL_AXIS));
+
     }
 
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="DictionaryWeAreUnbindingFrom"></param>
-    /// <param name="ButtonInputToBindTo"></param>
-    /// <param name="FunctionToUnbind"></param>
-    private void UnbindActionFromUnityInputEventHelper(Dictionary<ButtonInputID, UnityAction> DictionaryWeAreUnbindingFrom, ButtonInputID ButtonInputToBindTo, UnityAction FunctionToUnbind)
+    private class PlayerActionCommand
     {
-        if (!DictionaryWeAreUnbindingFrom.ContainsKey(ButtonInputToBindTo))
-        {
-            Debug.LogError("The keycode input you were trying to unbind has not been set yet");
-            return;
-        }
-        DictionaryWeAreUnbindingFrom[ButtonInputToBindTo] -= FunctionToUnbind;
-        if (DictionaryWeAreUnbindingFrom[ButtonInputToBindTo] == null)
-        {
-            DictionaryWeAreUnbindingFrom.Remove(ButtonInputToBindTo);
-        }
-    }
+        public KeyCode DefaultKeyCode;
+        public KeyCode AltKeyCode;
+        protected ActionCommand ActionCommandToExecute;
 
-    /// <summary>
-    /// Binds an action to the 
-    /// </summary>
-    /// <param name="AxisName"></param>
-    /// <param name="FunctionToPerform"></param>
-    public void BindAxisToAction(string AxisName, UnityAction<float> FunctionToPerform)
-    {
-        if (!AxisEventDictionary.ContainsKey(AxisName))
+        
+        public PlayerActionCommand(ActionCommand ActionCommandToExecute, KeyCode DefaultKeyCode, KeyCode AltKeyCode)
         {
-            AxisEventDictionary.Add(AxisName, null);
+            this.ActionCommandToExecute = ActionCommandToExecute;
+            this.DefaultKeyCode = DefaultKeyCode;
+            this.AltKeyCode = AltKeyCode;
         }
-        AxisEventDictionary[AxisName] += FunctionToPerform;
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="AxisName"></param>
-    public void UnbindActionFromAxis(string AxisName, UnityAction<float> FunctionToRemove)
-    {
-        if (!AxisEventDictionary.ContainsKey(AxisName))
-        {
-            Debug.LogWarning("There was no key found with the Axis Name: " + AxisName);
-            return;
-        }
-
-        AxisEventDictionary[AxisName] -= FunctionToRemove;
-        if (AxisEventDictionary[AxisName] == null)
-        {
-            AxisEventDictionary.Remove(AxisName);
-        }
-    }
-
-    [System.Serializable]
-    /// <summary>
-    /// 
-    /// </summary>
-    public class InputBinding
-    {
-        /// <summary>
-        /// The two types of valid key types that you can assign
-        /// </summary>
-        public enum BindingType { Keyboard, GamePad}
-        [Tooltip("This value is entirely for organization purposes in the editor and should not be used")]
-        public string ButtonName;
-        public ButtonInputID InputName { get; set; }
-        public KeyCode[] ValidKeyCodeBindings = new KeyCode[2];
 
         /// <summary>
-        /// Are any of the valid keys for this input pressed (true for one frame)
+        /// Returns whether or not the player has pressed the assigned button value
         /// </summary>
         /// <returns></returns>
-        public bool IsButtonPressed()
-        {
-            foreach (KeyCode KeycodeToCheck in ValidKeyCodeBindings)
-            {
-                if (Input.GetKeyDown(KeycodeToCheck))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
+        public bool WasButtonPressed()
+        { return Input.GetKeyDown(DefaultKeyCode) || Input.GetKeyDown(AltKeyCode); }
+        
         /// <summary>
-        /// Are any of the valid keys for this input released (true for one frame)
+        /// Returns whether or not the player has released the assigned button value
         /// </summary>
         /// <returns></returns>
-        public bool IsButtonReleased()
-        {
-            foreach (KeyCode KeycodeToCheck in ValidKeyCodeBindings)
-            {
-                if (Input.GetKeyUp(KeycodeToCheck))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        public bool WasButtonReleased()
+        { return Input.GetKeyUp(DefaultKeyCode) || Input.GetKeyUp(AltKeyCode); }
+
+        /// <summary>
+        /// Runs the command to execute when a player has pressed the assigned button value
+        /// </summary>
+        /// <param name="AssociatedCharacter"></param>
+        public void ExecuteReleaseCommand(Character AssociatedCharacter)
+        { ActionCommandToExecute.ExecuteActionReleased(AssociatedCharacter);}
+
+        /// <summary>
+        /// Runs the command to execute when a player has released the assigned button value
+        /// </summary>
+        /// <param name="AssociatedCharacter"></param>
+        public void ExecutePressedCommand(Character AssociatedCharacter)
+        { ActionCommandToExecute.ExecuteActionPress(AssociatedCharacter); }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private class PlayerAxisCommand
+    {
+        public string DefaultAxisName;
+        public string AltAxisName;
+        public AxisCommand AxisCommandToExecute;
+
+        public PlayerAxisCommand(AxisCommand AxisCommandToExecute, string DefaultAxisName, string AltAxisName)
+        {
+            this.AxisCommandToExecute = AxisCommandToExecute;
+            this.DefaultAxisName = DefaultAxisName;
+            this.AltAxisName = AltAxisName;
+        }
+
+        public void ExecuteAxisAction(Character AssocoatedCharacter, float AxisValue)
+        { AxisCommandToExecute.ExecuteAxisAction(AssocoatedCharacter, AxisValue); }
+
+        public float GetClampedAxisRaw()
+        { return Mathf.Clamp(Input.GetAxisRaw(DefaultAxisName) + Input.GetAxisRaw(AltAxisName), -1, 1); }
+    }
+
 }

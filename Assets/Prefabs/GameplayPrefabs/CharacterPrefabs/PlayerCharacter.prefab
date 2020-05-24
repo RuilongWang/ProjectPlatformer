@@ -179,6 +179,8 @@ GameObject:
   - component: {fileID: 1107087085971122761}
   - component: {fileID: 1333620915}
   - component: {fileID: 1379680479}
+  - component: {fileID: 1740934668}
+  - component: {fileID: 1740934667}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -214,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da88eba5acf03a34c88bb56af3b846f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterName: No Name
+  CharacterName: Amelia
   CharacterMaxHealth: 100
 --- !u!114 &1333620914
 MonoBehaviour:
@@ -228,13 +230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e078ccc52c6441840ac5da770b7a9974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultInputs:
-  - ButtonName: JUMP_BUTTON
-    ValidKeyCodeBindings: 2000000000000000
-  - ButtonName: ATTACK_BUTTON
-    ValidKeyCodeBindings: 6a00000000000000
-  - ButtonName: PAUSE_BUTTON
-    ValidKeyCodeBindings: 0d00000000000000
 --- !u!114 &1107087085971122761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,7 +247,7 @@ MonoBehaviour:
   useTerminalVelocity: 1
   UseAnimatorVelocity: 0
   gravityVector: {x: 0, y: -1}
-  gravityScale: 0.1574704
+  gravityScale: 0.6235828
   terminalVelocity: 10
 --- !u!114 &1333620915
 MonoBehaviour:
@@ -266,15 +261,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d84653155aadf4d4f94db2ccbf92932f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GroundAcceleration: 25
-  MaxWalkSpeed: 0.7
-  MaxRunSpeed: 1.65
+  GroundAcceleration: 75
+  MaxWalkSpeed: 3
+  MaxRunSpeed: 5.7
   MaxCrouchSpeed: 0.7
   AirAcceleration: 25
-  JumpHeight: 2.5
-  TimeToReachJumpApex: 1.8
+  JumpHeight: 1.1
+  TimeToReachJumpApex: 0.6
   DoubleJumpCount: 1
   FastFallScaled: 1.75
+  IsCharacterFacingRight: 1
   OverrideMovementWithAnimation: 0
   DesiredVelocityFromAnimation: {x: 0, y: 0}
 --- !u!114 &1379680479
@@ -295,3 +291,34 @@ MonoBehaviour:
   CollisionLayer: 0
   BoxColliderSize: {x: 0.3, y: 0.64}
   BufferSizePhysicsCollision: {x: 0.01, y: 0.01}
+--- !u!95 &1740934668
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5895057180388670323}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: be5e81e883c04f64380a64ba8a2f8c99, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1740934667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5895057180388670323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9991939ef4c27114e9ea58282e9b6080, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
