@@ -27,9 +27,8 @@ public class PhysicsManager : MonoBehaviour
         
     }
 
-    private void LateUpdate()
+    public void UpdatePhysicsManager()
     {
-        GameOverseer.Instance.HitboxManager.UpdateHitboxManager();
         UpdateGravityForPhysicsComponents();
         UpdateBoundsOfColliders();
         CheckOfrOverlappingColliders();

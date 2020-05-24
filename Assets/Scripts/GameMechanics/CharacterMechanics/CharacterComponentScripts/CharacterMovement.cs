@@ -68,9 +68,10 @@ public class CharacterMovement : MonoBehaviour
     public float HorizontalInput { get; private set; }
 
     /// <summary>
-    /// 
+    /// The Vertical Input Passed into our Character movement mechanics
     /// </summary>
     public float VerticalInput { get; private set; }
+
     /// <summary>
     /// The remaining number jumps that we can execute in the air 
     /// </summary>
@@ -120,14 +121,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void Update()
     {
-
-
         UpdateMovementBasedOnMovementState(CurrentMovementState);
-    }
-
-    private void OnDestroy()
-    {
-        
     }
 
 #if UNITY_EDITOR

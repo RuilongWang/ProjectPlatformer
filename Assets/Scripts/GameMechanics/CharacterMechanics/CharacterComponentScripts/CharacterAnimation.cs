@@ -11,7 +11,7 @@ public class CharacterAnimation : MonoBehaviour
     protected readonly int HORIZONTAL_INPUT = Animator.StringToHash("HorizontalInput");
     protected readonly int VERTICAL_INPUT = Animator.StringToHash("VerticalInput");
     #endregion const variables
-
+    private CharacterMovement AssociatedCharacterMovmeent { get { return AssociatedCharacter.CharacterMovement; } }
     private Character AssociatedCharacter;
     private Animator CharacterAnimator;
     private SpriteRenderer AssociatedSpriteRenderer;
@@ -42,5 +42,7 @@ public class CharacterAnimation : MonoBehaviour
             AssociatedSpriteRenderer.transform.localScale = new Vector3(1, 1, 1);
         else if (!CharacterMovement.IsCharacterFacingRight && AssociatedSpriteRenderer.transform.localScale.x > 0) 
             AssociatedSpriteRenderer.transform.localScale = new Vector3(-1, 1, 1);
+        CharacterAnimator.SetFloat(HORIZONTAL_INPUT, Mathf.Abs(AssociatedCharacterMovmeent.HorizontalInput));
+        CharacterAnimator.SetFloat(VERTICAL_INPUT, Mathf.Abs(AssociatedCharacterMovmeent.VerticalInput));
     }
 }
