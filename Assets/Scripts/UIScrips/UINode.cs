@@ -7,13 +7,13 @@ public class UINode : MonoBehaviour {
     public Transform pointerPosition;
     [Header("Adjacent UI Nodes")]
     [SerializeField]
-    private UINode nodeUp;
+    private UINode nodeUp = null;
     [SerializeField]
-    private UINode nodeDown;
+    private UINode nodeDown = null;
     [SerializeField]
-    private UINode nodeLeft;
+    private UINode nodeLeft = null;
     [SerializeField]
-    private UINode nodeRight;
+    private UINode nodeRight = null;
     private UIManager uiManager;
     [Tooltip("Mark this true if a player can currently select the item. if the item is locked off to the player you can mark it false")]
     public bool uiNodeActive = true;

@@ -6,16 +6,9 @@ using UnityEngine.SocialPlatforms;
 
 public class CustomBoxCollider2D : CustomCollider2D
 {
-    #region bounding variables
-    public Vector2 UpLeftBounds { get { return Box2DBounds.UpLeft; } }
-    public Vector2 UpRightBounds { get { return Box2DBounds.UpRight; } }
-    public Vector2 DownLeftBounds { get { return Box2DBounds.DownLeft; } }
-    public Vector2 DownRightBounds { get { return Box2DBounds.DownRight; } }
-    #endregion bounding variables
-
-
     protected CollisionFactory.Box2DBounds Box2DBounds;
     protected CollisionFactory.Box2DBounds PhysicsBoxBounds;
+    [Tooltip("The size of our box collider. Keep in mind that the size of the box collider will change with the local scale of transform that we are attached to")]
     public Vector2 BoxColliderSize = Vector2.one;
     [Tooltip("This is the buffer that we will give our physics colliders so that we do not run into instances where we collide with a wall in the opposite direction of our movement.")]
     public Vector2 BufferSizePhysicsCollision = Vector2.zero;
@@ -62,22 +55,11 @@ public class CustomBoxCollider2D : CustomCollider2D
     }
 #endif
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="BoxBounds"></param>
-    /// <param name="ColorToDraw"></param>
-    private void DrawBoxColliderBounds(CollisionFactory.Box2DBounds BoxBounds, Color ColorToDraw)
-    {
-        UnityEditor.Handles.color = ColorToDraw;
-        UnityEditor.Handles.DrawAAPolyLine(BoxBounds.GetVerticies());
-    }
-
     #endregion monobehaviour methods
 
     #region override methods
     /// <summary>
-    /// 
+    /// Update the bounds of our box collider based on its new transform position
     /// </summary>
     public override void UpdateColliderBounds()
     {
@@ -94,7 +76,7 @@ public class CustomBoxCollider2D : CustomCollider2D
     }
 
     /// <summary>
-    /// 
+    /// Updates the bounds of the physics collider based on the updated bounds position and the velocity of the physics object
     /// </summary>
     public override void UpdatePhysicsColliderBounds()
     {
@@ -129,6 +111,19 @@ public class CustomBoxCollider2D : CustomCollider2D
         return this.PhysicsBoxBounds.IsOverlappingBounds(OtherCollider.GetAssociatedBounds());
     }
 
-    
+
     #endregion override methods
+
+    #region debugging
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="BoxBounds"></param>
+    /// <param name="ColorToDraw"></param>
+    private void DrawBoxColliderBounds(CollisionFactory.Box2DBounds BoxBounds, Color ColorToDraw)
+    {
+        UnityEditor.Handles.color = ColorToDraw;
+        UnityEditor.Handles.DrawAAPolyLine(BoxBounds.GetVerticies());
+    }
+    #endregion debugging
 }

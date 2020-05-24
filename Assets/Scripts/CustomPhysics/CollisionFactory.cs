@@ -9,8 +9,6 @@ public class CollisionFactory
     {
         NONE,
         BOX,
-        CIRCLE,//NOT IMPLEMENTED
-        CAPSULE,//NOT IMPLEMENTED
     }
 
     /// <summary>
@@ -23,10 +21,6 @@ public class CollisionFactory
         {
             case ECollisionShape.BOX:
                 return new Box2DBounds();
-            case ECollisionShape.CIRCLE:
-                return new Circle2DBounds();
-            case ECollisionShape.CAPSULE:
-                return new Capsule2DBounds();
             default:
                 Debug.LogWarning("You passed in an unsupported Collision Shape.");
                 return new Box2DBounds();
@@ -277,106 +271,5 @@ public class CollisionFactory
             };
         }
     }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class Circle2DBounds : Bounds
-    {
-        public Vector2 Center;
-        public float Radius;
-
-        public Circle2DBounds()
-        {
-            this.CollisionShape = ECollisionShape.CIRCLE;
-        }
-
-        #region override methods
-        protected override Vector2 GetCenterPoint()
-        {
-            return CenterPoint;
-        }
-
-        protected override Vector2 GetMaxBounds()
-        {
-            return CenterPoint + Vector2.one * Radius;
-        }
-
-        protected override Vector2 GetMinBounds()
-        {
-            return CenterPoint - Vector2.one * Radius;
-        }
-
-        public void UpdateColliderBounds(Vector2 CenterPoint, float Radius)
-        {
-            this.Center = CenterPoint;
-            this.Radius = Radius;
-        }
-
-        protected override bool IsOverlappingBox2DBounds(Box2DBounds BoxBounds)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override void ShouldPushOutBox2dBounds(Box2DBounds OtherBounds, out bool ShouldPushOutVertically, out bool ShouldPushOutHorizontally, bool UseBufferForOverlap = false)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Vector2 GetOffsetForNearestHorizontalPointOnBoundsForBox2DBounds(Box2DBounds BoxBounds)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Vector2 GetOffsetForNearestVerticalPointOnBoundsForBox2DBounds(Box2DBounds BoxBounds)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion override methods
-    }
-
-    public class Capsule2DBounds : Bounds
-    {
-        public float Radius;
-        public float Size;
-
-        #region override methods
-        protected override Vector2 GetCenterPoint()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override Vector2 GetMaxBounds()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override Vector2 GetMinBounds()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override bool IsOverlappingBox2DBounds(Box2DBounds BoxBounds)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override void ShouldPushOutBox2dBounds(Box2DBounds OtherBounds, out bool ShouldPushOutVertically, out bool ShouldPushOutHorizontally, bool UseBufferForOverlap = false)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Vector2 GetOffsetForNearestHorizontalPointOnBoundsForBox2DBounds(Box2DBounds BoxBounds)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Vector2 GetOffsetForNearestVerticalPointOnBoundsForBox2DBounds(Box2DBounds BoxBounds)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion override methods
-    }
-
     #endregion collision bounds refs
 }

@@ -18,11 +18,11 @@ public class CharacterMovement : MonoBehaviour
     /// <summary>
     /// Sets the current movement state of our character
     /// </summary>
-    public enum MovementState
+    public enum MovementState : byte
     {
-        STANDING_GROUNDED,
-        CROUCHING_GROUNDED,
-        IN_AIR,
+        STANDING_GROUNDED = 0x00, //Character is grounded in the neutral position
+        CROUCHING_GROUNDED = 0x01, //Character is grounded in the crouching position
+        IN_AIR = 0x02, //Character is currently in the air
     }
     #endregion enum values
 
@@ -77,11 +77,6 @@ public class CharacterMovement : MonoBehaviour
     private int DoubleJumpsRemaining;
 
     /// <summary>
-    /// Is our character currently in the air. This will be marked false if the character is currently grounded
-    /// </summary>
-    private bool IsInAir;
-
-    /// <summary>
     /// The current movement state of our character
     /// </summary>
     public MovementState CurrentMovementState { get; private set; }
@@ -114,7 +109,6 @@ public class CharacterMovement : MonoBehaviour
 
 
     #region monobehaviour methods
-
     private void Awake()
     {
         AssociatedCharacter = GetComponent<Character>();
@@ -126,6 +120,8 @@ public class CharacterMovement : MonoBehaviour
 
     private void Update()
     {
+
+
         UpdateMovementBasedOnMovementState(CurrentMovementState);
     }
 
@@ -257,7 +253,7 @@ public class CharacterMovement : MonoBehaviour
     /// </summary>
     public void Jump()
     {
-        if (!IsInAir)
+        if (CurrentMovementState != MovementState.IN_AIR)
         {
             Rigid.Velocity.y = JumpVelocity;
         }

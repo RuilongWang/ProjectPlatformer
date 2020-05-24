@@ -20,6 +20,7 @@ public class PhysicsManager : MonoBehaviour
     public Dictionary<CustomCollider2D.ECollisionType, HashSet<CustomCollider2D>> AllActiveCollider2DComponentsInLevel = new Dictionary<CustomCollider2D.ECollisionType, HashSet<CustomCollider2D>>();
     #endregion main variables
 
+
     #region monobehaviour methods
     private void Awake()
     {
@@ -69,38 +70,46 @@ public class PhysicsManager : MonoBehaviour
     {
         Vector3 ClosestCollisionOffset;
         Vector3 CollisionOffset;
-        bool DidOverlapWithCollider;
+        bool DidOverlapWithAnyCollider;
         foreach (CustomCollider2D PhysicsCollider in AllActiveCollider2DComponentsInLevel[CustomCollider2D.ECollisionType.PHYSICS])
         {
             ClosestCollisionOffset = Vector2.zero;
+            DidOverlapWithAnyCollider = false;
             foreach (CustomCollider2D StaticCollider in AllActiveCollider2DComponentsInLevel[CustomCollider2D.ECollisionType.STATIC])
             {
-                DidOverlapWithCollider = false;
                 if (!Physics2D.GetIgnoreLayerCollision(PhysicsCollider.CollisionLayer, StaticCollider.CollisionLayer) &&
                     PhysicsCollider.IsPhysicsColliderOverlapping(StaticCollider))
                 {
                     bool ShouldPushOutVertically, ShouldPushOutHorizontally;
                     CollisionOffset = StaticCollider.PushOutCollider(PhysicsCollider, out ShouldPushOutVertically, out ShouldPushOutHorizontally, true);
-                    if (!DidOverlapWithCollider)
+                    if (!DidOverlapWithAnyCollider)
                     {
                         ClosestCollisionOffset = CollisionOffset;
                     }
                     else
                     {
-                        if (ClosestCollisionOffset.magnitude > CollisionOffset.magnitude)
+                        Vector2 PhysicsColliderCenterPoint = PhysicsCollider.GetAssociatedBounds().CenterPoint;
+                        if (ShouldPushOutHorizontally)
                         {
-                            ClosestCollisionOffset = CollisionOffset;
+                            float OriginalClosestX = Mathf.Abs(ClosestCollisionOffset.x - PhysicsColliderCenterPoint.x);
+                            float NewPointToCheck = Mathf.Abs(CollisionOffset.x - PhysicsColliderCenterPoint.x);
+                            if (NewPointToCheck < OriginalClosestX) { ClosestCollisionOffset.x = CollisionOffset.x; }
+                        }
+                        if (ShouldPushOutVertically)
+                        {
+                            float OriginalClosestY = Mathf.Abs(ClosestCollisionOffset.y - PhysicsColliderCenterPoint.y);
+                            float NewPointYToCheck = Mathf.Abs(CollisionOffset.y - PhysicsColliderCenterPoint.y);
+                            if (NewPointYToCheck < OriginalClosestY) { ClosestCollisionOffset.y = CollisionOffset.y; }
                         }
                     }
-                    DidOverlapWithCollider = true;
+                    DidOverlapWithAnyCollider = true;
                 }
-                if (DidOverlapWithCollider)
-                {
-                    PhysicsCollider.transform.position += ClosestCollisionOffset;
-                }
+                
             }
-            
-
+            if (DidOverlapWithAnyCollider)
+            {
+                PhysicsCollider.transform.position += ClosestCollisionOffset;
+            }
         }
     }
 
