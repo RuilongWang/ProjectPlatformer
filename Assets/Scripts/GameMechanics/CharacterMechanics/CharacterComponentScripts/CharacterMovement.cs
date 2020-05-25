@@ -15,8 +15,8 @@ public class CharacterMovement : MonoBehaviour
     /// 
     /// NOTE: Please remember to update these values in the character animator so that they appropriately line up with the values here
     /// </summary>
-    private const float INPUT_WALK_THRESHOLD = .3f;
-    private const float INPUT_RUN_THRESHOLD = .70f;
+    private const float INPUT_WALK_THRESHOLD = .25f;
+    private const float INPUT_RUN_THRESHOLD = .6f;
     #endregion const variables
 
     #region enum values

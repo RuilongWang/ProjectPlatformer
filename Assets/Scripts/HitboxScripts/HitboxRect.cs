@@ -50,8 +50,9 @@ public class HitboxRect : Hitbox
     {
         Vector2 TransformPositionVector2 = this.transform.position;
         //The updated bounds is based on the size, offset, and root transform local scale
-        Vector2 CenterOfHitbox = TransformPositionVector2 + PositionOffset * this.transform.root.localScale;
-        Vector2 SizeOfHitbox = this.BoxSize * this.transform.root.localScale;
+        Vector2 ScaledOffset = (Vector2)this.transform.localScale * (Vector2)this.transform.root.localScale;
+        Vector2 CenterOfHitbox = TransformPositionVector2 + PositionOffset * ScaledOffset;
+        Vector2 SizeOfHitbox = this.BoxSize * ScaledOffset;
         Box2DBounds.SetColliderBoundsForBox2D(ref CenterOfHitbox, ref SizeOfHitbox);
     }
     #endregion override methods

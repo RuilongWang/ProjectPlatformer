@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// Hitbox Interactions are handlers that are called anytime 
+/// Hitbox Interactions are handlers that are called anytime. This component would best be attached to our player's sprite.
+/// We place it there due to the sprite being the component that flips in scale
 /// </summary>
 public class HitboxInteraction : MonoBehaviour
 {
