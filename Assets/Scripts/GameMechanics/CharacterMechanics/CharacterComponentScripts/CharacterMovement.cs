@@ -193,6 +193,7 @@ public class CharacterMovement : MonoBehaviour
     {
         Vector2 CurrentVelocity = Rigid.Velocity;
         float GoalSpeed = 0;
+
         if (Mathf.Abs(HorizontalInput) > INPUT_RUN_THRESHOLD)
         {
             GoalSpeed = Mathf.Sign(HorizontalInput) * MaxRunSpeed;
