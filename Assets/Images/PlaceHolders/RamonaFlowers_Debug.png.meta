@@ -691,28 +691,28 @@ TextureImporter:
     second: RamonaFlowers_Debug_228
   - first:
       213: -5187380096067068624
-    second: RamonaFlowers_Debug_229
+    second: Jump_00
   - first:
       213: -6973727649457418093
-    second: RamonaFlowers_Debug_230
+    second: Jump_01
   - first:
       213: 1164241997654470878
-    second: RamonaFlowers_Debug_231
+    second: Jump_02
   - first:
       213: -8987052337365124151
-    second: RamonaFlowers_Debug_232
+    second: Jump_03
   - first:
       213: 3637210223092349273
-    second: RamonaFlowers_Debug_233
+    second: Jump_04
   - first:
       213: -8392904757023617526
-    second: RamonaFlowers_Debug_234
+    second: Jump_05
   - first:
       213: 2556955823939765887
-    second: RamonaFlowers_Debug_235
+    second: Jump_06
   - first:
       213: 4962729882712810572
-    second: RamonaFlowers_Debug_236
+    second: Jump_07
   - first:
       213: -7388945992317435354
     second: RamonaFlowers_Debug_237
@@ -3858,27 +3858,6 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 1611
-        width: 4
-        height: 9
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 667ec8524c0c22450800000000000000
-      internalID: 6062619997070223206
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Idle_00
       rect:
         serializedVersion: 2
@@ -5076,15 +5055,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_229
+      name: Jump_00
       rect:
         serializedVersion: 2
         x: 6
         y: 1571
         width: 41
         height: 51
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5121951, y: 0.039215688}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5097,15 +5076,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_230
+      name: Jump_01
       rect:
         serializedVersion: 2
         x: 50
         y: 1583
         width: 36
         height: 65
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.41666666, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5118,15 +5097,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_231
+      name: Jump_02
       rect:
         serializedVersion: 2
         x: 89
-        y: 1585
+        y: 1583
         width: 41
-        height: 61
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        height: 63
+      alignment: 9
+      pivot: {x: 0.4634146, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5139,15 +5118,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_232
+      name: Jump_03
       rect:
         serializedVersion: 2
         x: 133
-        y: 1588
+        y: 1583
         width: 44
-        height: 58
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        height: 63
+      alignment: 9
+      pivot: {x: 0.47727275, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5160,15 +5139,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_233
+      name: Jump_04
       rect:
         serializedVersion: 2
         x: 180
-        y: 1591
+        y: 1583
         width: 45
-        height: 53
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        height: 61
+      alignment: 9
+      pivot: {x: 0.4888889, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5181,14 +5160,14 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_234
+      name: Jump_05
       rect:
         serializedVersion: 2
         x: 228
-        y: 1589
+        y: 1583
         width: 46
-        height: 56
-      alignment: 7
+        height: 62
+      alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -5202,15 +5181,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_235
+      name: Jump_06
       rect:
         serializedVersion: 2
         x: 277
-        y: 1584
+        y: 1583
         width: 47
-        height: 62
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        height: 63
+      alignment: 9
+      pivot: {x: 0.4042553, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5223,15 +5202,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_236
+      name: Jump_07
       rect:
         serializedVersion: 2
         x: 327
         y: 1578
         width: 45
         height: 69
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.4888889, y: 0.072463766}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5251,8 +5230,8 @@ TextureImporter:
         y: 1571
         width: 42
         height: 52
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.52380955, y: 0.03846154}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

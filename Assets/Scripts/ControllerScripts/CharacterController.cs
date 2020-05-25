@@ -7,12 +7,12 @@ public class CharacterController : MonoBehaviour
     /// <summary>
     /// The associated character that is assigned to this character controller
     /// </summary>
-    protected Character AssocoatedCharacter;
+    protected GamePlayCharacters AssocoatedCharacter;
 
     #region monobehaviour methods
     protected virtual void Awake()
     {
-        AssocoatedCharacter = GetComponent<Character>();
+        AssocoatedCharacter = GetComponent<GamePlayCharacters>();
     }
 
     #endregion monobehaviour methods
@@ -24,18 +24,18 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     protected abstract class ActionCommand
     {
-        public virtual void ExecuteActionPress(Character AssociatedCharacter) { }
-        public virtual void ExecuteActionReleased(Character AssociateCharacter) { }
+        public virtual void ExecuteActionPress(GamePlayCharacters AssociatedCharacter) { }
+        public virtual void ExecuteActionReleased(GamePlayCharacters AssociateCharacter) { }
     }
 
     protected class CommandJump : ActionCommand
     {
-        public override void ExecuteActionPress(Character AssociatedCharacter)
+        public override void ExecuteActionPress(GamePlayCharacters AssociatedCharacter)
         {
             AssociatedCharacter.CharacterMovement.Jump();
         }
 
-        public override void ExecuteActionReleased(Character AssociateCharacter)
+        public override void ExecuteActionReleased(GamePlayCharacters AssociateCharacter)
         {
             AssociateCharacter.CharacterMovement.JumpReleased();
         }
@@ -48,7 +48,7 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     protected abstract class AxisCommand
     {
-        public virtual void ExecuteAxisAction(Character AssociatedCharacter, float RawAxisValue) { }
+        public virtual void ExecuteAxisAction(GamePlayCharacters AssociatedCharacter, float RawAxisValue) { }
         
     }
 
@@ -57,7 +57,7 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     protected class AxisHorizontalMovement : AxisCommand
     {
-        public override void ExecuteAxisAction(Character AssociatedCharacter, float RawAxisValue)
+        public override void ExecuteAxisAction(GamePlayCharacters AssociatedCharacter, float RawAxisValue)
         {
             AssociatedCharacter.CharacterMovement.ApplyHorizontalInput(RawAxisValue);
         }
@@ -68,7 +68,7 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     protected class AxisVerticalMovement : AxisCommand
     {
-        public override void ExecuteAxisAction(Character AssociatedCharacter, float RawAxisValue)
+        public override void ExecuteAxisAction(GamePlayCharacters AssociatedCharacter, float RawAxisValue)
         {
             AssociatedCharacter.CharacterMovement.ApplyVerticalInput(RawAxisValue);
         }

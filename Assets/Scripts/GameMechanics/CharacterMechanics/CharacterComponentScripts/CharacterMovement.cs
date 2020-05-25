@@ -161,14 +161,22 @@ public class CharacterMovement : MonoBehaviour
         {
             case MovementState.STANDING_GROUNDED:
                 UpdateStandingGroundedMovement();
-                if (Rigid.Velocity.y != 0) CurrentMovementState = MovementState.IN_AIR;
+                if (Rigid.Velocity.y != 0)
+                {
+                    CurrentMovementState = MovementState.IN_AIR;
+                    OnCharacterAirborne();
+                }
                 return;
             case MovementState.CROUCHING_GROUNDED:
                 UpdateCrouchingGroundedMovement();
                 return;
             case MovementState.IN_AIR:
                 UpdateInAirMovement();
-                if (Rigid.Velocity.y == 0) CurrentMovementState = MovementState.STANDING_GROUNDED;
+                if (Rigid.Velocity.y == 0)
+                {
+                    CurrentMovementState = MovementState.STANDING_GROUNDED;
+                    OnCharacterLanded();
+                }
                 return;
         }
     }

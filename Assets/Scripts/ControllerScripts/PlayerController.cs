@@ -103,14 +103,14 @@ public class PlayerController : CharacterController
         /// Runs the command to execute when a player has pressed the assigned button value
         /// </summary>
         /// <param name="AssociatedCharacter"></param>
-        public void ExecuteReleaseCommand(Character AssociatedCharacter)
+        public void ExecuteReleaseCommand(GamePlayCharacters AssociatedCharacter)
         { ActionCommandToExecute.ExecuteActionReleased(AssociatedCharacter);}
 
         /// <summary>
         /// Runs the command to execute when a player has released the assigned button value
         /// </summary>
         /// <param name="AssociatedCharacter"></param>
-        public void ExecutePressedCommand(Character AssociatedCharacter)
+        public void ExecutePressedCommand(GamePlayCharacters AssociatedCharacter)
         { ActionCommandToExecute.ExecuteActionPress(AssociatedCharacter); }
     }
 
@@ -130,7 +130,7 @@ public class PlayerController : CharacterController
             this.AltAxisName = AltAxisName;
         }
 
-        public void ExecuteAxisAction(Character AssocoatedCharacter, float AxisValue)
+        public void ExecuteAxisAction(GamePlayCharacters AssocoatedCharacter, float AxisValue)
         { AxisCommandToExecute.ExecuteAxisAction(AssocoatedCharacter, AxisValue); }
 
         public float GetClampedAxisRaw()
