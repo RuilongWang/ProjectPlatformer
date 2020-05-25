@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,10 +9,14 @@ using UnityEngine;
 /// </summary>
 public class CharacterMovement : MonoBehaviour
 {
-
     #region const variables
-    private const float INPUT_WALK_THRESHOLD = .15f;
-    private const float INPUT_RUN_THRESHOLD = .65f;
+    /// <summary>
+    /// The Input thresholds for our walk and run movement while grounded
+    /// 
+    /// NOTE: Please remember to update these values in the character animator so that they appropriately line up with the values here
+    /// </summary>
+    private const float INPUT_WALK_THRESHOLD = .3f;
+    private const float INPUT_RUN_THRESHOLD = .70f;
     #endregion const variables
 
     #region enum values
@@ -23,6 +28,13 @@ public class CharacterMovement : MonoBehaviour
         STANDING_GROUNDED = 0x00, //Character is grounded in the neutral position
         CROUCHING_GROUNDED = 0x01, //Character is grounded in the crouching position
         IN_AIR = 0x02, //Character is currently in the air
+    }
+
+    public enum GroundedStandingState : byte
+    {
+        Idle = 0x00,
+        Walk = 0x01,
+        Run = 0x02,
     }
     #endregion enum values
 
@@ -65,12 +77,9 @@ public class CharacterMovement : MonoBehaviour
     /// <summary>
     /// Input variable that store the intended directions based on what our controllers pass in
     /// </summary>
-    public float HorizontalInput { get; private set; }
+    public Vector2 MovementInput { get; private set; }
 
-    /// <summary>
-    /// The Vertical Input Passed into our Character movement mechanics
-    /// </summary>
-    public float VerticalInput { get; private set; }
+    private Vector2 PreviousMovementInput;
 
     /// <summary>
     /// The remaining number jumps that we can execute in the air 
@@ -81,6 +90,11 @@ public class CharacterMovement : MonoBehaviour
     /// The current movement state of our character
     /// </summary>
     public MovementState CurrentMovementState { get; private set; }
+
+    /// <summary>
+    /// This state will be updated while our character is in the grounded standing state
+    /// </summary>
+    public GroundedStandingState CurrentGroundedStandingState { get; private set; }
 
     [Header("Character Orientation")]
     [Tooltip("This will indicate that our character is facing in the 'Right' direction. This translates to our character's sprite renderer object have a positive localscale on the x-axis")]
@@ -108,7 +122,6 @@ public class CharacterMovement : MonoBehaviour
     private CustomPhysics2D Rigid;
     #endregion component references
 
-
     #region monobehaviour methods
     private void Awake()
     {
@@ -122,6 +135,7 @@ public class CharacterMovement : MonoBehaviour
     private void Update()
     {
         UpdateMovementBasedOnMovementState(CurrentMovementState);
+        
     }
 
 #if UNITY_EDITOR
@@ -135,7 +149,7 @@ public class CharacterMovement : MonoBehaviour
         AdjustGravityBasedOnJumpValues();
     }
 #endif
-#endregion monobehaviour methods
+    #endregion monobehaviour methods
 
     #region private helper methods
     /// <summary>
@@ -147,18 +161,21 @@ public class CharacterMovement : MonoBehaviour
         {
             case MovementState.STANDING_GROUNDED:
                 UpdateStandingGroundedMovement();
+                if (Rigid.Velocity.y != 0) CurrentMovementState = MovementState.IN_AIR;
                 return;
             case MovementState.CROUCHING_GROUNDED:
                 UpdateCrouchingGroundedMovement();
                 return;
             case MovementState.IN_AIR:
                 UpdateInAirMovement();
+                if (Rigid.Velocity.y == 0) CurrentMovementState = MovementState.STANDING_GROUNDED;
                 return;
         }
     }
     #endregion private helper methods
 
     #region input mehtods
+    
     /// <summary>
     /// Set the horizontal input for this character movement. This will be used to calculate the horizontal movement of our character based on the movement
     /// type that they are currently assigned
@@ -166,12 +183,16 @@ public class CharacterMovement : MonoBehaviour
     /// <param name="HorizontalInput"></param>
     public virtual void ApplyHorizontalInput(float HorizontalInput)
     {
-        this.HorizontalInput = HorizontalInput;
-
-        if (HorizontalInput < 0 && IsCharacterFacingRight) 
+        float AdjustedHorizontalMovement = (PreviousMovementInput.x + HorizontalInput) / 2;
+        
+        if (AdjustedHorizontalMovement < -INPUT_WALK_THRESHOLD && IsCharacterFacingRight)
             IsCharacterFacingRight = false;
-        else if (HorizontalInput > 0 && !IsCharacterFacingRight) 
+        else if (AdjustedHorizontalMovement > INPUT_WALK_THRESHOLD && !IsCharacterFacingRight)
             IsCharacterFacingRight = true;
+
+        PreviousMovementInput = MovementInput;
+        MovementInput = new Vector2(AdjustedHorizontalMovement, MovementInput.y);
+
     }
 
     /// <summary>
@@ -181,7 +202,11 @@ public class CharacterMovement : MonoBehaviour
     /// <param name="VerticalInput"></param>
     public virtual void ApplyVerticalInput(float VerticalInput)
     {
-        this.VerticalInput = VerticalInput;
+        float AdjustedVerticalMovement = (PreviousMovementInput.y + VerticalInput) / 2;
+
+        PreviousMovementInput = MovementInput;
+        MovementInput = new Vector2(MovementInput.x, AdjustedVerticalMovement);
+
     }
     #endregion input methods
 
@@ -194,13 +219,19 @@ public class CharacterMovement : MonoBehaviour
         Vector2 CurrentVelocity = Rigid.Velocity;
         float GoalSpeed = 0;
 
-        if (Mathf.Abs(HorizontalInput) > INPUT_RUN_THRESHOLD)
+        if (Mathf.Abs(MovementInput.x) > INPUT_RUN_THRESHOLD)
         {
-            GoalSpeed = Mathf.Sign(HorizontalInput) * MaxRunSpeed;
+            GoalSpeed = Mathf.Sign(MovementInput.x) * MaxRunSpeed;
+            if (CurrentGroundedStandingState != GroundedStandingState.Run) CurrentGroundedStandingState = GroundedStandingState.Run;
         }
-        else if (Mathf.Abs(HorizontalInput) > INPUT_WALK_THRESHOLD)
+        else if (Mathf.Abs(MovementInput.x) > INPUT_WALK_THRESHOLD)
         {
-            GoalSpeed = Mathf.Sign(HorizontalInput) * MaxWalkSpeed;
+            GoalSpeed = Mathf.Sign(MovementInput.x) * MaxWalkSpeed;
+            if (CurrentGroundedStandingState != GroundedStandingState.Walk) CurrentGroundedStandingState = GroundedStandingState.Walk;
+        }
+        else
+        {
+            if (CurrentGroundedStandingState != GroundedStandingState.Idle) CurrentGroundedStandingState = GroundedStandingState.Idle;
         }
         //GoalSpeed = -1 * MaxRunSpeed;
         CurrentVelocity.x = Mathf.MoveTowards(CurrentVelocity.x, GoalSpeed, GameOverseer.DELTA_TIME * GroundAcceleration);
@@ -215,9 +246,9 @@ public class CharacterMovement : MonoBehaviour
     {
         Vector2 CurrentVelocity = Rigid.Velocity;
         float GoalSpeed = 0;
-        if (Mathf.Abs(HorizontalInput) > INPUT_WALK_THRESHOLD)
+        if (Mathf.Abs(MovementInput.x) > INPUT_WALK_THRESHOLD)
         {
-            GoalSpeed = Mathf.Sign(HorizontalInput) * MaxCrouchSpeed;
+            GoalSpeed = Mathf.Sign(MovementInput.x) * MaxCrouchSpeed;
         }
 
         CurrentVelocity.x = Mathf.MoveTowards(CurrentVelocity.x, GoalSpeed, GameOverseer.DELTA_TIME * GroundAcceleration);
@@ -231,12 +262,12 @@ public class CharacterMovement : MonoBehaviour
     /// </summary>
     private void UpdateInAirMovement()
     {
-        if (Mathf.Abs(HorizontalInput) > INPUT_WALK_THRESHOLD)
+        if (Mathf.Abs(MovementInput.x) > INPUT_WALK_THRESHOLD)
         {
             Vector2 CurrentVelocity = Rigid.Velocity;
-            float GoalSpeed = Mathf.Sign(HorizontalInput) * MaxRunSpeed;
+            float GoalSpeed = Mathf.Sign(MovementInput.x) * MaxRunSpeed;
 
-            CurrentVelocity.x = Mathf.MoveTowards(CurrentVelocity.x, GoalSpeed, GameOverseer.DELTA_TIME * AirAcceleration * Mathf.Abs(HorizontalInput));
+            CurrentVelocity.x = Mathf.MoveTowards(CurrentVelocity.x, GoalSpeed, GameOverseer.DELTA_TIME * AirAcceleration * Mathf.Abs(MovementInput.x));
             Rigid.Velocity = CurrentVelocity;
         }
     }

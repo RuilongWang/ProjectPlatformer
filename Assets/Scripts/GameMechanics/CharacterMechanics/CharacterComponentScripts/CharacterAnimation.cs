@@ -6,10 +6,10 @@ using UnityEngine.Animations;
 public class CharacterAnimation : MonoBehaviour
 {
     #region const variables
-    protected readonly int HORIZONTAL_SPEED = Animator.StringToHash("HorizontalSpeed");
-    protected readonly int VERTICAL_SPEED = Animator.StringToHash("VerticalSpeed");
     protected readonly int HORIZONTAL_INPUT = Animator.StringToHash("HorizontalInput");
     protected readonly int VERTICAL_INPUT = Animator.StringToHash("VerticalInput");
+    protected readonly int STANDING_GROUNDED_STATE = Animator.StringToHash("StandingGroundedState");
+    protected readonly int MOVEMENT_STATE = Animator.StringToHash("MovementState");
     #endregion const variables
     private CharacterMovement AssociatedCharacterMovmeent { get { return AssociatedCharacter.CharacterMovement; } }
     private Character AssociatedCharacter;
@@ -42,7 +42,9 @@ public class CharacterAnimation : MonoBehaviour
             AssociatedSpriteRenderer.transform.localScale = new Vector3(1, 1, 1);
         else if (!CharacterMovement.IsCharacterFacingRight && AssociatedSpriteRenderer.transform.localScale.x > 0) 
             AssociatedSpriteRenderer.transform.localScale = new Vector3(-1, 1, 1);
-        CharacterAnimator.SetFloat(HORIZONTAL_INPUT, Mathf.Abs(AssociatedCharacterMovmeent.HorizontalInput));
-        CharacterAnimator.SetFloat(VERTICAL_INPUT, Mathf.Abs(AssociatedCharacterMovmeent.VerticalInput));
+        CharacterAnimator.SetFloat(HORIZONTAL_INPUT, Mathf.Abs(AssociatedCharacterMovmeent.MovementInput.x));
+        CharacterAnimator.SetFloat(VERTICAL_INPUT, Mathf.Abs(AssociatedCharacterMovmeent.MovementInput.y));
+        CharacterAnimator.SetInteger(MOVEMENT_STATE, (int)CharacterMovement.CurrentMovementState);
+        CharacterAnimator.SetInteger(STANDING_GROUNDED_STATE, (int)CharacterMovement.CurrentGroundedStandingState);
     }
 }
