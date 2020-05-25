@@ -11,7 +11,9 @@ public class GamePlayCharacters : Character
     /// <summary>
     /// 
     /// </summary>
-    public CharacterMovement CharacterMovement { get; private set; }
+    public CharacterMovement CharacterMovementComponent { get; private set; }
+
+    public CharacterAttack CharacterAttackComponent { get; private set; }
 
     /// <summary>
     /// 
@@ -26,8 +28,9 @@ public class GamePlayCharacters : Character
     protected override void Awake()
     {
         base.Awake();
-        CharacterMovement = GetComponent<CharacterMovement>();
+        CharacterMovementComponent = GetComponent<CharacterMovement>();
         Rigid = GetComponent<CustomPhysics2D>();
         AssignedCharacterController = GetComponent<CharacterController>();
+        CharacterAttackComponent = GetComponent<CharacterAttack>();
     }
 }

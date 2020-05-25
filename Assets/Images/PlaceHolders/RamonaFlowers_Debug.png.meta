@@ -2398,28 +2398,28 @@ TextureImporter:
     second: RamonaFlowers_Debug_797
   - first:
       213: -403392929085937027
-    second: RamonaFlowers_Debug_798
+    second: Attack_00
   - first:
       213: 2438374313727597682
-    second: RamonaFlowers_Debug_799
+    second: Attack_01
   - first:
       213: -4208289830608653068
-    second: RamonaFlowers_Debug_800
+    second: Attack_02
   - first:
       213: -9149435083089204704
-    second: RamonaFlowers_Debug_801
+    second: Attack_03
   - first:
       213: 6053302317743022362
-    second: RamonaFlowers_Debug_802
+    second: Attack_04
   - first:
       213: -8250133802203869946
-    second: RamonaFlowers_Debug_803
+    second: Attack_05
   - first:
       213: -8051838015191987761
-    second: RamonaFlowers_Debug_804
+    second: Attack_06
   - first:
       213: 2826461107929358442
-    second: RamonaFlowers_Debug_805
+    second: Attack_07
   - first:
       213: 8053220055436587762
     second: RamonaFlowers_Debug_806
@@ -11439,15 +11439,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_798
+      name: Attack_00
       rect:
         serializedVersion: 2
         x: 691
         y: 734
         width: 55
         height: 63
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.3090909, y: 0.031746034}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11460,15 +11460,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_799
+      name: Attack_01
       rect:
         serializedVersion: 2
         x: 749
         y: 734
         width: 36
         height: 82
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.44444445, y: 0.024390243}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11481,15 +11481,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_800
+      name: Attack_02
       rect:
         serializedVersion: 2
         x: 788
         y: 734
         width: 56
         height: 75
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5714286, y: 0.026666667}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11502,15 +11502,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_801
+      name: Attack_03
       rect:
         serializedVersion: 2
         x: 847
         y: 734
         width: 55
         height: 79
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.49090907, y: 0.025316456}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11523,15 +11523,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_802
+      name: Attack_04
       rect:
         serializedVersion: 2
         x: 905
         y: 734
         width: 77
         height: 82
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.22077923, y: 0.024390243}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11544,15 +11544,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_803
+      name: Attack_05
       rect:
         serializedVersion: 2
         x: 985
         y: 734
         width: 69
         height: 58
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.17391305, y: 0.03448276}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11565,15 +11565,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_804
+      name: Attack_06
       rect:
         serializedVersion: 2
         x: 1057
         y: 734
         width: 68
         height: 61
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.19117647, y: 0.032786883}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11586,15 +11586,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_805
+      name: Attack_07
       rect:
         serializedVersion: 2
         x: 1128
         y: 734
         width: 52
         height: 65
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.28846154, y: 0.03076923}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

@@ -32,12 +32,25 @@ public class CharacterController : MonoBehaviour
     {
         public override void ExecuteActionPress(GamePlayCharacters AssociatedCharacter)
         {
-            AssociatedCharacter.CharacterMovement.Jump();
+            AssociatedCharacter.CharacterMovementComponent.Jump();
         }
 
         public override void ExecuteActionReleased(GamePlayCharacters AssociateCharacter)
         {
-            AssociateCharacter.CharacterMovement.JumpReleased();
+            AssociateCharacter.CharacterMovementComponent.JumpReleased();
+        }
+    }
+
+    protected class CommandAttack01 : ActionCommand
+    {
+        public override void ExecuteActionPress(GamePlayCharacters AssociatedCharacter)
+        {
+            base.ExecuteActionPress(AssociatedCharacter);
+        }
+
+        public override void ExecuteActionReleased(GamePlayCharacters AssociateCharacter)
+        {
+            AssociateCharacter.CharacterAttackComponent.BeginAttack(CharacterAttack.CHARACTER_ATTACK_LIGHT);
         }
     }
     #endregion button command classes
@@ -59,7 +72,7 @@ public class CharacterController : MonoBehaviour
     {
         public override void ExecuteAxisAction(GamePlayCharacters AssociatedCharacter, float RawAxisValue)
         {
-            AssociatedCharacter.CharacterMovement.ApplyHorizontalInput(RawAxisValue);
+            AssociatedCharacter.CharacterMovementComponent.ApplyHorizontalInput(RawAxisValue);
         }
     }
 
@@ -70,7 +83,7 @@ public class CharacterController : MonoBehaviour
     {
         public override void ExecuteAxisAction(GamePlayCharacters AssociatedCharacter, float RawAxisValue)
         {
-            AssociatedCharacter.CharacterMovement.ApplyVerticalInput(RawAxisValue);
+            AssociatedCharacter.CharacterMovementComponent.ApplyVerticalInput(RawAxisValue);
         }
     }
     #endregion axis command classes

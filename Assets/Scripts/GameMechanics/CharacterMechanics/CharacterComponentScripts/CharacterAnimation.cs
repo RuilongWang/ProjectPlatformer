@@ -16,16 +16,17 @@ public class CharacterAnimation : MonoBehaviour
     #region animation references
     private GamePlayCharacters AssociatedCharacter;
 
-    private CharacterMovement AssociatedCharacterMovmeent { get { return AssociatedCharacter.CharacterMovement; } }
+    private CharacterMovement AssociatedCharacterMovmeent { get { return AssociatedCharacter.CharacterMovementComponent; } }
     private CustomPhysics2D CharacterPhysics { get { return AssociatedCharacter.Rigid; } }
-    private Animator CharacterAnimator { get { return AssociatedCharacter.CharacterAnimator; } }
+    private Animator CharacterAnimator;
     private SpriteRenderer AssociatedSpriteRenderer { get { return AssociatedCharacter.CharacterSpriteRenderer; } }
+    private Dictionary<int, int> TriggerInputBufferDictionary = new Dictionary<int, int>();
     #endregion animation references
 
     private void Awake()
     {
         AssociatedCharacter = GetComponent<GamePlayCharacters>();
-
+        CharacterAnimator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -47,5 +48,30 @@ public class CharacterAnimation : MonoBehaviour
         CharacterAnimator.SetFloat(VERTICAL_VELOCITY, CharacterPhysics.Velocity.y);
         CharacterAnimator.SetInteger(MOVEMENT_STATE, (int)AssociatedCharacterMovmeent.CurrentMovementState);
         CharacterAnimator.SetInteger(STANDING_GROUNDED_STATE, (int)AssociatedCharacterMovmeent.CurrentGroundedStandingState);
+    }
+
+    public void SetAnimationTrigger(int AnimatorHash, int AttackBufferInFrames = 0) 
+    {
+        CharacterAnimator.SetTrigger(AnimatorHash);
+        if (AttackBufferInFrames > 0) StartCoroutine(BeginBufferTriggerInput(AnimatorHash, AttackBufferInFrames));
+    }
+    public void SetAnimationInt(int AnimationHash, int Value) { CharacterAnimator.SetInteger(AnimationHash, Value); }
+    public void SetAnimationFloat(int AnimationHash, float Value) { CharacterAnimator.SetFloat(AnimationHash, Value); }
+
+    private IEnumerator BeginBufferTriggerInput(int AnimationHash, int AttackBufferInFrames)
+    {
+        if (TriggerInputBufferDictionary.ContainsKey(AnimationHash))
+        {
+            TriggerInputBufferDictionary[AnimationHash] = AttackBufferInFrames;
+            yield break;
+        }
+        TriggerInputBufferDictionary.Add(AnimationHash, AttackBufferInFrames);
+        while (TriggerInputBufferDictionary[AnimationHash] > 0)
+        {
+            --TriggerInputBufferDictionary[AnimationHash];
+            yield return null;
+        }
+        CharacterAnimator.SetBool(AnimationHash, false);
+        TriggerInputBufferDictionary.Remove(AnimationHash);
     }
 }

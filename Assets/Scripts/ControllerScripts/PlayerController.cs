@@ -40,6 +40,7 @@ public class PlayerController : CharacterController
         foreach (PlayerActionCommand PlayerAction in ButtonEventList)
         {
             if (PlayerAction.WasButtonPressed()) PlayerAction.ExecutePressedCommand(AssociatedPlayerCharacter);
+            if (PlayerAction.WasButtonReleased()) PlayerAction.ExecuteReleaseCommand(AssociatedPlayerCharacter);
         }
 
         foreach (PlayerAxisCommand PlayerAxis in AxesEventList)
@@ -58,7 +59,7 @@ public class PlayerController : CharacterController
 
         //Button Events
         ButtonEventList.Add(new PlayerActionCommand(new CommandJump(), KeyCode.Space, KeyCode.JoystickButton0));
-
+        ButtonEventList.Add(new PlayerActionCommand(new CommandAttack01(), KeyCode.J, KeyCode.JoystickButton2));
 
         //Axis Value Events
         AxesEventList.Add(new PlayerAxisCommand(new AxisHorizontalMovement(), 

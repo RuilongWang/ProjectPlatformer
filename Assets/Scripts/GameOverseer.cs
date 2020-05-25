@@ -61,8 +61,8 @@ public class GameOverseer : MonoBehaviour
 
     private void LateUpdate()
     {
-        HitboxManager.UpdateHitboxManager();
         PhysicsManager.UpdatePhysicsManager();
+        HitboxManager.UpdateHitboxManager();
     }
     #endregion monobehaviour methods
 }
