@@ -23,7 +23,7 @@ public class GamePlayCharacters : Character
     /// <summary>
     /// 
     /// </summary>
-    public CharacterController AssignedCharacterController;
+    public CharacterController AssignedCharacterController { get; protected set; }
 
     protected override void Awake()
     {
@@ -32,5 +32,14 @@ public class GamePlayCharacters : Character
         Rigid = GetComponent<CustomPhysics2D>();
         AssignedCharacterController = GetComponent<CharacterController>();
         CharacterAttackComponent = GetComponent<CharacterAttack>();
+    }
+
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+
+        if (Rigid == null) Rigid = GetComponent<CustomPhysics2D>();
+        if (CharacterAttackComponent == null) CharacterAttackComponent = GetComponent<CharacterAttack>();
+        if (CharacterMovementComponent == null) CharacterMovementComponent = GetComponent<CharacterMovement>();
     }
 }

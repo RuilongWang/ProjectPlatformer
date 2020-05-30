@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 
 
@@ -32,6 +33,11 @@ public class Character : MonoBehaviour
         CharacterCurrentHealth = CharacterCurrentHealth;
         CharacterAnimationComponent = GetComponent<CharacterAnimation>();
         CharacterSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+    }
+
+    protected virtual void OnValidate()
+    {
+        if (CharacterAnimationComponent == null) CharacterAnimationComponent = GetComponent<CharacterAnimation>();
     }
     #endregion monobehaviour methods
 

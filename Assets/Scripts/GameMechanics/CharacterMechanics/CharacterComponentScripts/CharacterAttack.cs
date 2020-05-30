@@ -11,7 +11,7 @@ public class CharacterAttack : MonoBehaviour
     #region const variables
     private readonly int ATTACK_TRIGGER = Animator.StringToHash("Attack");
     private readonly int ATTACK_TYPE = Animator.StringToHash("AttackType");
-    private const int ATTACK_BUFFER_FRAMES = 7;
+    private const int ATTACK_BUFFER_FRAMES = 15;
     #endregion const variables
 
     private GamePlayCharacters AssociatedCharacter;

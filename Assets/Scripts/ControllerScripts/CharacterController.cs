@@ -45,12 +45,7 @@ public class CharacterController : MonoBehaviour
     {
         public override void ExecuteActionPress(GamePlayCharacters AssociatedCharacter)
         {
-            base.ExecuteActionPress(AssociatedCharacter);
-        }
-
-        public override void ExecuteActionReleased(GamePlayCharacters AssociateCharacter)
-        {
-            AssociateCharacter.CharacterAttackComponent.BeginAttack(CharacterAttack.CHARACTER_ATTACK_LIGHT);
+            AssociatedCharacter.CharacterAttackComponent.BeginAttack(CharacterAttack.CHARACTER_ATTACK_LIGHT);
         }
     }
     #endregion button command classes

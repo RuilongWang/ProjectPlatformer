@@ -2356,31 +2356,31 @@ TextureImporter:
     second: RamonaFlowers_Debug_783
   - first:
       213: -2838548350484900641
-    second: RamonaFlowers_Debug_784
+    second: Attack1_00
   - first:
       213: 489858209596298492
-    second: RamonaFlowers_Debug_785
+    second: Attack1_01
   - first:
       213: 1455644471487274266
-    second: RamonaFlowers_Debug_786
+    second: Attack1_02
   - first:
       213: -6528751191969639976
-    second: RamonaFlowers_Debug_787
+    second: Attack2_00
   - first:
       213: -4497303804297276360
-    second: RamonaFlowers_Debug_788
+    second: Attack2_01
   - first:
       213: 1110935540904952860
-    second: RamonaFlowers_Debug_789
+    second: Attack2_02
   - first:
       213: -4063384301917424098
-    second: RamonaFlowers_Debug_790
+    second: Attack3_00
   - first:
       213: -8432378670650277517
-    second: RamonaFlowers_Debug_791
+    second: Attack3_01
   - first:
       213: 6165392079835311797
-    second: RamonaFlowers_Debug_792
+    second: Attack3_02
   - first:
       213: 7353886054634436750
     second: RamonaFlowers_Debug_793
@@ -2548,22 +2548,22 @@ TextureImporter:
     second: RamonaFlowers_Debug_847
   - first:
       213: -8542398101749663167
-    second: RamonaFlowers_Debug_848
+    second: DashAttack_00
   - first:
       213: -5087105267348716106
-    second: RamonaFlowers_Debug_849
+    second: DashAttack_01
   - first:
       213: -2892954224987518902
-    second: RamonaFlowers_Debug_850
+    second: DashAttack_02
   - first:
       213: 2866571311801734321
-    second: RamonaFlowers_Debug_851
+    second: DashAttack_03
   - first:
       213: 2441050438034092518
-    second: RamonaFlowers_Debug_852
+    second: DashAttack_04
   - first:
       213: -7701986393267903399
-    second: RamonaFlowers_Debug_853
+    second: DashAttack_05
   - first:
       213: 7055589758964541408
     second: RamonaFlowers_Debug_854
@@ -11145,15 +11145,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_784
+      name: Attack1_00
       rect:
         serializedVersion: 2
         x: 5
         y: 734
         width: 31
         height: 65
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.58064514, y: 0.03076923}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11166,15 +11166,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_785
+      name: Attack1_01
       rect:
         serializedVersion: 2
         x: 39
         y: 734
         width: 54
         height: 58
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.1851852, y: 0.03448276}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11187,15 +11187,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_786
+      name: Attack1_02
       rect:
         serializedVersion: 2
         x: 96
         y: 734
         width: 50
         height: 59
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.16, y: 0.033898305}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11208,15 +11208,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_787
+      name: Attack2_00
       rect:
         serializedVersion: 2
         x: 153
         y: 734
         width: 34
         height: 63
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.38235295, y: 0.031746034}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11229,15 +11229,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_788
+      name: Attack2_01
       rect:
         serializedVersion: 2
         x: 190
         y: 734
         width: 52
         height: 57
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.11538462, y: 0.03508772}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11250,15 +11250,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_789
+      name: Attack2_02
       rect:
         serializedVersion: 2
         x: 245
         y: 734
         width: 49
         height: 59
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.12244898, y: 0.033898305}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11271,15 +11271,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_790
+      name: Attack3_00
       rect:
         serializedVersion: 2
         x: 301
         y: 734
         width: 35
         height: 65
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.51428574, y: 0.03076923}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11292,15 +11292,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_791
+      name: Attack3_01
       rect:
         serializedVersion: 2
         x: 339
         y: 734
         width: 58
         height: 57
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.4137931, y: 0.03508772}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11313,15 +11313,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_792
+      name: Attack3_02
       rect:
         serializedVersion: 2
         x: 400
         y: 734
         width: 54
         height: 60
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.4074074, y: 0.033333335}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -11607,7 +11607,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_848
+      name: DashAttack_00
       rect:
         serializedVersion: 2
         x: 6
@@ -11628,7 +11628,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_849
+      name: DashAttack_01
       rect:
         serializedVersion: 2
         x: 49
@@ -11649,7 +11649,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_850
+      name: DashAttack_02
       rect:
         serializedVersion: 2
         x: 112
@@ -11670,7 +11670,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_851
+      name: DashAttack_03
       rect:
         serializedVersion: 2
         x: 175
@@ -11691,7 +11691,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_852
+      name: DashAttack_04
       rect:
         serializedVersion: 2
         x: 237
@@ -11712,7 +11712,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RamonaFlowers_Debug_853
+      name: DashAttack_05
       rect:
         serializedVersion: 2
         x: 295

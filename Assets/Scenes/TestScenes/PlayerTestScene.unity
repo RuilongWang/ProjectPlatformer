@@ -1132,6 +1132,65 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 919410099, guid: 023f024913ec1594b858a0947da9261f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.011
+      objectReference: {fileID: 0}
+    - target: {fileID: 919410099, guid: 023f024913ec1594b858a0947da9261f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.1875
+      objectReference: {fileID: 0}
+    - target: {fileID: 919410099, guid: 023f024913ec1594b858a0947da9261f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.354375
+      objectReference: {fileID: 0}
+    - target: {fileID: 919410099, guid: 023f024913ec1594b858a0947da9261f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.175
+      objectReference: {fileID: 0}
+    - target: {fileID: 1333620915, guid: 023f024913ec1594b858a0947da9261f, type: 3}
+      propertyPath: IsCharacterFacingRight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1333620915, guid: 023f024913ec1594b858a0947da9261f, type: 3}
+      propertyPath: TimeToReachJumpApex
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 1333620915, guid: 023f024913ec1594b858a0947da9261f, type: 3}
+      propertyPath: FastFallScaled
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1333620915, guid: 023f024913ec1594b858a0947da9261f, type: 3}
+      propertyPath: JumpHeight
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1458358069, guid: 023f024913ec1594b858a0947da9261f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 1458358069, guid: 023f024913ec1594b858a0947da9261f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.021
+      objectReference: {fileID: 0}
+    - target: {fileID: 1458358069, guid: 023f024913ec1594b858a0947da9261f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 797537607535942674, guid: 023f024913ec1594b858a0947da9261f,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.354375
+      objectReference: {fileID: 0}
+    - target: {fileID: 797537607535942674, guid: 023f024913ec1594b858a0947da9261f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.175
+      objectReference: {fileID: 0}
+    - target: {fileID: 977155889944690600, guid: 023f024913ec1594b858a0947da9261f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5895057180388670320, guid: 023f024913ec1594b858a0947da9261f,
         type: 3}
       propertyPath: m_LocalPosition.x

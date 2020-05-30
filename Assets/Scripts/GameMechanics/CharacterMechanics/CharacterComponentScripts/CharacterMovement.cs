@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(CustomPhysics2D))]
@@ -30,11 +28,14 @@ public class CharacterMovement : MonoBehaviour
         IN_AIR = 0x02, //Character is currently in the air
     }
 
+    /// <summary>
+    /// Substate while our character is standed and grounded
+    /// </summary>
     public enum GroundedStandingState : byte
     {
-        Idle = 0x00,
-        Walk = 0x01,
-        Run = 0x02,
+        IDLE = 0x00,
+        WALK = 0x01,
+        RUN = 0x02,
     }
     #endregion enum values
 
@@ -64,7 +65,7 @@ public class CharacterMovement : MonoBehaviour
     [Tooltip("This is the scaled acceleration of our fall speed. This will be applied when you let go of the jump button or hold the down input")]
     public float FastFallScaled = 1.75f;
 
-    
+
     /// <summary>
     /// This is the launch spaeed that we will use when calling the Jump method
     /// </summary>
@@ -79,6 +80,9 @@ public class CharacterMovement : MonoBehaviour
     /// </summary>
     public Vector2 MovementInput { get; private set; }
 
+    /// <summary>
+    /// The previous vertical and horizontal input set by the controller
+    /// </summary>
     private Vector2 PreviousMovementInput;
 
     /// <summary>
@@ -100,18 +104,16 @@ public class CharacterMovement : MonoBehaviour
     [Tooltip("This will indicate that our character is facing in the 'Right' direction. This translates to our character's sprite renderer object have a positive localscale on the x-axis")]
     public bool IsCharacterFacingRight = true;
 
-
-    private Character AssociatedCharacter;
+    /// <summary>
+    /// A reference to the associated character component
+    /// </summary>
+    private GamePlayCharacters AssociatedCharacter;
 
     #region animator variables
     /// <summary>
     /// Overrides our velocity update with the desired velocity from our animation. There will still be acceleration applied, but goal velocity is strictly set from our animation
     /// </summary>
     public bool OverrideMovementWithAnimation;
-    /// <summary>
-    /// The desired velocity based on our Animation. If 'Override MovementWithAnimation is set to true. This value is what will be set as our goal velocity.
-    /// </summary>
-    public Vector2 DesiredVelocityFromAnimation;
     #endregion animator varialbes
     #endregion member variables
 
@@ -119,34 +121,37 @@ public class CharacterMovement : MonoBehaviour
     /// <summary>
     /// Physics component that will updated with our character movement
     /// </summary>
-    private CustomPhysics2D Rigid;
+    private CustomPhysics2D Rigid { get { return AssociatedCharacter.Rigid; } }
     #endregion component references
 
     #region monobehaviour methods
     private void Awake()
     {
-        AssociatedCharacter = GetComponent<Character>();
-        Rigid = GetComponent<CustomPhysics2D>();
+        AssociatedCharacter = GetComponent<GamePlayCharacters>();
         DoubleJumpsRemaining = DoubleJumpCount;
 
+    }
+
+    private void Start()
+    {
         AdjustGravityBasedOnJumpValues();
     }
 
     private void Update()
     {
         UpdateMovementBasedOnMovementState(CurrentMovementState);
-        
     }
 
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        if (!Rigid)
+        if (AssociatedCharacter == null)
         {
-            Rigid = GetComponent<CustomPhysics2D>();
+            AssociatedCharacter = GetComponent<GamePlayCharacters>();
         }
         TimeToReachJumpApex = Mathf.Max(0.05f, TimeToReachJumpApex);
-        AdjustGravityBasedOnJumpValues();
+        if (!Application.isPlaying)
+            AdjustGravityBasedOnJumpValues();
     }
 #endif
     #endregion monobehaviour methods
@@ -157,7 +162,7 @@ public class CharacterMovement : MonoBehaviour
     /// </summary>
     private void UpdateMovementBasedOnMovementState(MovementState MovementState)
     {
-        switch(MovementState)
+        switch (MovementState)
         {
             case MovementState.STANDING_GROUNDED:
                 UpdateStandingGroundedMovement();
@@ -183,7 +188,7 @@ public class CharacterMovement : MonoBehaviour
     #endregion private helper methods
 
     #region input mehtods
-    
+
     /// <summary>
     /// Set the horizontal input for this character movement. This will be used to calculate the horizontal movement of our character based on the movement
     /// type that they are currently assigned
@@ -192,7 +197,7 @@ public class CharacterMovement : MonoBehaviour
     public virtual void ApplyHorizontalInput(float HorizontalInput)
     {
         float AdjustedHorizontalMovement = (PreviousMovementInput.x + HorizontalInput) / 2;
-        
+
         if (AdjustedHorizontalMovement < -INPUT_WALK_THRESHOLD && IsCharacterFacingRight)
             IsCharacterFacingRight = false;
         else if (AdjustedHorizontalMovement > INPUT_WALK_THRESHOLD && !IsCharacterFacingRight)
@@ -230,21 +235,21 @@ public class CharacterMovement : MonoBehaviour
         if (Mathf.Abs(MovementInput.x) > INPUT_RUN_THRESHOLD)
         {
             GoalSpeed = Mathf.Sign(MovementInput.x) * MaxRunSpeed;
-            if (CurrentGroundedStandingState != GroundedStandingState.Run) CurrentGroundedStandingState = GroundedStandingState.Run;
+            if (CurrentGroundedStandingState != GroundedStandingState.RUN) CurrentGroundedStandingState = GroundedStandingState.RUN;
         }
         else if (Mathf.Abs(MovementInput.x) > INPUT_WALK_THRESHOLD)
         {
             GoalSpeed = Mathf.Sign(MovementInput.x) * MaxWalkSpeed;
-            if (CurrentGroundedStandingState != GroundedStandingState.Walk) CurrentGroundedStandingState = GroundedStandingState.Walk;
+            if (CurrentGroundedStandingState != GroundedStandingState.WALK) CurrentGroundedStandingState = GroundedStandingState.WALK;
         }
         else
         {
-            if (CurrentGroundedStandingState != GroundedStandingState.Idle) CurrentGroundedStandingState = GroundedStandingState.Idle;
+            if (CurrentGroundedStandingState != GroundedStandingState.IDLE) CurrentGroundedStandingState = GroundedStandingState.IDLE;
         }
         //GoalSpeed = -1 * MaxRunSpeed;
         CurrentVelocity.x = Mathf.MoveTowards(CurrentVelocity.x, GoalSpeed, GameOverseer.DELTA_TIME * GroundAcceleration);
         Rigid.Velocity = CurrentVelocity;
-        
+
     }
 
     /// <summary>
@@ -308,7 +313,7 @@ public class CharacterMovement : MonoBehaviour
     /// </summary>
     public void JumpReleased()
     {
-        
+        SetGravityScaleToFastFallScale(true);
     }
 
     private void SetGravityScaleToFastFallScale(bool ShouldSetGravityScaleToFastFallScale)
@@ -341,16 +346,18 @@ public class CharacterMovement : MonoBehaviour
 
     private void AdjustGravityBasedOnJumpValues()
     {
+        if (!Rigid) return;
         float gravity = (2 * JumpHeight) / Mathf.Pow(TimeToReachJumpApex, 2);
         JumpVelocity = Mathf.Abs(gravity * TimeToReachJumpApex);
         JumpingAcceleration = gravity / CustomPhysics2D.GRAVITY_CONSTANT;
-        Rigid.gravityScale = JumpingAcceleration;        
+        Rigid.gravityScale = JumpingAcceleration;
+
     }
 
     private IEnumerator AccelerateToZeroGravityVelocity(int FramesToReachZero)
     {
         float gravitySpeedAtStart = Rigid.Velocity.y;
-        
+
         while (Rigid.Velocity.y < 0)
         {
             yield return null;

@@ -13,5 +13,11 @@ public class PlayerCharacter : GamePlayCharacters
     {
         base.Awake();
     }
+
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+        if (AssignedCharacterController == null) AssignedCharacterController = GetComponent<PlayerController>();
+    }
     #endregion monobehaviour methods
 }
