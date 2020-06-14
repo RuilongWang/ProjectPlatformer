@@ -107,7 +107,7 @@ public class CharacterMovement : MonoBehaviour
     /// <summary>
     /// A reference to the associated character component
     /// </summary>
-    private GamePlayCharacters AssociatedCharacter;
+    private GamePlayCharacter AssociatedCharacter;
 
     #region animator variables
     /// <summary>
@@ -127,7 +127,7 @@ public class CharacterMovement : MonoBehaviour
     #region monobehaviour methods
     private void Awake()
     {
-        AssociatedCharacter = GetComponent<GamePlayCharacters>();
+        AssociatedCharacter = GetComponent<GamePlayCharacter>();
         DoubleJumpsRemaining = DoubleJumpCount;
 
     }
@@ -147,9 +147,10 @@ public class CharacterMovement : MonoBehaviour
     {
         if (AssociatedCharacter == null)
         {
-            AssociatedCharacter = GetComponent<GamePlayCharacters>();
+            AssociatedCharacter = GetComponent<GamePlayCharacter>();
         }
         TimeToReachJumpApex = Mathf.Max(0.05f, TimeToReachJumpApex);
+
         if (!Application.isPlaying)
             AdjustGravityBasedOnJumpValues();
     }
@@ -171,6 +172,8 @@ public class CharacterMovement : MonoBehaviour
                     CurrentMovementState = MovementState.IN_AIR;
                     OnCharacterAirborne();
                 }
+
+                UpdateCharacterDirectionBasedOnInput();
                 return;
             case MovementState.CROUCHING_GROUNDED:
                 UpdateCrouchingGroundedMovement();
@@ -197,11 +200,6 @@ public class CharacterMovement : MonoBehaviour
     public virtual void ApplyHorizontalInput(float HorizontalInput)
     {
         float AdjustedHorizontalMovement = (PreviousMovementInput.x + HorizontalInput) / 2;
-
-        if (AdjustedHorizontalMovement < -INPUT_WALK_THRESHOLD && IsCharacterFacingRight)
-            IsCharacterFacingRight = false;
-        else if (AdjustedHorizontalMovement > INPUT_WALK_THRESHOLD && !IsCharacterFacingRight)
-            IsCharacterFacingRight = true;
 
         PreviousMovementInput = MovementInput;
         MovementInput = new Vector2(AdjustedHorizontalMovement, MovementInput.y);
@@ -346,7 +344,11 @@ public class CharacterMovement : MonoBehaviour
 
     private void AdjustGravityBasedOnJumpValues()
     {
-        if (!Rigid) return;
+        if (!AssociatedCharacter || !Rigid)
+        {
+            Debug.LogWarning("Associated Character not set. Skipping Gravity Adjustment. This should not cause any issues if this is the first we created our character movement comoponent");
+            return;
+        }
         float gravity = (2 * JumpHeight) / Mathf.Pow(TimeToReachJumpApex, 2);
         JumpVelocity = Mathf.Abs(gravity * TimeToReachJumpApex);
         JumpingAcceleration = gravity / CustomPhysics2D.GRAVITY_CONSTANT;
@@ -364,4 +366,18 @@ public class CharacterMovement : MonoBehaviour
         }
     }
     #endregion jumping methods
+
+    #region helper methods
+    /// <summary>
+    /// Checks to make sure that our direction bool is set to the correct direction based on the
+    /// controller input
+    /// </summary>
+    private void UpdateCharacterDirectionBasedOnInput()
+    {
+        if (MovementInput.x < -INPUT_WALK_THRESHOLD && IsCharacterFacingRight)
+            IsCharacterFacingRight = false;
+        else if (MovementInput.x > INPUT_WALK_THRESHOLD && !IsCharacterFacingRight)
+            IsCharacterFacingRight = true;
+    }
+    #endregion helper methods
 }

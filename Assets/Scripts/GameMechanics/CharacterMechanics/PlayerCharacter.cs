@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// A child of the character class that will perform and hold values important to our Playable character
 /// </summary>
-public class PlayerCharacter : GamePlayCharacters
+public class PlayerCharacter : GamePlayCharacter
 {
 
     #region monobehavoiur methods

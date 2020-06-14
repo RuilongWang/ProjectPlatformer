@@ -14,7 +14,7 @@ public class CharacterAttack : MonoBehaviour
     private const int ATTACK_BUFFER_FRAMES = 15;
     #endregion const variables
 
-    private GamePlayCharacters AssociatedCharacter;
+    private GamePlayCharacter AssociatedCharacter;
     private CharacterAnimation AssociatedCharacterAnimation { get { return AssociatedCharacter.CharacterAnimationComponent; } }
 
     
@@ -22,7 +22,7 @@ public class CharacterAttack : MonoBehaviour
     #region monobehaviour methods
     private void Awake()
     {
-        AssociatedCharacter = GetComponent<GamePlayCharacters>();
+        AssociatedCharacter = GetComponent<GamePlayCharacter>();
     }
 
     private void Update()

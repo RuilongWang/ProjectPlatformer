@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.MemoryProfiler;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterAnimation))]
 
 /// <summary>
 /// This is the most generic form of character that will be found in our game. Every
@@ -16,6 +17,8 @@ public class Character : MonoBehaviour
     public string CharacterName = "No Name";
     [Tooltip("The maximum amount of helath this character can have")]
     public float CharacterMaxHealth = 100;
+    [Tooltip("This is the container object that will contain our hitboxes as well as sprite components that are attached to our character. This should always be a direct child to the root transform")]
+    public Transform CharacterContainerTransform;
     /// <summary>
     /// The current health of our character. This can only be set through method in this class
     /// </summary>
@@ -33,6 +36,10 @@ public class Character : MonoBehaviour
         CharacterCurrentHealth = CharacterCurrentHealth;
         CharacterAnimationComponent = GetComponent<CharacterAnimation>();
         CharacterSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        if (CharacterContainerTransform == null)
+        {
+            Debug.LogWarning("The character container is null. Please be sure to attach a container transform to the Character component");
+        }
     }
 
     protected virtual void OnValidate()

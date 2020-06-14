@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 
+
+[RequireComponent(typeof(Animator))]
 public class CharacterAnimation : MonoBehaviour
 {
     #region const variables
@@ -14,7 +16,7 @@ public class CharacterAnimation : MonoBehaviour
     #endregion const variables
 
     #region animation references
-    private GamePlayCharacters AssociatedCharacter;
+    private GamePlayCharacter AssociatedCharacter;
 
     private CharacterMovement AssociatedCharacterMovmeent { get { return AssociatedCharacter.CharacterMovementComponent; } }
     private CustomPhysics2D CharacterPhysics { get { return AssociatedCharacter.Rigid; } }
@@ -26,7 +28,7 @@ public class CharacterAnimation : MonoBehaviour
 
     private void Awake()
     {
-        AssociatedCharacter = GetComponent<GamePlayCharacters>();
+        AssociatedCharacter = GetComponent<GamePlayCharacter>();
         CharacterAnimator = GetComponent<Animator>();
         if (CharacterAnimator.enabled)
         {

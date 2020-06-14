@@ -2,11 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterMovement))]
+[RequireComponent(typeof(CharacterAttack))]
+[RequireComponent(typeof(CustomPhysics2D))]
+[RequireComponent(typeof(CharacterController))]
+
+
 /// <summary>
 /// Extension of Character. These characters are meant to be characters that will have gameplay features. These characters are
 /// expected to use movement and are typically expected to be controlled in some way. Either by our player or by AI controller
 /// </summary>
-public class GamePlayCharacters : Character
+public class GamePlayCharacter : Character
 {
     /// <summary>
     /// 
