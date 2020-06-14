@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Analytics;
-using UnityEngine.SocialPlatforms;
+﻿using UnityEngine;
 
 public class CustomBoxCollider2D : CustomCollider2D
 {
@@ -76,7 +72,8 @@ public class CustomBoxCollider2D : CustomCollider2D
     }
 
     /// <summary>
-    /// Updates the bounds of the physics collider based on the updated bounds position and the velocity of the physics object
+    /// Updates the bounds of the physics collider based on the updated bounds position and the velocity of the physics object. This will only ever
+    /// be called for colliders of type physics
     /// </summary>
     public override void UpdatePhysicsColliderBounds()
     {

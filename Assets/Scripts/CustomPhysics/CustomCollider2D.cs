@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.Events;
 
 /// <summary>
 /// Base class of our custom collider. This will check to see if there are any points where our collider intersects
@@ -24,7 +26,22 @@ public abstract class CustomCollider2D : MonoBehaviour {
         STATIC,//Never expected to move. Good for most environmental colliders
         MOVABLE,//Can move, but does not trace for collision. Will also not be affected by other colliders it passes through
         PHYSICS,//This collider contains a physics component and will collide with objects due to physics.
+        TRIGGER,//This collider contains no physical properties and instead only acts to generate overlap events
     }
+
+    [Tooltip("Generates overlapping events with other Other colliders that can also")]
+    public bool CanGenerateOverlapEvents;
+
+    /// <summary>
+    /// Delegate that will trigger every time we receive a being overlap event
+    /// </summary>
+    [NonSerialized]
+    public UnityAction<CustomCollider2D> AOnBeginOverlap;
+    /// <summary>
+    /// Delegate that will trigger every time we receive an exit overlap event
+    /// </summary>
+    [NonSerialized]
+    public UnityAction<CustomCollider2D> AOnEndOverlap;
 
     /// <summary>
     /// The generic reference to our collider's bounds component
@@ -46,6 +63,8 @@ public abstract class CustomCollider2D : MonoBehaviour {
 
     [Tooltip("The collision's assigned physics layer. You can set what layers will collide with other layers using the Layer Collision Matrix in Unity")]
     public int CollisionLayer;
+
+    private HashSet<CustomCollider2D> OverlappingColliderSet = new HashSet<CustomCollider2D>();
     #region monobehaivour methods
     protected virtual void Awake()
     {
@@ -79,6 +98,8 @@ public abstract class CustomCollider2D : MonoBehaviour {
         }
 
         CollisionLayer = this.gameObject.layer;
+
+        if (AssignedCollisionType == ECollisionType.TRIGGER) CanGenerateOverlapEvents = true;
 #endif 
     }
     #endregion monobehaviour methods
@@ -103,6 +124,31 @@ public abstract class CustomCollider2D : MonoBehaviour {
         return this.AssociatedBounds.GetOffsetToClosestVerticalPointOnBounds(OtherCollider.AssociatedBounds);
     }
 
+
+    #region overlap methods
+    public void AddOverlappingColliderIfValid(CustomCollider2D ColliderToAdd)
+    {
+
+    }
+
+    /// <summary>
+    /// This method will be called every time we generate an overlap event
+    /// </summary>
+    /// <param name="Collider2D"></param>
+    public void OnBeginOverlap(CustomCollider2D Collider2D)
+    {
+        if (AOnBeginOverlap != null) AOnBeginOverlap.Invoke(Collider2D);
+    }
+
+    /// <summary>
+    /// This method will be called every time we generate an end overlap event
+    /// </summary>
+    /// <param name="Collider2D"></param>
+    public void OnEndOverlap(CustomCollider2D Collider2D)
+    {
+        if (AOnEndOverlap != null) AOnEndOverlap.Invoke(Collider2D);
+    }
+    #endregion overlap methods
 
     #region virtual methods
     /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -18,6 +19,8 @@ public class PhysicsManager : MonoBehaviour
     /// 
     /// </summary>
     public Dictionary<CustomCollider2D.ECollisionType, HashSet<CustomCollider2D>> AllActiveCollider2DComponentsInLevel = new Dictionary<CustomCollider2D.ECollisionType, HashSet<CustomCollider2D>>();
+
+    
     #endregion main variables
 
 
@@ -31,8 +34,9 @@ public class PhysicsManager : MonoBehaviour
     {
         UpdateGravityForPhysicsComponents();
         UpdateBoundsOfColliders();
-        CheckOfrOverlappingColliders();
+        PushOutOverlappingPhysicsColliders();
         UpdateAllValidPhysicsComponents();
+
     }
     #endregion monobehaivour methods
 
@@ -65,19 +69,31 @@ public class PhysicsManager : MonoBehaviour
         }
     }
 
-    private void CheckOfrOverlappingColliders()
+
+    /// <summary>
+    /// Checks to see
+    /// </summary>
+    private void PushOutOverlappingPhysicsColliders()
+    {
+        PushOutOverlappingPhysicsCollliderByCategory(CustomCollider2D.ECollisionType.STATIC);
+        PushOutOverlappingPhysicsCollliderByCategory(CustomCollider2D.ECollisionType.MOVABLE);
+    }
+
+    private void PushOutOverlappingPhysicsCollliderByCategory(CustomCollider2D.ECollisionType CollisionTypeToPushOut)
     {
         Vector3 ClosestCollisionOffset;
         Vector3 CollisionOffset;
         bool DidOverlapWithAnyCollider;
+        bool IsOverlapValid; //
         foreach (CustomCollider2D PhysicsCollider in AllActiveCollider2DComponentsInLevel[CustomCollider2D.ECollisionType.PHYSICS])
         {
             ClosestCollisionOffset = Vector2.zero;
             DidOverlapWithAnyCollider = false;
-            foreach (CustomCollider2D StaticCollider in AllActiveCollider2DComponentsInLevel[CustomCollider2D.ECollisionType.STATIC])
+            foreach (CustomCollider2D StaticCollider in AllActiveCollider2DComponentsInLevel[CollisionTypeToPushOut])
             {
+                IsOverlapValid = PhysicsCollider.IsPhysicsColliderOverlapping(StaticCollider);
                 if (!Physics2D.GetIgnoreLayerCollision(PhysicsCollider.CollisionLayer, StaticCollider.CollisionLayer) &&
-                    PhysicsCollider.IsPhysicsColliderOverlapping(StaticCollider))
+                    IsOverlapValid)
                 {
                     bool ShouldPushOutVertically, ShouldPushOutHorizontally;
                     CollisionOffset = StaticCollider.PushOutCollider(PhysicsCollider, out ShouldPushOutVertically, out ShouldPushOutHorizontally, true);
@@ -103,7 +119,7 @@ public class PhysicsManager : MonoBehaviour
                     }
                     DidOverlapWithAnyCollider = true;
                 }
-                
+
             }
             if (DidOverlapWithAnyCollider)
             {
@@ -111,7 +127,6 @@ public class PhysicsManager : MonoBehaviour
             }
         }
     }
-
 
 
     /// <summary>
@@ -128,6 +143,16 @@ public class PhysicsManager : MonoBehaviour
         }
     }
     #endregion custom physics methods
+
+    #region trigger events
+    /// <summary>
+    /// 
+    /// </summary>
+    private void GenerateOverlapEvents()
+    {
+
+    }
+    #endregion trigger events
 
 
     #region collection methods
