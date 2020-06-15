@@ -5,7 +5,7 @@ using UnityEngine.Animations;
 
 
 [RequireComponent(typeof(Animator))]
-public class CharacterAnimation : MonoBehaviour
+public class CharacterAnimation : AnimationComponent
 {
     #region const variables
     protected readonly int HORIZONTAL_INPUT = Animator.StringToHash("HorizontalInput");
@@ -16,35 +16,46 @@ public class CharacterAnimation : MonoBehaviour
     #endregion const variables
 
     #region animation references
+
+    /// <summary>
+    /// The associated character component
+    /// </summary>
     private GamePlayCharacter AssociatedCharacter;
 
+    /// <summary>
+    /// A reference to the associated character movement. Based on the associated character component
+    /// </summary>
     private CharacterMovement AssociatedCharacterMovmeent { get { return AssociatedCharacter.CharacterMovementComponent; } }
+
+    /// <summary>
+    /// A reference to the physics component. Based on the Associated Character Component
+    /// </summary>
     private CustomPhysics2D CharacterPhysics { get { return AssociatedCharacter.Rigid; } }
-    private Animator CharacterAnimator;
+
+    /// <summary>
+    /// A reference to the Sprite Renderer. Based on the Assocoated Character Component
+    /// </summary>
     private SpriteRenderer AssociatedSpriteRenderer { get { return AssociatedCharacter.CharacterSpriteRenderer; } }
+
+    /// <summary>
+    /// Trigger Input Dictionary. Contains a collection of all the buttons that are current registered as active in our buffer. This is so
+    /// our animation trigger parameters can deregister after a certain amount of time has passed.
+    /// </summary>
     private Dictionary<int, int> TriggerInputBufferDictionary = new Dictionary<int, int>();
-    private bool ShouldUpdateAnimatorManually;
+
     #endregion animation references
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         AssociatedCharacter = GetComponent<GamePlayCharacter>();
-        CharacterAnimator = GetComponent<Animator>();
-        if (CharacterAnimator.enabled)
-        {
-            Debug.LogWarning("You are using the Animator in debug mode. Please be sure to disable it when you are done.");
-            ShouldUpdateAnimatorManually = false;
-        }
-        else
-        {
-            ShouldUpdateAnimatorManually = true;
-        }
+        
     }
 
-    private void Update()
+    protected override void Update()
     {
         UpdateAnimatorBasedOnCharacterMovement();
-        if (ShouldUpdateAnimatorManually) CharacterAnimator.Update(GameOverseer.DELTA_TIME);
+        base.Update();
     }
 
     /// <summary>
@@ -53,11 +64,11 @@ public class CharacterAnimation : MonoBehaviour
     public void UpdateAnimatorBasedOnCharacterMovement()
     {
         SetCharacterSpriteScaleBasedOnCharacterMovement();
-        CharacterAnimator.SetFloat(HORIZONTAL_INPUT, Mathf.Abs(AssociatedCharacterMovmeent.MovementInput.x));
-        CharacterAnimator.SetFloat(VERTICAL_INPUT, Mathf.Abs(AssociatedCharacterMovmeent.MovementInput.y));
-        CharacterAnimator.SetFloat(VERTICAL_VELOCITY, CharacterPhysics.Velocity.y);
-        CharacterAnimator.SetInteger(MOVEMENT_STATE, (int)AssociatedCharacterMovmeent.CurrentMovementState);
-        CharacterAnimator.SetInteger(STANDING_GROUNDED_STATE, (int)AssociatedCharacterMovmeent.CurrentGroundedStandingState);
+        AssociatedAnimator.SetFloat(HORIZONTAL_INPUT, Mathf.Abs(AssociatedCharacterMovmeent.MovementInput.x));
+        AssociatedAnimator.SetFloat(VERTICAL_INPUT, Mathf.Abs(AssociatedCharacterMovmeent.MovementInput.y));
+        AssociatedAnimator.SetFloat(VERTICAL_VELOCITY, CharacterPhysics.Velocity.y);
+        AssociatedAnimator.SetInteger(MOVEMENT_STATE, (int)AssociatedCharacterMovmeent.CurrentMovementState);
+        AssociatedAnimator.SetInteger(STANDING_GROUNDED_STATE, (int)AssociatedCharacterMovmeent.CurrentGroundedStandingState);
     }
 
     /// <summary>
@@ -72,14 +83,45 @@ public class CharacterAnimation : MonoBehaviour
             AssociatedSpriteRenderer.transform.localScale = new Vector3(-1, 1, 1);
     }
 
+    /// <summary>
+    /// Call this method to toggle on an animation trigger. T
+    /// </summary>
+    /// <param name="AnimatorHash"></param>
+    /// <param name="AttackBufferInFrames"></param>
     public void SetAnimationTrigger(int AnimatorHash, int AttackBufferInFrames = 0) 
     {
-        CharacterAnimator.SetTrigger(AnimatorHash);
+        AssociatedAnimator.SetTrigger(AnimatorHash);
         if (AttackBufferInFrames > 0) StartCoroutine(BeginBufferTriggerInput(AnimatorHash, AttackBufferInFrames));
     }
-    public void SetAnimationInt(int AnimationHash, int Value) { CharacterAnimator.SetInteger(AnimationHash, Value); }
-    public void SetAnimationFloat(int AnimationHash, float Value) { CharacterAnimator.SetFloat(AnimationHash, Value); }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="AnimationHash"></param>
+    /// <param name="Value"></param>
+    public void SetAnimationInt(int AnimationHash, int Value) { AssociatedAnimator.SetInteger(AnimationHash, Value); }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="AnimationHash"></param>
+    /// <param name="Value"></param>
+    public void SetAnimationFloat(int AnimationHash, float Value) { AssociatedAnimator.SetFloat(AnimationHash, Value); }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="AnimationHash"></param>
+    /// <param name="Value"></param>
+    public void SetAnimationBool(int AnimationHash, bool Value) { AssociatedAnimator.SetBool(AnimationHash, Value); }
+
+    /// <summary>
+    /// This method acts to buffer trigger events in our Animator. If a button is pressed again while our coroutine is still
+    /// active, it will simply reset the buffer timer and exit out of the new cotourine.
+    /// </summary>
+    /// <param name="AnimationHash"></param>
+    /// <param name="AttackBufferInFrames"></param>
+    /// <returns></returns>
     private IEnumerator BeginBufferTriggerInput(int AnimationHash, int AttackBufferInFrames)
     {
         if (TriggerInputBufferDictionary.ContainsKey(AnimationHash))
@@ -93,7 +135,7 @@ public class CharacterAnimation : MonoBehaviour
             --TriggerInputBufferDictionary[AnimationHash];
             yield return null;
         }
-        CharacterAnimator.SetBool(AnimationHash, false);
+        AssociatedAnimator.SetBool(AnimationHash, false);
         TriggerInputBufferDictionary.Remove(AnimationHash);
     }
 }

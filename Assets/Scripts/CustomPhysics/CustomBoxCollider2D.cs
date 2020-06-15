@@ -30,7 +30,8 @@ public class CustomBoxCollider2D : CustomCollider2D
         {
             if (Box2DBounds == null)
             {
-                Box2DBounds = new CollisionFactory.Box2DBounds();
+                Box2DBounds = (CollisionFactory.Box2DBounds)CollisionFactory.GetNewBoundsInstance(CollisionFactory.ECollisionShape.BOX);
+                PreviousBounds = CollisionFactory.GetNewBoundsInstance(Box2DBounds.CollisionShape);
             }
         }
     }
@@ -59,6 +60,8 @@ public class CustomBoxCollider2D : CustomCollider2D
     /// </summary>
     public override void UpdateColliderBounds()
     {
+        PreviousBounds.CopyBoundsFrom(Box2DBounds);//Copy over the current bounds to the previous bounds.
+
         Vector2 AdjustedCeneterPoint = transform.position;
         AdjustedCeneterPoint += (ColliderOffset * transform.localScale);
         Vector2 BoxSize = BoxColliderSize * transform.localScale;
@@ -79,7 +82,7 @@ public class CustomBoxCollider2D : CustomCollider2D
     {
         Vector2 OffsetFromVelocity = (AssociatedPhysicsComponent.Velocity * GameOverseer.DELTA_TIME);
         Vector2 NewBoxSize = Box2DBounds.BoxSize + new Vector2(Mathf.Abs(OffsetFromVelocity.x), Mathf.Abs(OffsetFromVelocity.y));
-        Vector2 NewBoxCenter = Box2DBounds.CenterPoint + OffsetFromVelocity / 2f;
+        Vector2 NewBoxCenter = Box2DBounds.CenterPoint + OffsetFromVelocity / 2;
         if (AssociatedPhysicsComponent.Velocity.y != 0)
         {
             NewBoxCenter.y += Mathf.Sign(AssociatedPhysicsComponent.Velocity.y) * BufferSizePhysicsCollision.y;

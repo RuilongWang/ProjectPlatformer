@@ -41,17 +41,19 @@ public abstract class CustomCollider2D : MonoBehaviour {
     /// Delegate that will trigger every time we receive an exit overlap event
     /// </summary>
     [NonSerialized]
-    public UnityAction<CustomCollider2D> AOnEndOverlap;
+    public UnityAction<CustomCollider2D> UA_OnEndOverlap;
 
     /// <summary>
     /// The generic reference to our collider's bounds component
     /// </summary>
     private CollisionFactory.Bounds AssociatedBounds;
 
+    protected CollisionFactory.Bounds PreviousBounds;
+
     /// <summary>
     /// The associated physics component of our collider. If this is a static or moveable object, you more than likely should not have a physics component attached to this object.
     /// </summary>
-    protected CustomPhysics2D AssociatedPhysicsComponent;
+    public CustomPhysics2D AssociatedPhysicsComponent { get; protected set; }
 
     [Tooltip("The assigned collision type of our collision component. This will determine how we handle updates in our Collision Manager for optimization")]
     public ECollisionType AssignedCollisionType;
@@ -78,7 +80,9 @@ public abstract class CustomCollider2D : MonoBehaviour {
         {
             Debug.LogWarning("You collider does not contain a Physics component, but is assigned to CollisionType - 'Physics'. This can not work");
         }
+        PreviousBounds = CollisionFactory.GetNewBoundsInstance(AssociatedBounds.CollisionShape);
         UpdateColliderBounds();//We want to update the collider bounds on awake
+        PreviousBounds.CopyBoundsFrom(AssociatedBounds);//Make an exact copy for the first iteration
     }
 
     private void OnDestroy()
@@ -126,10 +130,6 @@ public abstract class CustomCollider2D : MonoBehaviour {
 
 
     #region overlap methods
-    public void AddOverlappingColliderIfValid(CustomCollider2D ColliderToAdd)
-    {
-
-    }
 
     /// <summary>
     /// This method will be called every time we generate an overlap event
@@ -146,7 +146,7 @@ public abstract class CustomCollider2D : MonoBehaviour {
     /// <param name="Collider2D"></param>
     public void OnEndOverlap(CustomCollider2D Collider2D)
     {
-        if (AOnEndOverlap != null) AOnEndOverlap.Invoke(Collider2D);
+        if (UA_OnEndOverlap != null) UA_OnEndOverlap.Invoke(Collider2D);
     }
     #endregion overlap methods
 
@@ -173,17 +173,16 @@ public abstract class CustomCollider2D : MonoBehaviour {
     public Vector2 PushOutCollider(CustomCollider2D OtherCollider, out bool ShouldPushOutVertically, out bool ShouldPushOutHorizontally, bool UseBufferForOverlap = false)
     {
         Vector2 OffsetToBePushedOut = Vector2.zero;
-        AssociatedBounds.ShouldPushOutBounds(OtherCollider.AssociatedBounds, out ShouldPushOutVertically, out ShouldPushOutHorizontally, UseBufferForOverlap);
+        PreviousBounds.ShouldPushOutBounds(OtherCollider.AssociatedBounds, out ShouldPushOutVertically, out ShouldPushOutHorizontally, UseBufferForOverlap);
         if (ShouldPushOutVertically)
         {
             OffsetToBePushedOut += AssociatedBounds.GetOffsetToClosestVerticalPointOnBounds(OtherCollider.AssociatedBounds);
-            if (OtherCollider.AssignedCollisionType == ECollisionType.PHYSICS) OtherCollider.AssociatedPhysicsComponent.Velocity.y = 0;
         }
         if (ShouldPushOutHorizontally)
         {
             OffsetToBePushedOut += AssociatedBounds.GetOffsetToClosestHorizontalPointOnBounds(OtherCollider.AssociatedBounds);
-            if (OtherCollider.AssignedCollisionType == ECollisionType.PHYSICS) OtherCollider.AssociatedPhysicsComponent.Velocity.x = 0;
         }
+
         return OffsetToBePushedOut;
     }
     #endregion virtual methods

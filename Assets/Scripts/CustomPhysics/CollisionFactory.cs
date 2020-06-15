@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class CollisionFactory
@@ -34,7 +35,7 @@ public class CollisionFactory
         /// <summary>
         /// This value identifies the shape of our collider. This is primarily for optimization when checking what type of shape we are using rather than comparing against the class type
         /// </summary>
-        protected ECollisionShape CollisionShape = ECollisionShape.NONE;
+        public ECollisionShape CollisionShape { get; protected set; }
 
         public Vector2 CenterPoint { get { return GetCenterPoint(); } }
         public Vector2 MinBounds { get { return GetMinBounds(); } }
@@ -112,6 +113,29 @@ public class CollisionFactory
                 default:
                     Debug.LogWarning("The bounds shape that you have passed in is not currently supported");
                     return Vector2.zero;
+            }
+        }
+
+        public void CopyBoundsFrom(Bounds BoundsToCopy) 
+        {
+            if (BoundsToCopy.CollisionShape != this.CollisionShape)
+            {
+                Debug.LogError("The bounds shape to copy does not match the this bounds shape. This Bounds: " + CollisionShape + " Other Bounds: " + BoundsToCopy.CollisionShape);
+                return;
+            }
+
+            Vector2 CenterToCopy;
+            Vector2 BoundsOfCopy;
+            switch(CollisionShape)
+            {
+                case ECollisionShape.BOX:
+                    CenterToCopy = BoundsToCopy.GetCenterPoint();
+                    BoundsOfCopy = ((Box2DBounds)BoundsToCopy).BoxSize;
+                    ((Box2DBounds)this).SetColliderBoundsForBox2D(ref CenterToCopy, ref BoundsOfCopy);
+                    return;
+                default:
+                    Debug.LogWarning("The Collision type that was passed in is not supported. " + CollisionShape);
+                    return;
             }
         }
 
