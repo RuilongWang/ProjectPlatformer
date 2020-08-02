@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor.MemoryProfiler;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(CharacterAnimation))]
 
@@ -29,6 +30,10 @@ public class Character : MonoBehaviour
     public CharacterAnimation CharacterAnimationComponent { get; private set; }
 
     #endregion main varialbes
+
+    #region delegates
+    public UnityAction HealthUpdated;
+    #endregion delegates
 
     #region monobehaivour methods
     protected virtual void Awake()
@@ -61,6 +66,7 @@ public class Character : MonoBehaviour
         {
             OnCharacterDead();
         }
+        HealthUpdated?.Invoke();
     }
 
     public virtual void CharacterAddHealth(float healthPointsToAdd)
@@ -70,6 +76,7 @@ public class Character : MonoBehaviour
         {
             CharacterCurrentHealth = CharacterMaxHealth;
         }
+        HealthUpdated?.Invoke();
     }
 
     /// <summary>

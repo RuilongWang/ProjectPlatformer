@@ -52,13 +52,13 @@ public class PhysicsManager : MonoBehaviour
     {
         foreach (KeyValuePair<CustomCollider2D, PhysicsColliderProperties> ColliderKeyValue in DictionaryOfIntersectedColliders)
         {
-            if (ColliderKeyValue.Value.CollidedHorizontally)
-            {
-                ColliderKeyValue.Key.AssociatedPhysicsComponent.Velocity.x = ColliderKeyValue.Value.PreviousVelocity.x;
-            }
             if (ColliderKeyValue.Value.CollidedVertically && ColliderKeyValue.Value.PreviousVelocity.y > 0)
             {
                 ColliderKeyValue.Key.AssociatedPhysicsComponent.Velocity.y = ColliderKeyValue.Value.PreviousVelocity.y;
+            }
+            if (ColliderKeyValue.Value.CollidedHorizontally && ColliderKeyValue.Key.AssociatedPhysicsComponent.Velocity.y == 0)
+            {
+                ColliderKeyValue.Key.AssociatedPhysicsComponent.Velocity.x = ColliderKeyValue.Value.PreviousVelocity.x;
             }
         }
     }
