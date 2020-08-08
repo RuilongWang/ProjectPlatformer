@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.MemoryProfiler;
 using UnityEngine;
@@ -32,7 +33,7 @@ public class Character : MonoBehaviour
     #endregion main varialbes
 
     #region delegates
-    public UnityAction HealthUpdated;
+    public UnityAction Delegate_HealthUpdated;
     #endregion delegates
 
     #region monobehaivour methods
@@ -55,6 +56,17 @@ public class Character : MonoBehaviour
 
     #region character health methods
     /// <summary>
+    /// This will set the health of the character without applying damage to our character.
+    /// If health is set to less than 0 Death will not be called.
+    /// </summary>
+    public virtual void SetCharacterHealth(float HealthToSet)
+    {
+
+        CharacterCurrentHealth = HealthToSet;
+        Delegate_HealthUpdated?.Invoke();
+    }
+
+    /// <summary>
     /// Use this method to appropriately apply damage to our character
     /// </summary>
     /// <param name="damageTaken"></param>
@@ -66,7 +78,7 @@ public class Character : MonoBehaviour
         {
             OnCharacterDead();
         }
-        HealthUpdated?.Invoke();
+        Delegate_HealthUpdated?.Invoke();
     }
 
     public virtual void CharacterAddHealth(float healthPointsToAdd)
@@ -76,7 +88,7 @@ public class Character : MonoBehaviour
         {
             CharacterCurrentHealth = CharacterMaxHealth;
         }
-        HealthUpdated?.Invoke();
+        Delegate_HealthUpdated?.Invoke();
     }
 
     /// <summary>

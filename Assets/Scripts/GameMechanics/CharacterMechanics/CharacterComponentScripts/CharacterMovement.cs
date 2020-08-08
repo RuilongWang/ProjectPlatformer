@@ -40,6 +40,9 @@ public class CharacterMovement : MonoBehaviour
     #endregion enum values
 
     #region member variables
+    [Header("Transform References")]
+    public Transform CharacterContainer;
+
     [Header("Grounded Movement")]
     [Tooltip("The acceleration of our character toward their goal speed")]
     public float GroundAcceleration;
@@ -375,9 +378,15 @@ public class CharacterMovement : MonoBehaviour
     private void UpdateCharacterDirectionBasedOnInput()
     {
         if (MovementInput.x < -INPUT_WALK_THRESHOLD && IsCharacterFacingRight)
+        {
             IsCharacterFacingRight = false;
+        }
         else if (MovementInput.x > INPUT_WALK_THRESHOLD && !IsCharacterFacingRight)
+        {
             IsCharacterFacingRight = true;
+        }
+        else return;
+        CharacterContainer.localScale = new Vector3(IsCharacterFacingRight ? 1 : -1, 1, 1);
     }
     #endregion helper methods
 }

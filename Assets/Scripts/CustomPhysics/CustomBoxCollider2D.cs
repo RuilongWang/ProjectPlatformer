@@ -81,19 +81,22 @@ public class CustomBoxCollider2D : CustomCollider2D
     public override void UpdatePhysicsColliderBounds()
     {
         Vector2 OffsetFromVelocity = (AssociatedPhysicsComponent.Velocity * GameOverseer.DELTA_TIME);
-        Vector2 NewBoxSize = Box2DBounds.BoxSize + new Vector2(Mathf.Abs(OffsetFromVelocity.x), Mathf.Abs(OffsetFromVelocity.y));
-        Vector2 NewBoxCenter = Box2DBounds.CenterPoint + OffsetFromVelocity / 2;
+        Vector2 BoxSizeAdjustment = new Vector2(Mathf.Max(0, Box2DBounds.BoxSize.x - Mathf.Abs(OffsetFromVelocity.x)), 
+            Mathf.Max(0, Box2DBounds.BoxSize.y - Mathf.Abs(OffsetFromVelocity.y)));
+        Vector2 NewBoxSizeWithVelocityOffset = new Vector2(Mathf.Abs(OffsetFromVelocity.x), Mathf.Abs(OffsetFromVelocity.y)) + BoxSizeAdjustment;
+
+        Vector2 NewBoxCenter = Box2DBounds.CenterPoint + (Box2DBounds.BoxSize - BoxSizeAdjustment) / 2f + OffsetFromVelocity / 2;
         if (AssociatedPhysicsComponent.Velocity.y != 0)
         {
             NewBoxCenter.y += Mathf.Sign(AssociatedPhysicsComponent.Velocity.y) * BufferSizePhysicsCollision.y;
-            NewBoxSize.y -= BufferSizePhysicsCollision.y / 2;
+            NewBoxSizeWithVelocityOffset.y -= BufferSizePhysicsCollision.y / 2;
         }
         if (AssociatedPhysicsComponent.Velocity.x != 0)
         {
             NewBoxCenter.x += Mathf.Sign(AssociatedPhysicsComponent.Velocity.x) * BufferSizePhysicsCollision.x;
-            NewBoxSize.x -= BufferSizePhysicsCollision.x / 2;
+            NewBoxSizeWithVelocityOffset.x -= BufferSizePhysicsCollision.x / 2;
         }
-        PhysicsBoxBounds.SetColliderBoundsForBox2D(ref NewBoxCenter, ref NewBoxSize);
+        PhysicsBoxBounds.SetColliderBoundsForBox2D(ref NewBoxCenter, ref NewBoxSizeWithVelocityOffset);
     }
 
     /// <summary>

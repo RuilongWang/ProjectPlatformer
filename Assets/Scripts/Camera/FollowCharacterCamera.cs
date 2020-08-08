@@ -17,6 +17,8 @@ public class FollowCharacterCamera : MonoBehaviour
     private Vector3 TargetPosition;
     private Vector3 TargetOffset;
 
+    private float HeightBeforeFollowingUp = 1f;
+
     #region monobehaviour methods
     private void Awake()
     {
@@ -41,6 +43,11 @@ public class FollowCharacterCamera : MonoBehaviour
     private void UpdateCameraPosition()
     {
         TargetPosition = TargetCharacter.transform.position + TargetOffset;
+        float OffsetYFromTargetPosition = TargetPosition.y - this.transform.position.y;
+        if (OffsetYFromTargetPosition <= HeightBeforeFollowingUp && OffsetYFromTargetPosition > 0)
+        {
+            TargetPosition.y = this.transform.position.y;
+        }
 
         this.transform.position = Vector3.Lerp(this.transform.position, TargetPosition, GameOverseer.DELTA_TIME * CameraFollowSpeed);
     }

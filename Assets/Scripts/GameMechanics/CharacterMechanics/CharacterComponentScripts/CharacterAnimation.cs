@@ -33,11 +33,6 @@ public class CharacterAnimation : AnimationComponent
     private CustomPhysics2D CharacterPhysics { get { return AssociatedCharacter.Rigid; } }
 
     /// <summary>
-    /// A reference to the Sprite Renderer. Based on the Assocoated Character Component
-    /// </summary>
-    private SpriteRenderer AssociatedSpriteRenderer { get { return AssociatedCharacter.CharacterSpriteRenderer; } }
-
-    /// <summary>
     /// Trigger Input Dictionary. Contains a collection of all the buttons that are current registered as active in our buffer. This is so
     /// our animation trigger parameters can deregister after a certain amount of time has passed.
     /// </summary>
@@ -63,24 +58,11 @@ public class CharacterAnimation : AnimationComponent
     /// </summary>
     public void UpdateAnimatorBasedOnCharacterMovement()
     {
-        SetCharacterSpriteScaleBasedOnCharacterMovement();
         AssociatedAnimator.SetFloat(HORIZONTAL_INPUT, Mathf.Abs(AssociatedCharacterMovmeent.MovementInput.x));
         AssociatedAnimator.SetFloat(VERTICAL_INPUT, Mathf.Abs(AssociatedCharacterMovmeent.MovementInput.y));
         AssociatedAnimator.SetFloat(VERTICAL_VELOCITY, CharacterPhysics.Velocity.y);
         AssociatedAnimator.SetInteger(MOVEMENT_STATE, (int)AssociatedCharacterMovmeent.CurrentMovementState);
         AssociatedAnimator.SetInteger(STANDING_GROUNDED_STATE, (int)AssociatedCharacterMovmeent.CurrentGroundedStandingState);
-    }
-
-    /// <summary>
-    /// Sets the caracter's sprite renderer comopnent based on the direction indicated 
-    /// by the CharacterMovmeent Component
-    /// </summary>
-    private void SetCharacterSpriteScaleBasedOnCharacterMovement()
-    {
-        if (AssociatedCharacterMovmeent.IsCharacterFacingRight && AssociatedSpriteRenderer.transform.localScale.x < 0)
-            AssociatedSpriteRenderer.transform.localScale = new Vector3(1, 1, 1);
-        else if (!AssociatedCharacterMovmeent.IsCharacterFacingRight && AssociatedSpriteRenderer.transform.localScale.x > 0)
-            AssociatedSpriteRenderer.transform.localScale = new Vector3(-1, 1, 1);
     }
 
     /// <summary>

@@ -33,6 +33,21 @@ public class DebugCharacterUI : DebugComponent
             return;
         }
         AssociatedCharacter = GetComponentInParent<GamePlayCharacter>();
+
+        AssociatedCharacter.Delegate_HealthUpdated += UpdateHealthBarSlider;
+        UpdateHealthBarSlider();
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+
+        AssociatedCharacter.Delegate_HealthUpdated -= UpdateHealthBarSlider;
+    }
+
+    protected virtual void Update()
+    {
+        UpdatePhysicsDisplayStats();
     }
     #endregion monobehaviour methods
 
@@ -51,19 +66,25 @@ public class DebugCharacterUI : DebugComponent
     private void UpdatePhysicsDisplayStats()
     {
         string PhysicsDataString = "";
-        PhysicsDataString += string.Format("Vel X: {0} Y: {1}\n", AssociatedCharacter.Rigid.Velocity.x, AssociatedCharacter.Rigid.Velocity.y);
+        PhysicsDataString += string.Format("Vel X: {0} Y: {1}\n", AssociatedCharacter.Rigid.Velocity.x.ToString("0.00"), 
+            AssociatedCharacter.Rigid.Velocity.y.ToString("0.00"));
         DebugPhysicsDisplayText.text = PhysicsDataString;
     }
     #endregion visually update debug ui
 
 
     #region virtual methods
-
+    /// <summary>
+    /// Call this method when debug functionality is tuned on or if this individual component has been activated
+    /// </summary>
     public override void OnBeginDebug()
     {
         DebugCharacterCanvas.gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// Call this method when debug functionality has been turned off or if this individual component have deactivated
+    /// </summary>
     public override void OnEndDebug()
     {
         DebugCharacterCanvas.gameObject.SetActive(false);
